@@ -1,0 +1,749 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Xcode的使用中总是离不开调试这个环境，在一年多的iOS开发时间中，我更多地依赖于XCode本身提供的GUI工具来进行调试，而对LLDB敬而远之，这段时间好好学习了LLDB的使用，发觉我错过了太多东西了……因此做一个比较完备的总结，也希望在写这篇文章的过程中进一步学习LLDB调试的各种实践方法。
+
+LLDB阐述LLDB 是一个有着 REPL 的特性和 C++ ,Python 插件的开源调试器。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS调试-LLDB学习总结">
+<meta property="og:url" content="http://yoursite.com/2015/12/27/iOS调试-LLDB学习总结/index.html">
+<meta property="og:site_name" content="Never Stop">
+<meta property="og:description" content="Xcode的使用中总是离不开调试这个环境，在一年多的iOS开发时间中，我更多地依赖于XCode本身提供的GUI工具来进行调试，而对LLDB敬而远之，这段时间好好学习了LLDB的使用，发觉我错过了太多东西了……因此做一个比较完备的总结，也希望在写这篇文章的过程中进一步学习LLDB调试的各种实践方法。
+
+LLDB阐述LLDB 是一个有着 REPL 的特性和 C++ ,Python 插件的开源调试器。">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/27363-08a7ac4c9c8691cf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/27363-fcdf07bfc4e57b7a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/27363-552dbcc4840b71bb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/27363-cdd2b2dc3f6d67d3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/27363-97d6e08ba486f85d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/27363-aacc20af67264901.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/27363-39ba33b696051d6a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/27363-3bd20524a1019214.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/27363-7d6c105fca46ab3c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/27363-c609788acab549c2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/27363-5a5a58f521c9e50c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/27363-9211bf124aed125e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2016-10-06T11:39:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS调试-LLDB学习总结">
+<meta name="twitter:description" content="Xcode的使用中总是离不开调试这个环境，在一年多的iOS开发时间中，我更多地依赖于XCode本身提供的GUI工具来进行调试，而对LLDB敬而远之，这段时间好好学习了LLDB的使用，发觉我错过了太多东西了……因此做一个比较完备的总结，也希望在写这篇文章的过程中进一步学习LLDB调试的各种实践方法。
+
+LLDB阐述LLDB 是一个有着 REPL 的特性和 C++ ,Python 插件的开源调试器。">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/27363-08a7ac4c9c8691cf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2015/12/27/iOS调试-LLDB学习总结/"/>
+
+  <title> iOS调试-LLDB学习总结 | Never Stop </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <a href="https://github.com/watersource"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Never Stop</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                iOS调试-LLDB学习总结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-12-27T20:11:32+08:00" content="2015-12-27">
+              2015-12-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Xcode的使用中总是离不开调试这个环境，在一年多的iOS开发时间中，我更多地依赖于XCode本身提供的GUI工具来进行调试，而对LLDB敬而远之，这段时间好好学习了LLDB的使用，发觉我错过了太多东西了……因此做一个比较完备的总结，也希望在写这篇文章的过程中进一步学习LLDB调试的各种实践方法。</p>
+</blockquote>
+<h2 id="LLDB阐述"><a href="#LLDB阐述" class="headerlink" title="LLDB阐述"></a>LLDB阐述</h2><p>LLDB 是一个有着 REPL 的特性和 C++ ,Python 插件的开源调试器。LLDB 绑定在 Xcode 内部，存在于主窗口底部的控制台中。调试器允许你在程序运行的特定时暂停它，你可以查看变量的值，执行自定的指令，并且按照你所认为合适的步骤来操作程序的进展。(摘自 <a href="https://objccn.io/issue-19-2/" target="_blank" rel="external">与调试器共舞</a>)</p>
+<p>它的基本语法为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;command&gt; [&lt;subcommand&gt; [&lt;subcommand&gt;...]] &lt;action&gt; [-options [option-value]] [argument [argument...]]</div></pre></td></tr></table></figure>
+<p>在XCode中，我们需要在程序暂停进入调试状态时才能使用LLDB，可以通过breakpoint、watchpoint、或者XCode的调试台自带的暂停按钮使程序暂停。</p>
+<h2 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h2><p>为了方便查询，就直接在文章开头po出常用的快捷键菜单把~</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">快捷键功能</th>
+<th style="text-align:center">命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">暂停/继续</td>
+<td style="text-align:center">cmd + ctrl + Y</td>
+</tr>
+<tr>
+<td style="text-align:left">控制台显示/隐藏</td>
+<td style="text-align:center">cmd + Y</td>
+</tr>
+<tr>
+<td style="text-align:left">光标切换到控制台</td>
+<td style="text-align:center">cmd + shift + C</td>
+</tr>
+<tr>
+<td style="text-align:left">清空控制台</td>
+<td style="text-align:center">cmd + K</td>
+</tr>
+<tr>
+<td style="text-align:left">step over</td>
+<td style="text-align:center">F6</td>
+</tr>
+<tr>
+<td style="text-align:left">step into</td>
+<td style="text-align:center">F7</td>
+</tr>
+<tr>
+<td style="text-align:left">step out</td>
+<td style="text-align:center">F8</td>
+</tr>
+</tbody>
+</table>
+<h2 id="HELP"><a href="#HELP" class="headerlink" title="HELP"></a>HELP</h2><p>LLDB的入门与Linux命令入门类似，可以通过执行<code>help</code>命令来查询这个命令的意义和详细参数</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/27363-08a7ac4c9c8691cf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="80%"></p>
+<p>从描述中我们能看出<code>thread backtrace</code>是用来查询暂停时的线程堆栈的，并了解了可以带入的入参。</p>
+<h2 id="唯一匹配原则"><a href="#唯一匹配原则" class="headerlink" title="唯一匹配原则"></a>唯一匹配原则</h2><p>LLDB有个很省事的特性，如果输入的字母已经能匹配到某个命令，就可以直接执行，等于输入了完整的命令。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/27363-fcdf07bfc4e57b7a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="80%"></p>
+<p>可以看到<code>expression</code>与<code>e</code>是等价的</p>
+<h2 id="变量查询与修改"><a href="#变量查询与修改" class="headerlink" title="变量查询与修改"></a>变量查询与修改</h2><ol>
+<li><p><code>expression</code></p>
+<p><code>expression</code> 可简写为<code>e</code>，作用为执行一个表达式，首当其冲，它肯定可以用来查询当前堆栈变量的值。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/27363-552dbcc4840b71bb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="80%"></p>
+<p>当然<code>e</code>的更主要的用法是通过执行表达式，动态修改当前线程堆栈变量的值，从而达到调试的目的（其实查询也很主要，只是会用另一种方式查询）。<br>比如，我们可以在某个<code>if..else..</code>的语句前打上断点，直接修改条件表达式的值，使程序覆盖了不同分支，而不用苦心积虑地停止程序、hard code变量值来进行调试，节省了一大坨修改与编译时间。</p>
+<p> <img src="http://upload-images.jianshu.io/upload_images/27363-cdd2b2dc3f6d67d3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="80%"></p>
+<p> 在上面这份测试代码，在进入条件判断语句前打了断点，那我们可以通过e命令，来自由控制程序走向任何一个分支。</p>
+<p> <img src="http://upload-images.jianshu.io/upload_images/27363-97d6e08ba486f85d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="80%"></p>
+<p>我们也可以通过执行表达式，实时改变当前的UI界面，方便界面代码的调试，比如我们可以执行下面代码来改变当前UI，让cellItem的边框显示出来，以判断我们的界面布局是否正确。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">e @import UIKit</div><div class="line">e cellItem.layer.borderWidth = 1</div></pre></td></tr></table></figure>
+<p>这里有个特殊的问题，由于程序已经被断点暂停了，因此执行UI更新的线程也被暂停了。我们可以通过让程序继续运行，也可以通过另一条表达式来更新UI。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">e (void)[CATransaction flush]</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<blockquote>
+<p>我们也可以用 <code>call</code> 来代替 <code>expression --</code>，其实我觉得用<code>e</code>更方便。 =。=</p>
+</blockquote>
+<ol>
+<li><p><code>p</code> 、 <code>po</code></p>
+<p> 在上面说过，在调试中，我们一般用<code>e</code>命令来修改变量，而查询变量一般用<code>p</code>与<code>po</code>命令。<br><code>po</code>的作用为打印对象，事实上，我们可以通过<code>help po</code>得知，<code>po</code>是<code>expression -O  --</code>的简写，我们可以通过它打印出对象，而不是打印对象的指针。而值得一提的是，在 <code>help expression</code> 返回的帮助信息中，我们可以知道，<code>po</code>命令会尝试调用对象的 <code>description</code> 方法来取得对象信息，因此我们也可以重载某个对象的<code>description</code>方法，使我们调试的时候能获得可读性更强，更全面的信息。</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">-(NSString*)description</div><div class="line">&#123;</div><div class="line">    return [NSString stringWithFormat:@&quot;Portal[%@, %@, %@, %@, %@, %@, %@]&quot;, ssid, mpUrl, ticket, authUrl, _openid, _tid, extend];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p> <code>p</code>即是<code>print</code>，也是<code>expression --</code>的缩写，与<code>po</code>不同，它不会打出对象的详细信息，只会打印出一个$符号，数字，再加上一段地址信息。由于<code>po</code>命令下，对象的<code>description</code> 有可能被随便乱改，没有输出地址消息。</p>
+<p>   <img src="http://upload-images.jianshu.io/upload_images/27363-aacc20af67264901.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="80%"></p>
+<p>   $符号在LLDB中代表着变量的分配。每次使用p后，会自动为你分配一个变量，后面再次想使用这个变量时，就可以直接使用。我们可以直接使用这个地址做一些转换，获取对象的信息</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/27363-39ba33b696051d6a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="80%"></p>
+</li>
+</ol>
+<h2 id="断点"><a href="#断点" class="headerlink" title="断点"></a>断点</h2><ol>
+<li><p><code>breakpoint</code> </p>
+<p> 所有调试都是由断点开始的，我们接触的最多，就是以<code>breakpoint</code>命令为基础的断点。<br>一般我们对<code>breakpoint</code>命令使用得不多，而是在Xcode的GUI界面中直接添加断点。除了直接触发程序暂停供调试外，我们可以进行进一步的配置。 </p>
+<p> <img src="http://upload-images.jianshu.io/upload_images/27363-3bd20524a1019214.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="80%"></p>
+<ul>
+<li>添加condition，一般用于多次调用的函数或者循坏的代码中，在作用域内达到某个条件，才会触发程序暂停</li>
+<li>忽略次数，这个很容易理解，在忽略触发几次后再触发暂停</li>
+<li>添加Action，为这个断点添加子命令、脚本、shell命令、声效（有个毛线用）等Action，我的理解是一个脚本化的功能，我们可以在断点的基础上添加一些方便调试的脚本，提高调试效率</li>
+<li>自动继续，配合上面的添加Action，我们就可以不用一次又一次的暂停程序进行调试来查询某些值（大型程序中断一次还是会有卡顿），直接用Action将需要的信息打印在控制台，一次性查看即可</li>
+</ul>
+<p>除去在代码中直接点击添加断点外，我们也可以在 <code>command + 7</code> breakpoint页面下直接添加相关的断点。我们常用的有 Exception Breakpoint 与 Symbolic Breakpoint</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/27363-7d6c105fca46ab3c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="80%"></p>
+<ul>
+<li><p>Add Exception Breakpoint</p>
+<pre><code>Exception Breakpoint为异常断点。在某些情况下，TableView的数据源与UI操作不一致，或者容器插入了nil的指针，将消息传至野指针，都会导致程序的crash，并且LLDB输出的信息不是很友好。加上异常断点，能够使程序在抛出异常的栈自动暂停，可直接定位导致抛出异常的代码。在一般的开发流程中，都建议开启这个异常断点，反正你总是会crash的
+</code></pre></li>
+<li><p>Add Symbolic Breakpoint</p>
+<pre><code>Symbolic Breakpoint 为符号断点。有时候，我们并不清楚程序会在什么情况下调用某一个函数，那我们可以通过符号断点来获取调用该函数时的程序堆栈。当然，在自己实现的类，我们也可以在该函数实现的地方打上断点，但如果需要定位其他框架提供的API的调用，就只能使用符号断点啦。
+</code></pre><p>  当然，LLDB的<code>breakpoint</code>命令也可以实现上述的功能，因为不常用，所以这里就简单列举一些用法。 breakpoint set -n trigger //在所有类的trigger函数实现中打上断点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">breakpoint set -f ViewController.m -n trigger //在ViewController.m中的trigger方法打上断点 </div><div class="line">breakpoint set -f ViewController.m -l 50 //在ViewController.m的50行打上断点 </div><div class="line">breakpoint set -f ViewController.m -n trigger: -c testCondition &gt; 5 //在ViewController.m中的trigger方法打上断点并添加condition， testCondition大于5时触发断点 </div><div class="line">breakpoint set -n trigger -o //单次断点 </div><div class="line">breakpoint command add -o &quot;frame info&quot; 3 //在设置的三号断点加入子命令frame info </div><div class="line">breakpoint list // 列出所有断点 </div><div class="line">breakpoint delete 3 //删除3号断点</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>watchpoint</code> </p>
+<p> 有时候我们会关心类的某个属性什么时候被人修改了，最简单的方法当然就是在setter的方法打断点，或者在<code>@property</code>的属性生命行打上断点。这样当对象的setter方法被调用时，就会触发这个断点。</p>
+<p> <img src="http://upload-images.jianshu.io/upload_images/27363-c609788acab549c2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="80%"></p>
+<p> 当然这么做是有缺点的，对于直接访问内存地址的修改，setter方法的断点并没有办法监控得到，因此我们需要用到<code>watchpoint</code>命令。</p>
+<p> <code>watchpoint</code>命令在XCode的GUI中也可以直接使用，当程序暂停时，我们能对当前程序栈中的变量设置watchpoint。值得注意的是，watchpoint是直接设置到该变量所在的内存地址上的，所以当这个变量释放了后，watchpoint仍然是对这个地址的内存生效的。</p>
+<p> <img src="http://upload-images.jianshu.io/upload_images/27363-5a5a58f521c9e50c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="80%"></p>
+<p> 我们也可以在LLDB中直接用<code>watchpoint</code>命令，可以通过选项实现更多效果。</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">watchpoint set self-&gt;testVar     //为该变量地址设置watchpoint</div><div class="line"> watchpoint set expression 0x00007fb27b4969e0 //为该内存地址设置watchpoint，内存地址可从前文提及的`p`命令获取</div><div class="line"> watchpoint command add -o &apos;frame info&apos; 1  //为watchpoint 1号加上子命令 `frame info`</div><div class="line"> watchpoint list //列出所有watchpoint</div><div class="line"> watchpoint delete // 删除所有watchpoint</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="堆栈"><a href="#堆栈" class="headerlink" title="堆栈"></a>堆栈</h2><ol>
+<li><p><code>thread</code> 和 <code>bt</code></p>
+<p> <code>bt</code>即是<code>thread backtrace</code>，作用是打印出当前线程的堆栈信息。当程序发生了crash后，我们可以用该命令打印出发生crash的当前的程序堆栈，查询出发生crash的调用路径。由于比较常用，所以LLDB直接给它一个特殊的<code>bt</code>别名。</p>
+<p> <code>thread</code>另一个比较常用的用法是 <code>thread return</code>，调试的时候，我们希望在当前执行的程序堆栈直接返回一个自己想要的值，可以执行该命令直接返回。</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">thread return &lt;expr&gt;</div></pre></td></tr></table></figure>
+<p> 在这个断点中，我们可以执行 <code>thread return NO</code>让该函数调用直接返回<code>NO</code> ，在调试中轻松覆盖任何函数的返回路径。</p>
+<p> <img src="http://upload-images.jianshu.io/upload_images/27363-9211bf124aed125e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="80%"></p>
+</li>
+<li><p>frame</p>
+<p> <code>frame</code>即是帧，其实就是当前的程序堆栈，我们输入<code>bt</code>命令，打印出来的其实是当前线程的frame。<br>在调试中，一般我们比较关心当前堆栈的变量值，我们可以使用<code>frame variable</code>来获取全部变量值。当然也可以输入特定变量名，来获取单独的变量值，如<code>frame v self-&gt; testVar</code>来获取<code>testVar</code>的值。</p>
+</li>
+</ol>
+<h2 id="End"><a href="#End" class="headerlink" title="End"></a>End</h2><p>全文暂时完~在接下来的实践与学习中，如果有好玩的新东西，也会补充到这里来。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/10/01/gcd_中_dispatch_once_的性能与实现/" rel="next" title="GCD 中 dispatch_once 的性能与实现">
+                <i class="fa fa-chevron-left"></i> GCD 中 dispatch_once 的性能与实现
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/hello.jpg"
+               alt="Yuan He" />
+          <p class="site-author-name" itemprop="name">Yuan He</p>
+          <p class="site-description motion-element" itemprop="description">博学而笃志,切问而近思</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/WaterSource/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2654101531/" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#LLDB阐述"><span class="nav-number">1.</span> <span class="nav-text">LLDB阐述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快捷键"><span class="nav-number">2.</span> <span class="nav-text">快捷键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HELP"><span class="nav-number">3.</span> <span class="nav-text">HELP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#唯一匹配原则"><span class="nav-number">4.</span> <span class="nav-text">唯一匹配原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变量查询与修改"><span class="nav-number">5.</span> <span class="nav-text">变量查询与修改</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#断点"><span class="nav-number">6.</span> <span class="nav-text">断点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#堆栈"><span class="nav-number">7.</span> <span class="nav-text">堆栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#End"><span class="nav-number">8.</span> <span class="nav-text">End</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2013 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yuan He</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
