@@ -1,0 +1,662 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS开发," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="最近苹果推出新的mac操作系统(macOS Sierra 10.12)，作为一个开发者,肯定是第一时间升级。随之，开发工具 Xcode 也升级到了最新版 Xcode 8.0。
+马上就到国庆了，为了加班赶进度，上架项目。测试结束，提交成功之后，欣喜的去 iTunes Connect 上发布版本时发现，构建版本旁边没有出现预期的 “加号” 按钮，这让大家怎么发布新版本。
+网上搜了搜，很模糊，都指的是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Xcode 8 打包上线 iTunes Connect 找不到构建版本">
+<meta property="og:url" content="http://yoursite.com/2016/09/30/Xcode 8 打包上线 iTunes Connect 找不到构建版本/index.html">
+<meta property="og:site_name" content="Never Stop">
+<meta property="og:description" content="最近苹果推出新的mac操作系统(macOS Sierra 10.12)，作为一个开发者,肯定是第一时间升级。随之，开发工具 Xcode 也升级到了最新版 Xcode 8.0。
+马上就到国庆了，为了加班赶进度，上架项目。测试结束，提交成功之后，欣喜的去 iTunes Connect 上发布版本时发现，构建版本旁边没有出现预期的 “加号” 按钮，这让大家怎么发布新版本。
+网上搜了搜，很模糊，都指的是">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2559321-f4c40c812ba03e7c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2559321-e1e99874e751fd3a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2559321-95e91eb90ad93e30.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2559321-4bfe22cc5bf9b807.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2559321-34b52a3c4c636f3e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2559321-7d906dbd35dec6d9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2559321-d42dfcdbf88c6e39.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2016-10-07T13:47:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Xcode 8 打包上线 iTunes Connect 找不到构建版本">
+<meta name="twitter:description" content="最近苹果推出新的mac操作系统(macOS Sierra 10.12)，作为一个开发者,肯定是第一时间升级。随之，开发工具 Xcode 也升级到了最新版 Xcode 8.0。
+马上就到国庆了，为了加班赶进度，上架项目。测试结束，提交成功之后，欣喜的去 iTunes Connect 上发布版本时发现，构建版本旁边没有出现预期的 “加号” 按钮，这让大家怎么发布新版本。
+网上搜了搜，很模糊，都指的是">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2559321-f4c40c812ba03e7c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/09/30/Xcode 8 打包上线 iTunes Connect 找不到构建版本/"/>
+
+  <title> Xcode 8 打包上线 iTunes Connect 找不到构建版本 | Never Stop </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <a href="https://github.com/watersource"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Never Stop</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Xcode 8 打包上线 iTunes Connect 找不到构建版本
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-30T20:10:49+08:00" content="2016-09-30">
+              2016-09-30
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近苹果推出新的mac操作系统(macOS Sierra 10.12)，作为一个开发者,肯定是第一时间升级。随之，开发工具 Xcode 也升级到了最新版 Xcode 8.0。</p>
+<p>马上就到国庆了，为了加班赶进度，上架项目。测试结束，提交成功之后，欣喜的去 iTunes Connect 上发布版本时发现，构建版本旁边没有出现预期的 “加号” 按钮，这让大家怎么发布新版本。</p>
+<p>网上搜了搜，很模糊，都指的是 iOS 10 权限问题，可是到底是什么权限问题，该怎么解决。这里就告诉大家：</p>
+<blockquote>
+<p>1、如何解决iOS10权限设置问题</p>
+<p>2、如何避免这样类似的问题</p>
+</blockquote>
+<h2 id="一：iOS-10-权限设置问题："><a href="#一：iOS-10-权限设置问题：" class="headerlink" title="一：iOS 10 权限设置问题："></a>一：iOS 10 权限设置问题：</h2><p>iOS 10的一大变化是更强的隐私数据保护。如果你不设置相应的权限就会crash（比如：大家最近遇到的选择相册、相机 crash问题）。解决办法是在 info.plist 文件中添加对应的Key-Value权限就可以了。</p>
+<p>添加权限有两种方式：</p>
+<h3 id="方式一："><a href="#方式一：" class="headerlink" title="方式一："></a>方式一：</h3><p>1、在工程找到 info.plist 文件：Supporting Files -&gt; info.plist -&gt; 右击 -&gt; Open As -&gt; Source Code ，打开plist文件。</p>
+<p>2、根据项目权限需求，复制 以下 相应 Value 和 Key 到 plist文件中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">访问蓝牙：</div><div class="line"></div><div class="line">&lt;key&gt;NSBluetoothPeripheralUsageDescription&lt;/key&gt;</div><div class="line"></div><div class="line">&lt;string&gt;访问蓝牙&lt;/string&gt;</div><div class="line"></div><div class="line">访问相机：</div><div class="line"></div><div class="line">&lt;key&gt;NSCameraUsageDescription&lt;/key&gt;</div><div class="line"></div><div class="line">&lt;string&gt;访问相机&lt;/string&gt;</div><div class="line"></div><div class="line">使用期间访问位置：</div><div class="line"></div><div class="line">&lt;key&gt;NSLocationWhenInUseUsageDescription&lt;/key&gt;</div><div class="line"></div><div class="line">&lt;true/&gt;</div><div class="line"></div><div class="line">访问麦克风：</div><div class="line"></div><div class="line">&lt;key&gt;NSMicrophoneUsageDescription&lt;key/&gt;</div><div class="line"></div><div class="line">&lt;string&gt;访问麦克风&lt;/string&gt;</div><div class="line"></div><div class="line">访问相册：</div><div class="line"></div><div class="line">&lt;key&gt;NSPhotoLibraryUsageDescription&lt;/key&gt;</div><div class="line"></div><div class="line">&lt;string&gt;访问相册&lt;/string&gt;</div><div class="line"></div><div class="line">始终访问位置：</div><div class="line"></div><div class="line">&lt;key&gt;NSLocationAlwaysUsageDescription&lt;/key&gt;</div><div class="line"></div><div class="line">&lt;true/&gt;</div><div class="line"></div><div class="line">访问通信录：</div><div class="line"></div><div class="line">&lt;key&gt;NSContactsUsageDescription&lt;/key&gt;</div><div class="line"></div><div class="line">&lt;string&gt;访问通信录&lt;/string&gt;</div></pre></td></tr></table></figure>
+<h3 id="方式二："><a href="#方式二：" class="headerlink" title="方式二："></a>方式二：</h3><p>在工程找到 info.plist 文件，打开plist文件，直接添加。</p>
+<div align="center"><br><br><img src="http://upload-images.jianshu.io/upload_images/2559321-f4c40c812ba03e7c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="120%"><br><br>plist文件<br><br></div>
+
+<p>Value部分的文字是展示给用户看的，小编试了一下是必填的（其他权限，希望大家积极评论）。</p>
+<p>添加相册权限后的效果：</p>
+<div align="center"><br><br><img src="http://upload-images.jianshu.io/upload_images/2559321-e1e99874e751fd3a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="80%"><br><br>访问相册1<br><br></div>
+
+<div align="center"><br><br><img src="http://upload-images.jianshu.io/upload_images/2559321-95e91eb90ad93e30.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="80%"><br><br>访问相册2<br><br></div>
+
+<p>如果Value文字为空，运行是没有问题的。但是打包提交，会收到苹果的反馈邮件，如下：</p>
+<div align="center"><br><br><img src="http://upload-images.jianshu.io/upload_images/2559321-4bfe22cc5bf9b807.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="150%"><br><br>苹果反馈邮件<br><br></div>
+
+<h2 id="如何避免类似问题"><a href="#如何避免类似问题" class="headerlink" title="如何避免类似问题"></a>如何避免类似问题</h2><p>其实这种问题解决起来很简单（根据苹果的反馈邮件），只是我们发现这个问题的过程很难，为什么呢？</p>
+<blockquote>
+<p>1、我们每次提交一个版本后，苹果都会给 “公司邮箱”（注册苹果开发者账号的邮箱）发一封邮件。作为开发者，如果能第一时间收到这个邮件（下图:苹果反馈邮件），那么我们会避免浪费很多时间。</p>
+<p>2、可是往往开发者账号都是用公司邮箱注册的，不可能将邮箱密码授权给开发人员。所以，我们可以通过这种方式，在 iTunes Connect 里将自己添加为开发人员，这样每次苹果也会给你发一封提交反馈邮件。</p>
+</blockquote>
+<p>通过下面的邮件，我们可以很清楚看到，工程中缺少什么权限</p>
+<div align="center"><br><br><img src="http://upload-images.jianshu.io/upload_images/2559321-34b52a3c4c636f3e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="150%"><br><br>苹果反馈邮件<br><br></div>
+
+<p>添加iTunes Connect 开发人员：</p>
+<p>登录iTunes Connect -&gt; 选择用户和智能 -&gt; 添加 iTunes Connect 用户 -&gt; 输入基本信息 -&gt; 选择开发人员 -&gt; … -&gt; OK</p>
+<div align="center"><br><br><img src="http://upload-images.jianshu.io/upload_images/2559321-7d906dbd35dec6d9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="110%"><br><br>1.选择用户和职能<br><br><img src="http://upload-images.jianshu.io/upload_images/2559321-d42dfcdbf88c6e39.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="110%"><br><br>2.添加iTunes Connect 用户<br><br></div>
+
+<p>这样你就是苹果的开发人员了，希望这篇文章对大家解决问题能有所帮助。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS开发/" rel="tag">#iOS开发</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/20/iOS代理设计模式/" rel="next" title="闲谈 iOS 代理设计模式">
+                <i class="fa fa-chevron-left"></i> 闲谈 iOS 代理设计模式
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/hello.jpg"
+               alt="Yuan He" />
+          <p class="site-author-name" itemprop="name">Yuan He</p>
+          <p class="site-description motion-element" itemprop="description">博学而笃志,切问而近思</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/WaterSource/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2654101531/" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一：iOS-10-权限设置问题："><span class="nav-number">1.</span> <span class="nav-text">一：iOS 10 权限设置问题：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#方式一："><span class="nav-number">1.1.</span> <span class="nav-text">方式一：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方式二："><span class="nav-number">1.2.</span> <span class="nav-text">方式二：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何避免类似问题"><span class="nav-number">2.</span> <span class="nav-text">如何避免类似问题</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2013 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yuan He</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
