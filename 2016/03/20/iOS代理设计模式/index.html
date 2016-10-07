@@ -1,0 +1,744 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS开发," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="在项目中我们经常会用到代理的设计模式，这是iOS中一种消息传递的方式，也可以通过这种方式来传递一些参数。这篇文章会涵盖代理的使用技巧和原理，以及代理的内存管理等方面的知识。我会通过这些方面的知识，带大家真正领略代理的奥妙。写的有点多，但都是干货，我能写下去，不知道你有没有耐心看下去。本人能力有限，如果文章中有什么问题或没有讲到的点，请帮忙指出，十分感谢!
+iOS中消息传递方式在iOS中有很多">
+<meta property="og:type" content="article">
+<meta property="og:title" content="闲谈 iOS 代理设计模式">
+<meta property="og:url" content="http://yoursite.com/2016/03/20/iOS代理设计模式/index.html">
+<meta property="og:site_name" content="Never Stop">
+<meta property="og:description" content="在项目中我们经常会用到代理的设计模式，这是iOS中一种消息传递的方式，也可以通过这种方式来传递一些参数。这篇文章会涵盖代理的使用技巧和原理，以及代理的内存管理等方面的知识。我会通过这些方面的知识，带大家真正领略代理的奥妙。写的有点多，但都是干货，我能写下去，不知道你有没有耐心看下去。本人能力有限，如果文章中有什么问题或没有讲到的点，请帮忙指出，十分感谢!
+iOS中消息传递方式在iOS中有很多">
+<meta property="og:image" content="http://cc.cocimg.com/api/uploads/20160316/1458098110314804.jpg">
+<meta property="og:image" content="http://cc.cocimg.com/api/uploads/20160316/1458097968368231.png">
+<meta property="og:image" content="http://cc.cocimg.com/api/uploads/20160316/1458097882278657.png">
+<meta property="og:image" content="http://cc.cocimg.com/api/uploads/20160316/1458097709387770.png">
+<meta property="og:image" content="http://cc.cocimg.com/api/uploads/20160316/1458097660507240.png">
+<meta property="og:image" content="http://cc.cocimg.com/api/uploads/20160316/1458097647603160.png">
+<meta property="og:image" content="http://cc.cocimg.com/api/uploads/20160316/1458096834820774.png">
+<meta property="og:image" content="http://cc.cocimg.com/api/uploads/20160316/1458096811587921.png">
+<meta property="og:image" content="http://cc.cocimg.com/api/uploads/20160316/1458096270149621.png">
+<meta property="og:updated_time" content="2016-10-07T13:17:07.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="闲谈 iOS 代理设计模式">
+<meta name="twitter:description" content="在项目中我们经常会用到代理的设计模式，这是iOS中一种消息传递的方式，也可以通过这种方式来传递一些参数。这篇文章会涵盖代理的使用技巧和原理，以及代理的内存管理等方面的知识。我会通过这些方面的知识，带大家真正领略代理的奥妙。写的有点多，但都是干货，我能写下去，不知道你有没有耐心看下去。本人能力有限，如果文章中有什么问题或没有讲到的点，请帮忙指出，十分感谢!
+iOS中消息传递方式在iOS中有很多">
+<meta name="twitter:image" content="http://cc.cocimg.com/api/uploads/20160316/1458098110314804.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/03/20/iOS代理设计模式/"/>
+
+  <title> 闲谈 iOS 代理设计模式 | Never Stop </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <a href="https://github.com/watersource"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Never Stop</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                闲谈 iOS 代理设计模式
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-20T21:23:49+08:00" content="2016-03-20">
+              2016-03-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <div align="center"><br><br><img src="http://cc.cocimg.com/api/uploads/20160316/1458098110314804.jpg" width="100%"><br><br></div>
+
+<hr>
+<p>在项目中我们经常会用到代理的设计模式，这是iOS中一种消息传递的方式，也可以通过这种方式来传递一些参数。这篇文章会涵盖代理的使用技巧和原理，以及代理的内存管理等方面的知识。我会通过这些方面的知识，带大家真正领略代理的奥妙。写的有点多，但都是干货，我能写下去，不知道你有没有耐心看下去。本人能力有限，如果文章中有什么问题或没有讲到的点，请帮忙指出，十分感谢!</p>
+<h2 id="iOS中消息传递方式"><a href="#iOS中消息传递方式" class="headerlink" title="iOS中消息传递方式"></a>iOS中消息传递方式</h2><p>在iOS中有很多种消息传递方式，这里先简单介绍一下各种消息传递方式。</p>
+<ul>
+<li>通知：在iOS中由通知中心进行消息接收和消息广播，是一种一对多的消息传递方式。</li>
+<li>代理：是一种通用的设计模式，iOS中对代理支持的很好，由代理对象、委托者、协议三部分组成。</li>
+<li>block：iOS4.0中引入的一种回调方法，可以将回调处理代码直接写在block代码块中，看起来逻辑清晰代码整齐。</li>
+<li>target action：通过将对象传递到另一个类中，在另一个类中将该对象当做target的方式，来调用该对象方法，从内存角度来说和代理类似。</li>
+<li>KVO：NSObject的Category－NSKeyValueObserving，通过属性监听的方式来监测某个值的变化，当值发生变化时调用KVO的回调方法。</li>
+</ul>
+<p>…..当然还有其他回调方式，这里只是简单的列举。</p>
+<h2 id="代理的基本使用"><a href="#代理的基本使用" class="headerlink" title="代理的基本使用"></a>代理的基本使用</h2><p>代理是一种通用的设计模式，在iOS中对代理设计模式支持的很好，有特定的语法来实现代理模式，OC语言可以通过@Protocol实现协议。</p>
+<h3 id="代理主要由三部分组成："><a href="#代理主要由三部分组成：" class="headerlink" title="代理主要由三部分组成："></a>代理主要由三部分组成：</h3><ul>
+<li>协议：用来指定代理双方可以做什么，必须做什么。</li>
+<li>代理：根据指定的协议，完成委托方需要实现的功能。</li>
+<li>委托：根据指定的协议，指定代理去完成什么功能。</li>
+</ul>
+<p>这里用一张图来阐述一下三方之间的关系：</p>
+<div align="center"><br><br><img src="http://cc.cocimg.com/api/uploads/20160316/1458097968368231.png" width="100%"><br><br>图例<br><br></div>
+
+<h3 id="Protocol－协议的概念"><a href="#Protocol－协议的概念" class="headerlink" title="Protocol－协议的概念"></a>Protocol－协议的概念</h3><p>从上图中我们可以看到三方之间的关系，在实际应用中通过协议来规定代理双方的行为，协议中的内容一般都是方法列表，当然也可以定义属性，我会在后续文章中顺带讲一下协议中定义属性。</p>
+<p>协议是公共的定义，如果只是某个类使用，我们常做的就是写在某个类中。如果是多个类都是用同一个协议，建议创建一个Protocol文件，在这个文件中定义协议。遵循的协议可以被继承，例如我们常用的UITableView，由于继承自UIScrollView的缘故，所以也将UIScrollViewDelegate继承了过来，我们可以通过代理方法获取UITableView偏移量等状态参数。</p>
+<p>协议只能定义公用的一套接口，类似于一个约束代理双方的作用。但不能提供具体的实现方法，实现方法需要代理对象去实现。协议可以继承其他协议，并且可以继承多个协议，在iOS中对象是不支持多继承的，而协议可以多继承。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// 当前协议继承了三个协议，这样其他三个协议中的方法列表都会被继承过来</div><div class="line">@protocol LoginProtocol</div><div class="line">- (void)userLoginWithUsername:(NSString *)username password:(NSString *)password;</div><div class="line">@end</div></pre></td></tr></table></figure>
+<p>协议有两个修饰符@optional和@required，创建一个协议如果没有声明，默认是@required状态的。这两个修饰符只是约定代理是否强制需要遵守协议，如果@required状态的方法代理没有遵守，会报一个黄色的警告，只是起一个约束的作用，没有其他功能。</p>
+<p>无论是@optional还是@required，在委托方调用代理方法时都需要做一个判断，判断代理是否实现当前方法，否则会导致崩溃。</p>
+<h4 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// 判断代理对象是否实现这个方法，没有实现会导致崩溃</div><div class="line">if ([self.delegate respondsToSelector:@selector(userLoginWithUsername:password:)]) &#123;</div><div class="line">    [self.delegate userLoginWithUsername:self.username.text password:self.password.text];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>下面我们将用一个小例子来讲解一下这个问题：</p>
+<p><em>示例：假设我在公司正在敲代码，敲的正开心呢，突然口渴了，想喝一瓶红茶。这时我就可以拿起手机去外卖app上定一个红茶，然后外卖app就会下单给店铺并让店铺给我送过来。</em></p>
+<p>这个过程中，外卖app就是我的代理，我就是委托方，我买了一瓶红茶并付给外卖app钱，这就是购买协议。我只需要从外卖app上购买就可以，具体的操作都由外卖app去处理，我只需要最后接收这瓶红茶就可以。我付的钱就是参数，最后送过来的红茶就是处理结果。</p>
+<p>但是我买红茶的同时，我还想吃一份必胜客披萨，我需要另外向必胜客app去订餐，上面的外卖app并没有这个功能。我又向必胜客购买了一份披萨，必胜客当做我的代理去为我做这份披萨，并最后送到我手里。这就是多个代理对象，我就是委托方。</p>
+<div align="center"><br><br><img src="http://cc.cocimg.com/api/uploads/20160316/1458097882278657.png" width="100%"><br><br>代理<br><br></div>
+
+<p>在iOS中一个代理可以有多个委托方，而一个委托方也可以有多个代理。我指定了外卖app和必胜客两个代理，也可以再指定麦当劳等多个代理，委托方也可以为多个代理服务。</p>
+<p>代理对象在很多情况下其实是可以复用的，可以创建多个代理对象为多个委托方服务，在下面将会通过一个小例子介绍一下控制器代理的复用。</p>
+<p>下面是一个简单的代理：</p>
+<p>首先定义一个协议类，来定义公共协议</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">#import</div><div class="line">@protocol LoginProtocol</div><div class="line">@optional</div><div class="line">- (void)userLoginWithUsername:(NSString *)username password:(NSString *)password;</div><div class="line">@end</div></pre></td></tr></table></figure>
+<p>定义委托类，这里简单实现了一个用户登录功能，将用户登录后的账号密码传递出去，有代理来处理具体登录细节。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">#import #import &quot;LoginProtocol.h&quot;</div><div class="line">/**</div><div class="line"> *  当前类是委托类。用户登录后，让代理对象去实现登录的具体细节，委托类不需要知道其中实现的具体细节。</div><div class="line"> */</div><div class="line">@interface LoginViewController : UIViewController</div><div class="line">// 通过属性来设置代理对象</div><div class="line">@property (nonatomic, weak) id delegate;</div><div class="line">@end</div><div class="line"> </div><div class="line">实现部分：</div><div class="line"> </div><div class="line">@implementation LoginViewController</div><div class="line">- (void)loginButtonClick:(UIButton *)button &#123;</div><div class="line">  // 判断代理对象是否实现这个方法，没有实现会导致崩溃</div><div class="line">  if ([self.delegate respondsToSelector:@selector(userLoginWithUsername:password:)]) &#123;</div><div class="line">      // 调用代理对象的登录方法，代理对象去实现登录方法</div><div class="line">      [self.delegate userLoginWithUsername:self.username.text password:self.password.text];</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>代理方，实现具体的登录流程，委托方不需要知道实现细节。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">// 遵守登录协议</div><div class="line">@interface ViewController ()  </div><div class="line">@end</div><div class="line"> </div><div class="line">@implementation ViewController</div><div class="line">- (void)viewDidLoad &#123;</div><div class="line">    [super viewDidLoad];</div><div class="line"> </div><div class="line">    LoginViewController *loginVC = [[LoginViewController alloc] init];</div><div class="line">    loginVC.delegate = self;</div><div class="line">    [self.navigationController pushViewController:loginVC animated:YES];</div><div class="line">&#125;</div><div class="line"> </div><div class="line">/**</div><div class="line"> *  代理方实现具体登录细节</div><div class="line"> */</div><div class="line">- (void)userLoginWithUsername:(NSString *)username password:(NSString *)password &#123;</div><div class="line">    NSLog(@&quot;username : %@, password : %@&quot;, username, password);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="代理使用原理"><a href="#代理使用原理" class="headerlink" title="代理使用原理"></a>代理使用原理</h3><p>代理实现流程</p>
+<p>在iOS中代理的本质就是代理对象内存的传递和操作，我们在委托类设置代理对象后，实际上只是用一个id类型的指针将代理对象进行了一个弱引用。委托方让代理方执行操作，实际上是在委托类中向这个id类型指针指向的对象发送消息，而这个id类型指针指向的对象，就是代理对象。</p>
+<div align="center"><br><br><img src="http://cc.cocimg.com/api/uploads/20160316/1458097709387770.png" width="100%"><br><br>代理原理<br><br></div>
+
+<p>通过上面这张图我们发现，其实委托方的代理属性本质上就是代理对象自身，设置委托代理就是代理属性指针指向代理对象，相当于代理对象只是在委托方中调用自己的方法，如果方法没有实现就会导致崩溃。从崩溃的信息上来看，就可以看出来是代理方没有实现协议中的方法导致的崩溃。</p>
+<p>而协议只是一种语法，是声明委托方中的代理属性可以调用协议中声明的方法，而协议中方法的实现还是有代理方完成，而协议方和委托方都不知道代理方有没有完成，也不需要知道怎么完成。</p>
+<p>代理内存管理</p>
+<p>为什么我们设置代理属性都使用weak呢？</p>
+<p>我们定义的指针默认都是__strong类型的，而属性本质上也是一个成员变量和set、get方法构成的，strong类型的指针会造成强引用，必定会影响一个对象的生命周期，这也就会形成循环引用。</p>
+<div align="center"><br><br><img src="http://cc.cocimg.com/api/uploads/20160316/1458097660507240.png" width="100%"><br><br>强引用<br><br></div>
+
+<p>上图中，由于代理对象使用强引用指针，引用创建的委托方LoginVC对象，并且成为LoginVC的代理。这就会导致LoginVC的delegate属性强引用代理对象，导致循环引用的问题，最终两个对象都无法正常释放。</p>
+<div align="center"><br><br><img src="http://cc.cocimg.com/api/uploads/20160316/1458097647603160.png" width="100%"><br><br>弱引用<br><br></div>
+
+<p>我们将LoginVC对象的delegate属性，设置为弱引用属性。这样在代理对象生命周期存在时，可以正常为我们工作，如果代理对象被释放，委托方和代理对象都不会因为内存释放导致的Crash。</p>
+<p>但是，这样还有点问题，真的不会崩溃吗？</p>
+<p>下面两种方式都是弱引用代理对象，但是第一种在代理对象被释放后不会导致崩溃，而第二种会导致崩溃。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">@property (nonatomic, weak) iddelegate;</div><div class="line">@property (nonatomic, assign) iddelegate;</div></pre></td></tr></table></figure>
+<p>weak和assign是一种“非拥有关系”的指针，通过这两种修饰符修饰的指针变量，都不会改变被引用对象的引用计数。但是在一个对象被释放后，weak会自动将指针指向nil，而assign则不会。在iOS中，向nil发送消息时不会导致崩溃的，所以assign就会导致野指针的错误unrecognized selector sent to instance。</p>
+<p>所以我们如果修饰代理属性，还是用weak修饰吧，比较安全。</p>
+<h3 id="控制器瘦身－代理对象"><a href="#控制器瘦身－代理对象" class="headerlink" title="控制器瘦身－代理对象"></a>控制器瘦身－代理对象</h3><p>为什么要使用代理对象？</p>
+<p>随着项目越来越复杂，控制器也随着业务的增加而变得越来越臃肿。对于这种情况，很多人都想到了最近比较火的MVVM设计模式。但是这种模式学习曲线很大不好掌握，对于新项目来说可以使用，对于一个已经很复杂的大中型项目，就不太好动框架这层的东西了。</p>
+<p>在项目中用到比较多的控件应该就有UITableView了，有的页面往往UITableView的处理逻辑很多，这就是导致控制器臃肿的一个很大的原因。对于这种问题，我们可以考虑给控制器瘦身，通过代理对象的方式给控制器瘦身。</p>
+<p>什么是代理对象</p>
+<p>这是平常控制器使用UITableView(图画的难看，主要是意思理解就行)</p>
+<div align="center"><br><br><img src="http://cc.cocimg.com/api/uploads/20160316/1458096834820774.png" width="80%"><br><br>常用写法<br><br></div>
+
+<p>这是我们优化之后的控制器构成</p>
+<div align="center"><br><br><img src="http://cc.cocimg.com/api/uploads/20160316/1458096811587921.png" width="70%"><br><br>代理对象<br><br></div>
+
+<p>从上面两张图可以看出，我们将UITableView的delegate和DataSource单独拿出来，由一个代理对象类进行控制，只将必须控制器处理的逻辑传递给控制器处理。</p>
+<p>UITableView的数据处理、展示逻辑和简单的逻辑交互都由代理对象去处理，和控制器相关的逻辑处理传递出来，交由控制器来处理，这样控制器的工作少了很多，而且耦合度也大大降低了。这样一来，我们只需要将需要处理的工作交由代理对象处理，并传入一些参数即可。</p>
+<p>下面我们用一段代码来实现一个简单的代理对象</p>
+<p>代理对象.h文件的声明</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">typedef void (^selectCell) (NSIndexPath *indexPath);</div><div class="line">/**</div><div class="line"> *  代理对象(UITableView的协议需要声明在.h文件中，不然外界在使用的时候会报黄色警告，看起来不太舒服)</div><div class="line"> */</div><div class="line">@interface TableViewDelegateObj : NSObject [UITableViewDelegate, UITableViewDataSource]（因识别问题，这里将尖括号改为方括号）</div><div class="line"> </div><div class="line">/**</div><div class="line"> *  创建代理对象实例，并将数据列表传进去</div><div class="line"> *  代理对象将消息传递出去，是通过block的方式向外传递消息的</div><div class="line"> *  @return 返回实例对象</div><div class="line"> */</div><div class="line">+ (instancetype)createTableViewDelegateWithDataList:(NSArray *)dataList</div><div class="line">                                        selectBlock:(selectCell)selectBlock;</div><div class="line">@end</div></pre></td></tr></table></figure>
+<p>代理对象.m文件中的实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">#import &quot;TableViewDelegateObj.h&quot;</div><div class="line"> </div><div class="line">@interface TableViewDelegateObj () </div><div class="line">@property (nonatomic, strong) NSArray   *dataList;</div><div class="line">@property (nonatomic, copy)   selectCell selectBlock;</div><div class="line">@end</div><div class="line"> </div><div class="line">@implementation TableViewDelegateObj</div><div class="line">+ (instancetype)createTableViewDelegateWithDataList:(NSArray *)dataList</div><div class="line">                                        selectBlock:(selectCell)selectBlock &#123;</div><div class="line">    return [[[self class] alloc] initTableViewDelegateWithDataList:dataList</div><div class="line">                                                       selectBlock:selectBlock];</div><div class="line">&#125;</div><div class="line"> </div><div class="line">- (instancetype)initTableViewDelegateWithDataList:(NSArray *)dataList selectBlock:(selectCell)selectBlock &#123;</div><div class="line">    self = [super init];</div><div class="line">    if (self) &#123;</div><div class="line">        self.dataList = dataList;</div><div class="line">        self.selectBlock = selectBlock;</div><div class="line">    &#125;</div><div class="line">    return self;</div><div class="line">&#125;</div><div class="line"> </div><div class="line">- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath &#123;</div><div class="line">    static NSString *identifier = @&quot;cell&quot;;</div><div class="line">    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];</div><div class="line">    if (!cell) &#123;</div><div class="line">        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];</div><div class="line">    &#125;</div><div class="line">    cell.textLabel.text = self.dataList[indexPath.row];</div><div class="line">    return cell;</div><div class="line">&#125;</div><div class="line"> </div><div class="line">- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section &#123;</div><div class="line">    return self.dataList.count;</div><div class="line">&#125;</div><div class="line"> </div><div class="line">- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath &#123;</div><div class="line">    [tableView deselectRowAtIndexPath:indexPath animated:NO];</div><div class="line">    // 将点击事件通过block的方式传递出去</div><div class="line">    self.selectBlock(indexPath);</div><div class="line">&#125;</div><div class="line">@end</div></pre></td></tr></table></figure>
+<p>外界控制器的调用非常简单，几行代码就搞定了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">self.tableDelegate = [TableViewDelegateObj createTableViewDelegateWithDataList:self.dataList </div><div class="line">                                                                   selectBlock:^(NSIndexPath *indexPath) &#123;</div><div class="line">    NSLog(@&quot;点击了%ld行cell&quot;, (long)indexPath.row);</div><div class="line">&#125;];</div><div class="line">self.tableView.delegate = self.tableDelegate;</div><div class="line">self.tableView.dataSource = self.tableDelegate;</div></pre></td></tr></table></figure>
+<p>在控制器中只需要创建一个代理对象类，并将UITableView的delegate和dataSource都交给代理对象去处理，让代理对象成为UITableView的代理，解决了控制器臃肿以及和UITableView的解藕。</p>
+<p>上面的代码只是简单的实现了点击cell的功能，如果有其他需求大多也都可以在代理对象中进行处理。使用代理对象类还有一个好处，就是如果多个UITableView逻辑一样或类似，代理对象是可以复用的。</p>
+<h3 id="非正式协议"><a href="#非正式协议" class="headerlink" title="非正式协议"></a>非正式协议</h3><p>简介</p>
+<p>在iOS2.0之前还没有引入@Protocol正式协议之前，实现协议的功能主要是通过给NSObject添加Category的方式。这种通过Category的方式，相对于iOS2.0之后引入的@Protocol，就叫做非正式协议。</p>
+<p>正如上面所说的，非正式协议一般都是以NSObject的Category的方式存在的。由于是对NSObject进行的Category，所以所有基于NSObject的子类，都接受了所定义的非正式协议。对于@Protocol来说编译器会在编译期检查语法错误，而非正式协议则不会检查是否实现。</p>
+<p>非正式协议中没有@Protocol的@optional和@required之分，和@Protocol一样在调用的时候，需要进行判断方法是否实现。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// 由于是使用的Category，所以需要用self来判断方法是否实现</div><div class="line">if ([self respondsToSelector:@selector(userLoginWithUsername:password:)]) &#123;</div><div class="line">    [self userLoginWithUsername:self.username.text password:self.password.text];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>非正式协议示例</p>
+<p>在iOS早期也使用了大量非正式协议，例如CALayerDelegate就是非正式协议的一种实现，非正式协议本质上就是Category。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@interface NSObject (CALayerDelegate)</div><div class="line">- (void)displayLayer:(CALayer *)layer;</div><div class="line">- (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx;</div><div class="line">- (void)layoutSublayersOfLayer:(CALayer *)layer;</div><div class="line">- (nullable id)actionForLayer:(CALayer *)layer forKey:(NSString *)event;</div><div class="line">@end</div></pre></td></tr></table></figure>
+<h3 id="代理和block的选择"><a href="#代理和block的选择" class="headerlink" title="代理和block的选择"></a>代理和block的选择</h3><p>在iOS中的回调方法有很多，而代理和block功能更加相似，都是直接进行回调，那我们应该用哪个呢，或者说哪个更好呢？</p>
+<p>其实这两种消息传递的方式，没有哪个更好、哪个不好直说….我们应该区分的是在什么情况下应该用什么，用什么更合适！下面我将会简单的介绍一下在不同情况下代理和block的选择：</p>
+<ul>
+<li><p>多个消息传递，应该使用delegate。在有多个消息传递时，用delegate实现更合适，看起来也更清晰。block就不太好了，这个时候block反而不便于维护，而且看起来非常臃肿，很别扭。例如UIKit的UITableView中有很多代理如果都换成block实现，我们脑海里想一下这个场景，这里就不用代码写例子了…..那简直看起来不能忍受。</p>
+</li>
+<li><p>一个委托对象的代理属性只能有一个代理对象，如果想要委托对象调用多个代理对象的回调应该用block。</p>
+</li>
+</ul>
+<div align="center"><br><br><img src="http://cc.cocimg.com/api/uploads/20160316/1458096270149621.png" width="70%"><br><br>代理<br><br></div>
+
+<p>上面图中代理1可以被设置，代理2和代理3设置的时候被划了叉，是因为这个步骤是错误的操作。我们上面说过，delegate只是一个保存某个代理对象的地址，如果设置多个代理相当于重新赋值，只有最后一个设置的代理才会被真正赋值。</p>
+<ul>
+<li>单例对象最好不要用delegate。单例对象由于始终都只是同一个对象，如果使用delegate，就会造成我们上面说的delegate属性被重新赋值的问题，最终只能有一个对象可以正常响应代理方法。</li>
+</ul>
+<p>这种情况我们可以使用block的方式，在主线程的多个对象中使用block都是没问题的，下面我们将用一个循环暴力测试一下block到底有没有问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">NSOperationQueue *queue = [[NSOperationQueue alloc] init];</div><div class="line">queue.maxConcurrentOperationCount = 10;</div><div class="line">for (int i = 0; i &lt; 100; i++) &#123;</div><div class="line">    [queue addOperationWithBlock:^&#123;</div><div class="line">        [[LoginViewController shareInstance] userLoginWithSuccess:^(NSString *username) &#123;</div><div class="line">            NSLog(@&quot;TestTableViewController : %d&quot;, i);</div><div class="line">        &#125;];</div><div class="line">    &#125;];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面用NSOperationQueue创建了一个新的队列，并且将最大并发数设置为10，然后创建一个100次的循环。我们在多线程情况下测试单例在block的情况下能否正常使用，答案是可以的。但是我们还是需要注意一点，在多线程情况下因为是单例对象，我们对block中必要的地方加锁，防止资源抢夺的问题发生。</p>
+<ul>
+<li>代理是可选的，而block在方法调用的时候只能通过将某个参数传递一个nil进去，只不过这并不是什么大问题，没有代码洁癖的可以忽略。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[self downloadTaskWithResumeData:resumeData</div><div class="line">                  sessionManager:manager</div><div class="line">                        savePath:savePath</div><div class="line">                   progressBlock:nil</div><div class="line">                    successBlock:successBlock</div><div class="line">                    failureBlock:failureBlock];</div></pre></td></tr></table></figure>
+<ul>
+<li><p>代理更加面相过程，block则更面向结果。从设计模式的角度来说，代理更佳面向过程，而block更佳面向结果。例如我们使用NSXMLParserDelegate代理进行XML解析，NSXMLParserDelegate中有很多代理方法，NSXMLParser会不间断调用这些方法将一些转换的参数传递出来，这就是NSXMLParser解析流程，这些通过代理来展现比较合适。而例如一个网络请求回来，就通过success、failure代码块来展示就比较好。</p>
+</li>
+<li><p>从性能上来说，block的性能消耗要略大于delegate，因为block会涉及到栈区向堆区拷贝等操作，时间和空间上的消耗都大于代理。而代理只是定义了一个方法列表，在遵守协议对象的objc_protocol_list中添加一个节点，在运行时向遵守协议的对象发送消息即可。这篇文章并不是讲block的，所以不对此做过多叙述。唐巧有一篇文章介绍过block，非常推荐这篇文章去深入学习block。</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS开发/" rel="tag">#iOS开发</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/12/27/iOS调试-LLDB学习总结/" rel="next" title="iOS调试-LLDB学习总结">
+                <i class="fa fa-chevron-left"></i> iOS调试-LLDB学习总结
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/hello.jpg"
+               alt="Yuan He" />
+          <p class="site-author-name" itemprop="name">Yuan He</p>
+          <p class="site-description motion-element" itemprop="description">博学而笃志,切问而近思</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">9</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/WaterSource/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2654101531/" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS中消息传递方式"><span class="nav-number">1.</span> <span class="nav-text">iOS中消息传递方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代理的基本使用"><span class="nav-number">2.</span> <span class="nav-text">代理的基本使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代理主要由三部分组成："><span class="nav-number">2.1.</span> <span class="nav-text">代理主要由三部分组成：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Protocol－协议的概念"><span class="nav-number">2.2.</span> <span class="nav-text">Protocol－协议的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#示例："><span class="nav-number">2.2.1.</span> <span class="nav-text">示例：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代理使用原理"><span class="nav-number">2.3.</span> <span class="nav-text">代理使用原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#控制器瘦身－代理对象"><span class="nav-number">2.4.</span> <span class="nav-text">控制器瘦身－代理对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非正式协议"><span class="nav-number">2.5.</span> <span class="nav-text">非正式协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代理和block的选择"><span class="nav-number">2.6.</span> <span class="nav-text">代理和block的选择</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2013 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yuan He</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
