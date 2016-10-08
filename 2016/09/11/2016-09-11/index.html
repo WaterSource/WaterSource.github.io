@@ -94,7 +94,7 @@ Update:9.16看到 GitHub 上有一个 repo 可以一句命令即可解决本文�
 <meta property="og:description" content="随着 iOS10 的正式版即将发布，Xcode8 GM 也在发布会后放出，本文不会涉及到 Xcode8 有哪些更新，而是记录了如何让 Xcode8 继续支持 Plugin。
 Update:9.16看到 GitHub 上有一个 repo 可以一句命令即可解决本文提到的所有问题 update_xcode_plugins，没有亲测，如果觉得本文方法比较麻烦，可以一试。
 我个人常用的 Xcode 插件可以">
-<meta property="og:updated_time" content="2016-10-08T07:13:07.000Z">
+<meta property="og:updated_time" content="2016-10-08T07:15:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="让你的 Xcode8 继续使用插件">
 <meta name="twitter:description" content="随着 iOS10 的正式版即将发布，Xcode8 GM 也在发布会后放出，本文不会涉及到 Xcode8 有哪些更新，而是记录了如何让 Xcode8 继续支持 Plugin。
@@ -313,7 +313,7 @@ Update:9.16看到 GitHub 上有一个 repo 可以一句命令即可解决本文�
       
         <p>随着 iOS10 的正式版即将发布，Xcode8 GM 也在发布会后放出，本文不会涉及到 Xcode8 有哪些更新，而是记录了如何让 Xcode8 继续支持 Plugin。</p>
 <h2 id="Update"><a href="#Update" class="headerlink" title="Update:"></a>Update:</h2><h3 id="9-16"><a href="#9-16" class="headerlink" title="9.16"></a>9.16</h3><p>看到 GitHub 上有一个 repo 可以一句命令即可解决本文提到的所有问题 <a href="https://github.com/inket/update_xcode_plugins" target="_blank" rel="external">update_xcode_plugins</a>，没有亲测，如果觉得本文方法比较麻烦，可以一试。</p>
-<p>我个人常用的 Xcode 插件可以参见这篇文章 <a href="">Xcode 常用插件</a>。</p>
+<p>我个人常用的 Xcode 插件可以参见这篇文章 <a href="http://runtoo.me/2016/09/12/2016-09-15/" target="_blank" rel="external">Xcode 常用插件</a>。</p>
 <hr>
 <p>相信各位已经有尝试过 Xcode-beta 了，但是会发现之前所有的插件都失效了。一开始我以为是和之前一样 Xcode 升级了，需要更新 Xcode info.plsit 中的 DVTPlugInCompatibilityUUID,于是运行了如下命令，具体修复原理和方案可以参考这篇文章 <a href="http://joeshang.github.io/2015/04/10/fix-xcode-upgrade-plugin-invalid/" target="_blank" rel="external">Xcode升级后插件失效的原理与修复办法</a>。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find ~/Library/Application\ Support/Developer/Shared/Xcode/Plug-ins -name Info.plist -maxdepth 3 | xargs -I&#123;&#125; defaults write &#123;&#125; DVTPlugInCompatibilityUUIDs -array-add `defaults read /Applications/Xcode-beta.app/Contents/Info.plist DVTPlugInCompatibilityUUID`</div></pre></td></tr></table></figure>
