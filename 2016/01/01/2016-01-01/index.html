@@ -1,0 +1,635 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS开发," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="微信分享之使用分享微信分享及收藏是指第三方App通过接入该功能，让用户可以从App分享文字、图片、音乐、视频、网页至微信好友会话、朋友圈或添加到微信收藏。
+微信分享及收藏功能已向全体开发者开放，开发者在微信开放平台帐号下申请App并通过审核后，即可获得微信分享及收藏权限。
+微信分享及收藏目前支持文字、图片、音乐、视频、网页共五种类型。开发者在App中在集成微信SDK后，可调用接口实现，以下依次是文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信分享之使用分享">
+<meta property="og:url" content="http://yoursite.com/2016/01/01/2016-01-01/index.html">
+<meta property="og:site_name" content="Never Stop">
+<meta property="og:description" content="微信分享之使用分享微信分享及收藏是指第三方App通过接入该功能，让用户可以从App分享文字、图片、音乐、视频、网页至微信好友会话、朋友圈或添加到微信收藏。
+微信分享及收藏功能已向全体开发者开放，开发者在微信开放平台帐号下申请App并通过审核后，即可获得微信分享及收藏权限。
+微信分享及收藏目前支持文字、图片、音乐、视频、网页共五种类型。开发者在App中在集成微信SDK后，可调用接口实现，以下依次是文">
+<meta property="og:updated_time" content="2016-10-13T01:42:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微信分享之使用分享">
+<meta name="twitter:description" content="微信分享之使用分享微信分享及收藏是指第三方App通过接入该功能，让用户可以从App分享文字、图片、音乐、视频、网页至微信好友会话、朋友圈或添加到微信收藏。
+微信分享及收藏功能已向全体开发者开放，开发者在微信开放平台帐号下申请App并通过审核后，即可获得微信分享及收藏权限。
+微信分享及收藏目前支持文字、图片、音乐、视频、网页共五种类型。开发者在App中在集成微信SDK后，可调用接口实现，以下依次是文">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/01/01/2016-01-01/"/>
+
+  <title> 微信分享之使用分享 | Never Stop </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Never Stop</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                微信分享之使用分享
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-01-01T16:11:32+08:00" content="2016-01-01">
+              2016-01-01
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="微信分享之使用分享"><a href="#微信分享之使用分享" class="headerlink" title="微信分享之使用分享"></a>微信分享之使用分享</h2><p>微信分享及收藏是指第三方App通过接入该功能，让用户可以从App分享文字、图片、音乐、视频、网页至微信好友会话、朋友圈或添加到微信收藏。</p>
+<p>微信分享及收藏功能已向全体开发者开放，开发者在微信开放平台帐号下申请App并通过审核后，即可获得微信分享及收藏权限。</p>
+<p>微信分享及收藏目前支持文字、图片、音乐、视频、网页共五种类型。开发者在App中在集成微信SDK后，可调用接口实现，以下依次是文字分享、图片分享、音乐分享、视频分享、网站分享的示例。</p>
+<blockquote>
+<p>分享或收藏的目标场景，通过修改scene场景值实现。<br>发送到聊天界面——WXSceneSession<br>发送到朋友圈——WXSceneTimeline<br>添加到微信收藏——WXSceneFavorite</p>
+</blockquote>
+<h2 id="文字类型分享示例"><a href="#文字类型分享示例" class="headerlink" title="文字类型分享示例"></a>文字类型分享示例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// 第三方程序发送消息至微信终端程序的消息结构体</div><div class="line">SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];</div><div class="line">req.text = @&quot;分享的内容&quot;;</div><div class="line">// 发送消息的类型，包括文本消息和多媒体消息两种，两者只能选择其一，不能同时发送文本和多媒体消息</div><div class="line">req.bText = YES;</div><div class="line">req.scene = WXSceneTimeline;</div><div class="line">[WXApi sendReq:req];</div></pre></td></tr></table></figure>
+<h2 id="图片类型分享示例"><a href="#图片类型分享示例" class="headerlink" title="图片类型分享示例"></a>图片类型分享示例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">// 用于微信终端和第三方程序之间传递消息的多媒体消息内容</div><div class="line">WXMediaMessage *message = [WXMediaMessage message];</div><div class="line">// 设置消息缩略图的方法</div><div class="line">[message setThumbImage:[UIImage imageNamed:@&quot;图片.png&quot;]];</div><div class="line">// 多媒体消息中包含的图片数据对象</div><div class="line">WXImageObject *imageObject = [WXImageObject object];</div><div class="line">NSString *filePath = [[NSBundle mainBundle] pathForResource:@&quot;res1&quot; ofType:@&quot;jpg&quot;];</div><div class="line">// 图片真实数据内容</div><div class="line">imageObject.imageData = [NSData dataWithContentsOfFile:filePath];</div><div class="line">// 多媒体数据对象，可以为WXImageObject，WXMusicObject，WXVideoObject，WXWebpageObject等。</div><div class="line">message.mediaObject = imageObject;</div><div class="line"></div><div class="line">SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];</div><div class="line">req.bText = NO;</div><div class="line">req.message = message;</div><div class="line">req.scene = WXSceneTimeline;// 分享到朋友圈</div><div class="line">[WXApi sendReq:req];</div></pre></td></tr></table></figure>
+<h2 id="音乐类型分享示例"><a href="#音乐类型分享示例" class="headerlink" title="音乐类型分享示例"></a>音乐类型分享示例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">WXMediaMessage *message = [WXMediaMessage message];</div><div class="line">// 标题</div><div class="line">message.title = @&quot;音乐标题&quot;;</div><div class="line">// 描述内容</div><div class="line">message.description = @&quot;音乐描述&quot;;</div><div class="line">[message setThumbImage:[UIImage imageNamed:@&quot;缩略图.jpg&quot;]];</div><div class="line"></div><div class="line">// 多媒体消息中包含的音乐数据对象</div><div class="line">WXMusicObject *ext = [WXMusicObject object];</div><div class="line">// 音乐网页的url地址</div><div class="line">ext.musicUrl = @&quot;音乐url&quot;;</div><div class="line">// 音乐lowband数据url地址</div><div class="line">ext.musicLowBandDataUrl = ext.musicUrl;</div><div class="line">// 音乐数据url地址</div><div class="line">ext.musicDataUrl = @&quot;音乐数据url&quot;;</div><div class="line">// 音乐lowband数据url地址</div><div class="line">ext.musicLowBandDataUrl = ext.musicDataUrl;</div><div class="line">message.mediaObject = ext;</div><div class="line"></div><div class="line">SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];</div><div class="line">req.bText = NO;</div><div class="line">req.message = message;</div><div class="line">req.scene = WXSceneTimeline;</div><div class="line"></div><div class="line">[WXApi sendReq:req];</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：分享至微信的音乐，直接点击好友会话或朋友圈下的分享内容会跳转至第三方 APP，点击会话列表顶部的音乐分享内容将跳转至微信原生音乐播放器播放。</p>
+</blockquote>
+<h2 id="视频类型分享示例"><a href="#视频类型分享示例" class="headerlink" title="视频类型分享示例"></a>视频类型分享示例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">WXMediaMessage *message = [WXMediaMessage message];</div><div class="line">message.title = @&quot;标题&quot;;</div><div class="line">message.description = @&quot;描述&quot;;</div><div class="line">[message setThumbImage:[UIImage imageNamed:@&quot;缩略图.jpg&quot;]];</div><div class="line"></div><div class="line">// 多媒体消息中包含的视频数据对象</div><div class="line">WXVideoObject *videoObject = [WXVideoObject object];</div><div class="line">// 视频网页的url地址</div><div class="line">videoObject.videoUrl = @&quot;视频url&quot;;</div><div class="line">// 视频lowband网页的url地址</div><div class="line">videoObject.videoLowBandUrl = videoObject.videoUrl;</div><div class="line"></div><div class="line">SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];</div><div class="line">req.bText = NO;</div><div class="line">req.message = message;</div><div class="line">req.scene = WXSceneTimeline;</div><div class="line"></div><div class="line">[WXApi sendReq:req];</div></pre></td></tr></table></figure>
+<h2 id="网页类型分享示例"><a href="#网页类型分享示例" class="headerlink" title="网页类型分享示例"></a>网页类型分享示例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">WXMediaMessage *message = [WXMediaMessage message];</div><div class="line">message.title = @&quot;标题&quot;;</div><div class="line">message.description = @&quot;描述&quot;;</div><div class="line">[message setThumbImage:[UIImage imageNamed:@&quot;res2.png&quot;]];</div><div class="line"></div><div class="line">// 多媒体消息中包含的网页数据对象</div><div class="line">WXWebpageObject *webpageObject = [WXWebpageObject object];</div><div class="line">// 网页的url地址</div><div class="line">webpageObject.webpageUrl = @&quot;https://opne.weixin.qq.com&quot;;</div><div class="line">message.mediaObject = webpageObject;</div><div class="line"></div><div class="line">SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];</div><div class="line">req.bText = NO;</div><div class="line">req.message = message;</div><div class="line">req.scene = WXSceneTimeline;</div><div class="line"></div><div class="line">[WXApi sendReq:req];</div></pre></td></tr></table></figure>
+<p>以上就是微信分享的内容，不过作为过来人，还是劝告你们，能用还是用第三方吧，要是有很多种分享都要做还是很繁琐的~</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS开发/" rel="tag">#iOS开发</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/12/27/iOS调试-LLDB学习总结/" rel="next" title="iOS调试-LLDB学习总结">
+                <i class="fa fa-chevron-left"></i> iOS调试-LLDB学习总结
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/01/27/2016-01-27/" rel="prev" title="微信分享之搭建分享环境">
+                微信分享之搭建分享环境 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/hello.jpg"
+               alt="Yuan He" />
+          <p class="site-author-name" itemprop="name">Yuan He</p>
+          <p class="site-description motion-element" itemprop="description">博学而笃志,切问而近思</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">23</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/WaterSource/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2654101531/" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#微信分享之使用分享"><span class="nav-number">1.</span> <span class="nav-text">微信分享之使用分享</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文字类型分享示例"><span class="nav-number">2.</span> <span class="nav-text">文字类型分享示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图片类型分享示例"><span class="nav-number">3.</span> <span class="nav-text">图片类型分享示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#音乐类型分享示例"><span class="nav-number">4.</span> <span class="nav-text">音乐类型分享示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#视频类型分享示例"><span class="nav-number">5.</span> <span class="nav-text">视频类型分享示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网页类型分享示例"><span class="nav-number">6.</span> <span class="nav-text">网页类型分享示例</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2013 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yuan He</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

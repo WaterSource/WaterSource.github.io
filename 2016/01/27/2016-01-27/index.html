@@ -1,0 +1,666 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS开发," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="社交网络是一种很有魔力的东西，不仅是因为在这种模式上产生出了诸如微信，微博等用户数以亿计的APP。而且还有很多的应用程序都会在里面添加分享的功能，以此作为推广应用的一种方式。
+在我们实际开发的时候，往往为了快速实现功能，都会选择友盟或ShareSDK等第三方分享的框架来快速实现分享的功能。这些框架的使用也很简单，官方的资料也比较完善。所以这次我来总结一下如何实现原生的分享。
+微信分享在现在的手机里">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信分享之搭建分享环境">
+<meta property="og:url" content="http://yoursite.com/2016/01/27/2016-01-27/index.html">
+<meta property="og:site_name" content="Never Stop">
+<meta property="og:description" content="社交网络是一种很有魔力的东西，不仅是因为在这种模式上产生出了诸如微信，微博等用户数以亿计的APP。而且还有很多的应用程序都会在里面添加分享的功能，以此作为推广应用的一种方式。
+在我们实际开发的时候，往往为了快速实现功能，都会选择友盟或ShareSDK等第三方分享的框架来快速实现分享的功能。这些框架的使用也很简单，官方的资料也比较完善。所以这次我来总结一下如何实现原生的分享。
+微信分享在现在的手机里">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1694407-8a439b923f358831.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1694407-5f77e1313c126601.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1694407-47dfbdef8add7078.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1694407-ff0148a71fbc7057.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1694407-48ea178642804efe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1694407-f4886418e892af90.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2016-10-13T01:36:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微信分享之搭建分享环境">
+<meta name="twitter:description" content="社交网络是一种很有魔力的东西，不仅是因为在这种模式上产生出了诸如微信，微博等用户数以亿计的APP。而且还有很多的应用程序都会在里面添加分享的功能，以此作为推广应用的一种方式。
+在我们实际开发的时候，往往为了快速实现功能，都会选择友盟或ShareSDK等第三方分享的框架来快速实现分享的功能。这些框架的使用也很简单，官方的资料也比较完善。所以这次我来总结一下如何实现原生的分享。
+微信分享在现在的手机里">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1694407-8a439b923f358831.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/01/27/2016-01-27/"/>
+
+  <title> 微信分享之搭建分享环境 | Never Stop </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Never Stop</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                微信分享之搭建分享环境
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-01-27T20:11:32+08:00" content="2016-01-27">
+              2016-01-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>社交网络是一种很有魔力的东西，不仅是因为在这种模式上产生出了诸如微信，微博等用户数以亿计的APP。而且还有很多的应用程序都会在里面添加分享的功能，以此作为推广应用的一种方式。</p>
+<p>在我们实际开发的时候，往往为了快速实现功能，都会选择友盟或ShareSDK等第三方分享的框架来快速实现分享的功能。这些框架的使用也很简单，官方的资料也比较完善。所以这次我来总结一下如何实现原生的分享。</p>
+<h2 id="微信分享"><a href="#微信分享" class="headerlink" title="微信分享"></a>微信分享</h2><p>在现在的手机里，微信已经成了我们必不可少的APP。不论是亲戚，朋友，还是工作，我们都喜欢使用微信进行分享。可以肯定的说，微信已经成为了我们在移动互联网时代的ID。这也是为什么我们会选择微信作为APP上的分享平台之一。</p>
+<p>接下来，我们就来看一下如何实现原生的微信分享的功能。</p>
+<h2 id="向微信注册你的应用程序id"><a href="#向微信注册你的应用程序id" class="headerlink" title="向微信注册你的应用程序id"></a>向微信注册你的应用程序id</h2><p>首先我们进入到<a href="https://open.weixin.qq.com/" target="_blank" rel="external">微信开放平台</a>,登录我们的微信开发者账号。然后选择管理中心，这里可以看见我们注册的所有想要通过微信进行分享的应用。在这里我们选择创建移动应用，进入到如图1-1所示的页面：</p>
+<div align="center"><br><br><img src="http://upload-images.jianshu.io/upload_images/1694407-8a439b923f358831.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="100%"><br><br>图1-1 创建移动应用<br><br></div>
+
+<p>这里面需要提交给微信的信息都写得清晰明了，移动应用名称和英文名称，移动应用简介和英文简介，还有两张PNG格式的移动应用图片，分别为28<em>28和108</em>108像素，大小不能超过300KB。</p>
+<p>点击下一步，进入如图1-2所示的界面：</p>
+<div align="center"><br><br><img src="http://upload-images.jianshu.io/upload_images/1694407-5f77e1313c126601.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="100%"><br><br>图1-2 填写平台信息<br><br></div>
+
+<p>首先需要填写你应用的官方网站，然后选择iOS应用，这里有两个需要填写，第一项是AppStore下载地址，这一项是选填，有些应用会在第一个版本就有分享功能，就可以先不进行填写，待到上线之后再进行修改。第二项是Bundle ID，这一项是为了唯一标示你的APP，填写你的APP里的Bundle ID就可以了~</p>
+<p>接下来再点击提交审核就可以了，审核会在七天之内完成~</p>
+<h2 id="下载微信终端SDK文件"><a href="#下载微信终端SDK文件" class="headerlink" title="下载微信终端SDK文件"></a>下载微信终端SDK文件</h2><p>SDK文件包括 libWeChatSDK.a，WXApi.h，WXApiObject.h 三个。请前往“<a href="https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&amp;t=resource/res_list&amp;verify=1&amp;id=open1419319164&amp;lang=zh_CN" target="_blank" rel="external">资源下载页</a>”下载最新SDK包。</p>
+<h2 id="搭建开发环境"><a href="#搭建开发环境" class="headerlink" title="搭建开发环境"></a>搭建开发环境</h2><p>首先在Xcode中建立你的工程，将SDK文件中包含的libWeChatSDK.a，WXApi.h，WXApiObject.h三个文件添加到你所建的工程中，如图1-3所示。</p>
+<div align="center"><br><br><img src="http://upload-images.jianshu.io/upload_images/1694407-47dfbdef8add7078.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="60%"><br><br>图1-3 添加SDK文件<br><br></div>
+
+<p>微信开放平台新增了微信模块用户统计功能，便于开发者统计微信功能模块的用户使用和活跃情况。开发者需要在工程中链接上: SystemConfiguration.framework, libz.dylib, libsqlite3.0.dylib, libc++.dylib。如图1-4所示：</p>
+<div align="center"><br><br><img src="http://upload-images.jianshu.io/upload_images/1694407-ff0148a71fbc7057.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="90%"><br><br>图1-4 添加所需系统库<br><br></div>
+
+<p>在你的工程文件中选择Build Setting，在Search Paths中添加libWeChatSDK.a ，WXApi.h，WXApiObject.h三个文件所在位置，如图1-5所示：</p>
+<div align="center"><br><br><img src="http://upload-images.jianshu.io/upload_images/1694407-48ea178642804efe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="90%"><br><br>图1-5 添加Search Path<br><br></div>
+
+<p>在Xcode中，选择你的工程设置项，选中“TARGETS”一栏，在“info”标签栏的“URL type“添加“URL scheme”为你所注册的应用程序 id，如图1-6所示：</p>
+<div align="center"><br><br><img src="http://upload-images.jianshu.io/upload_images/1694407-f4886418e892af90.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="90%"><br><br>图1-6 设置URL scheme<br><br></div>
+
+<p>在你需要使 用微信终端API的文件中import WXApi.h头文件，并增加WXApiDelegate协议。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">#import &lt;UIKit/UIKit.h&gt;</div><div class="line">#import &quot;WXApi.h&quot;</div><div class="line"></div><div class="line">@interface AppDelegate : UIResponder &lt;UIApplicationDelegate, WXApiDelegate&gt;</div><div class="line"></div><div class="line">@property (strong, nonatomic) UIWindow *window;</div><div class="line"></div><div class="line">@end</div></pre></td></tr></table></figure>
+<h2 id="在代码中使用开发工具包"><a href="#在代码中使用开发工具包" class="headerlink" title="在代码中使用开发工具包"></a>在代码中使用开发工具包</h2><p>要使你的程序启动后微信终端能响应你的程序，必须在代码中向微信终端注册你的id。（如下所示，在AppDelegate的didFinishLaunchingWithOptions函数中向微信注册id）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions &#123;</div><div class="line">    // Override point for customization after application launch.</div><div class="line">    // 向微信注册</div><div class="line">    [WXApi registerApp:@&quot;wxd930ea5d5a258f4f&quot; withDescription:@&quot;demo 2.0&quot;];</div><div class="line">    return YES;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>重写AppDelegate的handleOpenURL和openURL方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url</div><div class="line">&#123;</div><div class="line">    return [WXApi handleOpenURL:url delegate:self];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation</div><div class="line">&#123;</div><div class="line">    return [WXApi handleOpenURL:url delegate:self];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>现在，你的程序要实现和微信终端交互的具体请求与回应，因此需要实现WXApiDelegate协议的两个方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">- (void)onReq:(BaseReq *)req;</div><div class="line">// 是微信终端向第三方程序发起请求，要求第三方程序响应。第三方程序响应完后必须调用sendRsp返回。在调用sendRsp返回时，会切回到微信终端程序界面。</div><div class="line"></div><div class="line">- (void)onResp:(BaseResp *)resp;</div><div class="line">// 如果第三方程序向微信发送了sendReq的请求，那么onResp会被回调。sendReq请求调用后，会切到微信终端程序界面。</div></pre></td></tr></table></figure>
+<p>具体在此两方法中所要完成的内容由你定义，具体可参考微信开发工具包中的SDK Sample Demo源码。</p>
+<p>如果你的程序要发消息给微信，那么需要调用WXApi的sendReq函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">+(BOOL) sendReq:(BaseReq*)req;</div><div class="line">// 其中req参数为SendMessageToWXReq类型。</div></pre></td></tr></table></figure>
+<p>需要注意的是，SendMessageToWXReq的scene成员，如果scene填WXSceneSession，那么消息会发送至微信的会话内。如果scene填 WXSceneTimeline，那么消息会发送至朋友圈。如果scene填WXSceneFavorite,那么消息会发送到“我的收藏”中。scene默认值为 WXSceneSession。</p>
+<p>至此，你已经能使用微信终端SDK的API内容了。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS开发/" rel="tag">#iOS开发</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/01/01/2016-01-01/" rel="next" title="微信分享之使用分享">
+                <i class="fa fa-chevron-left"></i> 微信分享之使用分享
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/02/20/2016-02-20/" rel="prev" title="微博分享SDK">
+                微博分享SDK <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/hello.jpg"
+               alt="Yuan He" />
+          <p class="site-author-name" itemprop="name">Yuan He</p>
+          <p class="site-description motion-element" itemprop="description">博学而笃志,切问而近思</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">23</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/WaterSource/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2654101531/" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#微信分享"><span class="nav-number">1.</span> <span class="nav-text">微信分享</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#向微信注册你的应用程序id"><span class="nav-number">2.</span> <span class="nav-text">向微信注册你的应用程序id</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载微信终端SDK文件"><span class="nav-number">3.</span> <span class="nav-text">下载微信终端SDK文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建开发环境"><span class="nav-number">4.</span> <span class="nav-text">搭建开发环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在代码中使用开发工具包"><span class="nav-number">5.</span> <span class="nav-text">在代码中使用开发工具包</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2013 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yuan He</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
