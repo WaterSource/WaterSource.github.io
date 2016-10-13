@@ -1,0 +1,678 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS开发," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前两篇博客我们介绍了如何使用微信的原生分享。但我还是那句话，我写了原生的分享，但大家在做项目的时候千万不要直接上原生，一定要用第三方！！！不然受苦受难的可是自己~
+让你的应用在微博开放平台上运营，只需要通过简单的六个步骤：
+图1-1 六个步骤
+
+成为开发者&amp;amp;创建应用这一部分涉及较少的技术性问题，请大家上新手指南进行查看。
+其中还是有几个需要注意的点：
+
+设定授权回调：请在“我的应用 - 应">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微博分享SDK">
+<meta property="og:url" content="http://yoursite.com/2016/02/20/2016-02-20/index.html">
+<meta property="og:site_name" content="Never Stop">
+<meta property="og:description" content="前两篇博客我们介绍了如何使用微信的原生分享。但我还是那句话，我写了原生的分享，但大家在做项目的时候千万不要直接上原生，一定要用第三方！！！不然受苦受难的可是自己~
+让你的应用在微博开放平台上运营，只需要通过简单的六个步骤：
+图1-1 六个步骤
+
+成为开发者&amp;amp;创建应用这一部分涉及较少的技术性问题，请大家上新手指南进行查看。
+其中还是有几个需要注意的点：
+
+设定授权回调：请在“我的应用 - 应">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1694407-acd6eb9f1bf6f378.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1694407-20648a10269dd569.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1694407-51e8716830ae77cc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1694407-ae3890e51249dc07.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2016-10-13T01:19:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微博分享SDK">
+<meta name="twitter:description" content="前两篇博客我们介绍了如何使用微信的原生分享。但我还是那句话，我写了原生的分享，但大家在做项目的时候千万不要直接上原生，一定要用第三方！！！不然受苦受难的可是自己~
+让你的应用在微博开放平台上运营，只需要通过简单的六个步骤：
+图1-1 六个步骤
+
+成为开发者&amp;amp;创建应用这一部分涉及较少的技术性问题，请大家上新手指南进行查看。
+其中还是有几个需要注意的点：
+
+设定授权回调：请在“我的应用 - 应">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1694407-acd6eb9f1bf6f378.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/02/20/2016-02-20/"/>
+
+  <title> 微博分享SDK | Never Stop </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Never Stop</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                微博分享SDK
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-02-20T13:50:38+08:00" content="2016-02-20">
+              2016-02-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>前两篇博客我们介绍了如何使用微信的原生分享。但我还是那句话，我写了原生的分享，但大家在做项目的时候千万不要直接上原生，一定要用第三方！！！不然受苦受难的可是自己~</p>
+<p>让你的应用在微博开放平台上运营，只需要通过简单的六个步骤：</p>
+<div align="center"><br><br><img src="http://upload-images.jianshu.io/upload_images/1694407-acd6eb9f1bf6f378.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="100%"><br><br>图1-1 六个步骤<br><br></div>
+
+<h2 id="成为开发者-amp-创建应用"><a href="#成为开发者-amp-创建应用" class="headerlink" title="成为开发者&amp;创建应用"></a>成为开发者&amp;创建应用</h2><p>这一部分涉及较少的技术性问题，请大家上<a href="http://open.weibo.com/wiki/%E6%96%B0%E6%89%8B%E6%8C%87%E5%8D%97" target="_blank" rel="external">新手指南</a>进行查看。</p>
+<p>其中还是有几个需要注意的点：</p>
+<ul>
+<li><p>设定授权回调：请在“我的应用 - 应用信息 - 高级信息”中填写您的应用回调 ,这样才能使OAuth2.0授权正常进行 。如果您的APPSECRET发生泄露,您也可以通过该页面中的重置按钮对其重置。<strong>注意: iOS应用推荐使用默认授权回调页!</strong>地址为:<a href="https://api.weibo.com/oauth2/default.html" target="_blank" rel="external">https://api.weibo.com/oauth2/default.html</a>。</p>
+</li>
+<li><p>设定Apple ID和Bundle ID：请在“我的应用 - 应用信息 - 基本信息”中填写您的Apple ID和Bundle ID,这样您的应用才能正常使用微博iOS SDK授权和回调。(更改设置有延时,建议退出账号重新登录后再测试)。<strong>注:Apple ID如果没有的话,先随意填写,当获取了合法的Apple ID之后请马上到这个页面修改为正式版本。Bundle ID需要和工程设置保证一致。</strong></p>
+</li>
+</ul>
+<h2 id="设置工程回调URL-Types"><a href="#设置工程回调URL-Types" class="headerlink" title="设置工程回调URL Types"></a>设置工程回调URL Types</h2><p>如下图所示：其中Identifier应为自己的SSO授权回调地址，URL Scheme则为WB[APP KEY]。</p>
+<div align="center"><br><br><img src="http://upload-images.jianshu.io/upload_images/1694407-20648a10269dd569.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="100%"><br><br>图1-2 设置URL Types<br><br></div>
+
+<h2 id="添加SDK文件到工程"><a href="#添加SDK文件到工程" class="headerlink" title="添加SDK文件到工程"></a>添加SDK文件到工程</h2><p>将从GitHub上下载的libWeiboSDK文件夹添加到工程,其中包含WeiboSDK.h、WeiboUser.h、WBHttpRequest.h、WBHttpRequest+WeiboUser.h、WBHttpRequest+WeiboShare.h、WBHttpRequest+WeiboToken.h、WBSDKBasicButton.h、WBSDKRelationshipButton.h、WBSDKCommentButton.h、WeiboSDK+Statistics.h这10个.h文件以及libWeiboSDK.a和WeiboSDK.bundle,统共12个文件。</p>
+<div align="center"><br><br><img src="http://upload-images.jianshu.io/upload_images/1694407-51e8716830ae77cc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="100%"><br><br>图1-3 添加SDK文件到工程<br><br></div>
+
+
+<p>在工程中引入静态库之后,需要在编译时添加–ObjC编译选项,避免静态库中类加载不全造成程序崩溃。</p>
+<p>方法:程序Target-&gt;Buid Settings-&gt;Linking 下 OtherLinker Flags项添加-ObjC。</p>
+<h2 id="添加FrameWork文件到工程"><a href="#添加FrameWork文件到工程" class="headerlink" title="添加FrameWork文件到工程"></a>添加FrameWork文件到工程</h2><p>在工程中修改Other Linker Flags后,需要修改编译步骤的链接库设置,避免链接阶段由于库的设置错误导致程序崩溃。</p>
+<p>方法:程序Target-&gt;Buid Phases-&gt;Link BinaryWith Libraries下添加以下 Framework到工程中。需要添加的Frameworks为:QuartzCore.framework、ImageIO.framework、SystemConfiguration.framework、Security.framework、CoreTelephony.framework、CoreText.framework、UIKit.framework、Foundation.framework、CoreGraphics.framework 、libz.dylib、libsqlite3.dylib</p>
+<div align="center"><br><br><img src="http://upload-images.jianshu.io/upload_images/1694407-ae3890e51249dc07.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="100%"><br><br>图1-4 添加FrameWork<br><br></div>
+
+<h2 id="定义常用的常量"><a href="#定义常用的常量" class="headerlink" title="定义常用的常量"></a>定义常用的常量</h2><p>定义应用SSO登录或者Oauth2.0认证所需的几个常量。</p>
+<p>AppKey:第三方应用申请的AppKey, 来身份鉴证、显示来源等;</p>
+<p>AppRedirectURL: 应用回调 ,在进行Oauth2.0登录认证时所使用 。对于Mobile客户端应用来说,是不存在Server的,故此处的应用回调地址只要与新浪微博开放平台-&gt;我的应用 -&gt;应用信息-&gt; 高级应用 -&gt;授权设置-&gt;应用回调中的url地址保持一致就可以了,如下所示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">#define kAppKey         @&quot;2045436852&quot;</div><div class="line">#define kRedirectURI    @&quot;http://www.sina.com&quot;</div></pre></td></tr></table></figure>
+<h3 id="注册AppKey-ClientID"><a href="#注册AppKey-ClientID" class="headerlink" title="注册AppKey (ClientID)"></a>注册AppKey (ClientID)</h3><p>程序启动时,在代码中向微博终端注册你的AppKey,如果初次集成微博SDK,建议打开调试选项以便输出调试信息。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</div><div class="line">&#123;</div><div class="line">    [WeiboSDK enableDebugMode:YES];</div><div class="line">    [WeiboSDK registerApp:kAppKey];</div><div class="line">    return YES;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="重写AppDelegate的handleOpenURL和openURL方法"><a href="#重写AppDelegate的handleOpenURL和openURL方法" class="headerlink" title="重写AppDelegate的handleOpenURL和openURL方法"></a>重写AppDelegate的handleOpenURL和openURL方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation</div><div class="line">&#123;</div><div class="line">    return [WeiboSDK handleOpenURL:url delegate:self];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url</div><div class="line">&#123;</div><div class="line">    return [WeiboSDK handleOpenURL:url delegate:self ];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>至此，微博 SDK 的导入和初始化工作就都完成了~</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">- (void)shareButtonPressed</div><div class="line">&#123;</div><div class="line">    // 获取AppDelegate</div><div class="line">    AppDelegate *myDelegate =(AppDelegate*)[[UIApplication sharedApplication] delegate];</div><div class="line">    /**</div><div class="line">    第三方应用向微博客户端请求认证的消息结构</div><div class="line"></div><div class="line">    第三方应用向微博客户端申请认证时，需要调用[WeiboSDK sendRequest:]函数， 向微博客户端发送一个WBAuthorizeRequest的消息结构。</div><div class="line"></div><div class="line">    微博客户端处理完后会向第三方应用发送一个结构为WBAuthorizeResponse的处理结果。</div><div class="line"> */</div><div class="line">    WBAuthorizeRequest *authRequest = [WBAuthorizeRequest request];</div><div class="line">    // 微博开放平台第三方应用授权回调页地址，默认为`http://`</div><div class="line">    authRequest.redirectURI = kRedirectURI;</div><div class="line">    // 微博开放平台第三方应用scope，多个scope用逗号分隔</div><div class="line">    authRequest.scope = @&quot;all&quot;;</div><div class="line">    // 第三方应用发送消息至微博客户端程序的消息结构体，其中message类型我会在下面放出</div><div class="line">    WBSendMessageToWeiboRequest *request = [WBSendMessageToWeiboRequest requestWithMessage:[self messageToShare] authInfo:authRequest access_token:myDelegate.wbtoken];</div><div class="line">    // 自定义信息字典，用于数据传输过程中存储相关的上下文环境数据</div><div class="line"></div><div class="line">    // 第三方应用给微博客户端程序发送request时，可以在userInfo中存储请求相关的信息。</div><div class="line">    request.userInfo = @&#123;@&quot;ShareMessageFrom&quot;: @&quot;SendMessageToWeiboViewController&quot;,</div><div class="line">                     @&quot;Other_Info_1&quot;: [NSNumber numberWithInt:123],</div><div class="line">                     @&quot;Other_Info_2&quot;: @[@&quot;obj1&quot;, @&quot;obj2&quot;],</div><div class="line">                     @&quot;Other_Info_3&quot;: @&#123;@&quot;key1&quot;: @&quot;obj1&quot;, @&quot;key2&quot;: @&quot;obj2&quot;&#125;&#125;;</div><div class="line">    // 发送请求给微博客户端程序，并切换到微博</div><div class="line"></div><div class="line">    // 请求发送给微博客户端程序之后，微博客户端程序会进行相关的处理，处理完成之后一定会调用 [WeiboSDKDelegate didReceiveWeiboResponse:] 方法将处理结果返回给第三方应用</div><div class="line">    [WeiboSDK sendRequest:request];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="文字类型的消息格式"><a href="#文字类型的消息格式" class="headerlink" title="文字类型的消息格式"></a>文字类型的消息格式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">// 微博客户端程序和第三方应用之间传递的消息结构</div><div class="line"></div><div class="line">// 一个消息结构由三部分组成：文字、图片和多媒体数据。三部分内容中至少有一项不为空，图片和多媒体数据不能共存。</div><div class="line">WBMessageObject *message = [WBMessageObject message];</div><div class="line">message.text = NSLocalizedString(@&quot;测试通过WeiboSDK发送文字到微博!&quot;, nil);</div></pre></td></tr></table></figure>
+<h3 id="图片类型的消息格式"><a href="#图片类型的消息格式" class="headerlink" title="图片类型的消息格式"></a>图片类型的消息格式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">WBMessageObject *message = [WBMessageObject message];</div><div class="line">// 消息中包含的图片数据对象</div><div class="line">WBImageObject *image = [WBImageObject object];</div><div class="line">// 图片真实数据内容</div><div class="line">image.imageData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@&quot;image_1&quot; ofType:@&quot;jpg&quot;]];</div><div class="line">// 消息的图片内容</div><div class="line">message.imageObject = image;</div></pre></td></tr></table></figure>
+<h3 id="网页类型的消息格式"><a href="#网页类型的消息格式" class="headerlink" title="网页类型的消息格式"></a>网页类型的消息格式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">WBMessageObject *message = [WBMessageObject message];</div><div class="line">// 消息中包含的网页数据对象</div><div class="line">WBWebpageObject *webpage = [WBWebpageObject object];</div><div class="line">// 对象唯一ID，用于唯一标识一个多媒体内容</div><div class="line">// 当第三方应用分享多媒体内容到微博时，应该将此参数设置为被分享的内容在自己的系统中的唯一标识</div><div class="line">webpage.objectID = @&quot;identifier1&quot;;</div><div class="line">webpage.title = NSLocalizedString(@&quot;分享网页标题&quot;, nil);</div><div class="line">webpage.description = [NSString stringWithFormat:NSLocalizedString(@&quot;分享网页内容简介-%.0f&quot;, nil), [[NSDate date] timeIntervalSince1970]];</div><div class="line">// 多媒体内容缩略图</div><div class="line">webpage.thumbnailData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@&quot;image_2&quot; ofType:@&quot;jpg&quot;]];</div><div class="line">// 网页的url地址</div><div class="line">webpage.webpageUrl = @&quot;http://sina.cn?a=1&quot;;</div><div class="line">// 消息的多媒体内容</div><div class="line">message.mediaObject = webpage;</div></pre></td></tr></table></figure>
+<p>这就是微博分享的环境搭建和基本使用的全部内容了，捎带脚吐槽一句，微博的分享真难用啊，我就测试了几次就说我账号异常，我也是……</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS开发/" rel="tag">#iOS开发</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/12/27/iOS调试-LLDB学习总结/" rel="next" title="iOS调试-LLDB学习总结">
+                <i class="fa fa-chevron-left"></i> iOS调试-LLDB学习总结
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/20/iOS代理设计模式/" rel="prev" title="闲谈 iOS 代理设计模式">
+                闲谈 iOS 代理设计模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/hello.jpg"
+               alt="Yuan He" />
+          <p class="site-author-name" itemprop="name">Yuan He</p>
+          <p class="site-description motion-element" itemprop="description">博学而笃志,切问而近思</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/WaterSource/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2654101531/" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#成为开发者-amp-创建应用"><span class="nav-number">1.</span> <span class="nav-text">成为开发者&创建应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置工程回调URL-Types"><span class="nav-number">2.</span> <span class="nav-text">设置工程回调URL Types</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加SDK文件到工程"><span class="nav-number">3.</span> <span class="nav-text">添加SDK文件到工程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加FrameWork文件到工程"><span class="nav-number">4.</span> <span class="nav-text">添加FrameWork文件到工程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义常用的常量"><span class="nav-number">5.</span> <span class="nav-text">定义常用的常量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#注册AppKey-ClientID"><span class="nav-number">5.1.</span> <span class="nav-text">注册AppKey (ClientID)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重写AppDelegate的handleOpenURL和openURL方法"><span class="nav-number">5.2.</span> <span class="nav-text">重写AppDelegate的handleOpenURL和openURL方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文字类型的消息格式"><span class="nav-number">5.3.</span> <span class="nav-text">文字类型的消息格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图片类型的消息格式"><span class="nav-number">5.4.</span> <span class="nav-text">图片类型的消息格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网页类型的消息格式"><span class="nav-number">5.5.</span> <span class="nav-text">网页类型的消息格式</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2013 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yuan He</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

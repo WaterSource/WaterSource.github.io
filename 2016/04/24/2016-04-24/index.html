@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="iOS开发," />
 
 
 
@@ -84,16 +84,34 @@
 
 
 
-<meta name="description" content="博学而笃志,切问而近思">
-<meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="http://yoursite.com/categories/index.html">
+<meta name="description" content="公司有一个iOS应用需要集成百度地图，替换iOS自带的MapKit，于是去百度地图的API官网按照文档一步步操作。
+申请密钥、配置开发环境等都很顺利，等到真正运行时遇到了这样的错误：
+
+地图所需资源文件不完整,请根据开发指南正确添加mapapi.bundle文件。
+
+经过一番研究，终于找到了解决办法，这是文档里没有提到的，所以重点说一下。
+解决办法：单独导入mapapi.bundle！这个文件在B">
+<meta property="og:type" content="article">
+<meta property="og:title" content="集成百度地图iOS SDK时遇到“地图所需资源文件不完整,请根据开发指南正确添加mapapi.bundle文件”的解决办法">
+<meta property="og:url" content="http://yoursite.com/2016/04/24/2016-04-24/index.html">
 <meta property="og:site_name" content="Never Stop">
-<meta property="og:description" content="博学而笃志,切问而近思">
-<meta property="og:updated_time" content="2016-08-29T07:02:32.000Z">
+<meta property="og:description" content="公司有一个iOS应用需要集成百度地图，替换iOS自带的MapKit，于是去百度地图的API官网按照文档一步步操作。
+申请密钥、配置开发环境等都很顺利，等到真正运行时遇到了这样的错误：
+
+地图所需资源文件不完整,请根据开发指南正确添加mapapi.bundle文件。
+
+经过一番研究，终于找到了解决办法，这是文档里没有提到的，所以重点说一下。
+解决办法：单独导入mapapi.bundle！这个文件在B">
+<meta property="og:updated_time" content="2016-10-13T01:19:24.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="categories">
-<meta name="twitter:description" content="博学而笃志,切问而近思">
+<meta name="twitter:title" content="集成百度地图iOS SDK时遇到“地图所需资源文件不完整,请根据开发指南正确添加mapapi.bundle文件”的解决办法">
+<meta name="twitter:description" content="公司有一个iOS应用需要集成百度地图，替换iOS自带的MapKit，于是去百度地图的API官网按照文档一步步操作。
+申请密钥、配置开发环境等都很顺利，等到真正运行时遇到了这样的错误：
+
+地图所需资源文件不完整,请根据开发指南正确添加mapapi.bundle文件。
+
+经过一番研究，终于找到了解决办法，这是文档里没有提到的，所以重点说一下。
+解决办法：单独导入mapapi.bundle！这个文件在B">
 
 
 
@@ -114,15 +132,9 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/categories/"/>
+  <link rel="canonical" href="http://yoursite.com/2016/04/24/2016-04-24/"/>
 
-  <title>
-  
-
-  
-    分类 | Never Stop
-  
-</title>
+  <title> 集成百度地图iOS SDK时遇到“地图所需资源文件不完整,请根据开发指南正确添加mapapi.bundle文件”的解决办法 | Never Stop </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -143,7 +155,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -233,16 +245,148 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
     
-      <div class="category-all-page">
-        <div class="category-all-title">
-            目前共计 3 个分类
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                集成百度地图iOS SDK时遇到“地图所需资源文件不完整,请根据开发指南正确添加mapapi.bundle文件”的解决办法
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-04-24T18:11:32+08:00" content="2016-04-24">
+              2016-04-24
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
         </div>
-        <div class="category-all">
-          <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Tips/">Tips</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/杂谈/">杂谈</a><span class="category-list-count">3</span></li></ul>
-        </div>
-      </div>
+      </header>
     
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>公司有一个iOS应用需要集成百度地图，替换iOS自带的MapKit，于是去百度地图的<a href="http://lbsyun.baidu.com/" target="_blank" rel="external">API官网</a>按照文档一步步操作。</p>
+<p>申请密钥、配置开发环境等都很顺利，等到真正运行时遇到了这样的错误：</p>
+<blockquote>
+<p>地图所需资源文件不完整,请根据开发指南正确添加mapapi.bundle文件。</p>
+</blockquote>
+<p>经过一番研究，终于找到了解决办法，这是文档里没有提到的，所以重点说一下。</p>
+<p>解决办法：单独导入mapapi.bundle！这个文件在BaiduMapAPI_Map.framework-&gt;Resources下面。使用右键-&gt;Add Files to…之后，还需要在Build Phases-&gt;Link Binary With Libraries中再次添加一次。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS开发/" rel="tag">#iOS开发</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/20/iOS代理设计模式/" rel="next" title="闲谈 iOS 代理设计模式">
+                <i class="fa fa-chevron-left"></i> 闲谈 iOS 代理设计模式
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/20/2016-05-20/" rel="prev" title="Introduction to MVC-MVVM for iOS">
+                Introduction to MVC-MVVM for iOS <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -274,8 +418,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/hello.jpg"
@@ -345,6 +498,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -441,6 +605,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
 
   
 
