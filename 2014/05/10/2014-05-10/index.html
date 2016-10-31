@@ -1,0 +1,676 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS开发," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="iOS sdk中提供了很多方便的方法来播放多媒体。本文将利用这些SDK做一个demo，来讲述一下如何使用它们来播放音频文件。
+
+iOS sdk中提供了很多方便的方法来播放多媒体。本文将利用这些SDK做一个demo，来讲述一下如何使用它们来播放音频文件。
+AudioToolbox framework
+使用AudioToolbox framework。这个框架可以将比较短的声音注册到 system">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS开发之多媒体播放">
+<meta property="og:url" content="http://yoursite.com/2014/05/10/2014-05-10/index.html">
+<meta property="og:site_name" content="Never Stop">
+<meta property="og:description" content="iOS sdk中提供了很多方便的方法来播放多媒体。本文将利用这些SDK做一个demo，来讲述一下如何使用它们来播放音频文件。
+
+iOS sdk中提供了很多方便的方法来播放多媒体。本文将利用这些SDK做一个demo，来讲述一下如何使用它们来播放音频文件。
+AudioToolbox framework
+使用AudioToolbox framework。这个框架可以将比较短的声音注册到 system">
+<meta property="og:image" content="http://s8.51cto.com/wyfs01/M01/44/2C/wKioOVKv4rryY8CaAABXVdhRv8E271.jpg">
+<meta property="og:updated_time" content="2016-10-31T12:27:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS开发之多媒体播放">
+<meta name="twitter:description" content="iOS sdk中提供了很多方便的方法来播放多媒体。本文将利用这些SDK做一个demo，来讲述一下如何使用它们来播放音频文件。
+
+iOS sdk中提供了很多方便的方法来播放多媒体。本文将利用这些SDK做一个demo，来讲述一下如何使用它们来播放音频文件。
+AudioToolbox framework
+使用AudioToolbox framework。这个框架可以将比较短的声音注册到 system">
+<meta name="twitter:image" content="http://s8.51cto.com/wyfs01/M01/44/2C/wKioOVKv4rryY8CaAABXVdhRv8E271.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2014/05/10/2014-05-10/"/>
+
+  <title> iOS开发之多媒体播放 | Never Stop </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Never Stop</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                iOS开发之多媒体播放
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2014-05-10T16:11:32+08:00" content="2014-05-10">
+              2014-05-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>iOS sdk中提供了很多方便的方法来播放多媒体。本文将利用这些SDK做一个demo，来讲述一下如何使用它们来播放音频文件。</p>
+</blockquote>
+<p>iOS sdk中提供了很多方便的方法来播放多媒体。本文将利用这些SDK做一个demo，来讲述一下如何使用它们来播放音频文件。</p>
+<p>AudioToolbox framework</p>
+<p>使用AudioToolbox framework。这个框架可以将比较短的声音注册到 system sound服务上。被注册到system sound服务上的声音称之为 system sounds。它必须满足下面几个条件。</p>
+<p>1、播放的时间不能超过30秒</p>
+<p>2、数据必须是 PCM或者IMA4流格式</p>
+<p>3、必须被打包成下面三个格式之一：Core Audio Format (.caf), Waveform audio (.wav), 或者 Audio Interchange File (.aiff)</p>
+<p>声音文件必须放到设备的本地文件夹下面。通过AudioServicesCreateSystemSoundID方法注册这个声音文 件，AudioServicesCreateSystemSoundID需要声音文件的url的CFURLRef对象。看下面注册代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">#import &lt;AudioToolbox/AudioToolbox.h&gt;</div><div class="line">@interface MediaPlayerViewController : UIViewController </div><div class="line">&#123; </div><div class="line">    IBOutlet UIButton *audioButton; </div><div class="line">    SystemSoundID shortSound; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">- (id)init </div><div class="line">&#123; </div><div class="line">    self = [super initWithNibName:@&quot;MediaPlayerViewController&quot; bundle:nil]; </div><div class="line">    if (self) &#123; </div><div class="line">        // Get the full path of Sound12.aif </div><div class="line">        NSString *soundPath = [[NSBundle mainBundle] pathForResource:@&quot;Sound12&quot; </div><div class="line">                                                              ofType:@&quot;aif&quot;]; </div><div class="line">        // If this file is actually in the bundle... </div><div class="line">        if (soundPath) &#123; </div><div class="line">            // Create a file URL with this path </div><div class="line">            NSURL *soundURL = [NSURL fileURLWithPath:soundPath]; </div><div class="line">         </div><div class="line">            // Register sound file located at that URL as a system sound </div><div class="line">            OSStatus err = AudioServicesCreateSystemSoundID((CFURLRef)soundURL,  </div><div class="line">                                                            &amp;shortSound); </div><div class="line">            if (err != kAudioServicesNoError) </div><div class="line">                NSLog(@&quot;Could not load %@, error code: %d&quot;, soundURL, err); </div><div class="line">        &#125; </div><div class="line">    &#125; </div><div class="line">    return self;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样就可以使用下面代码播放声音了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">- (IBAction)playShortSound:(id)sender </div><div class="line">&#123; </div><div class="line">    AudioServicesPlaySystemSound(shortSound); </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>使用下面代码，还加一个震动的效果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">- (IBAction)playShortSound:(id)sender </div><div class="line">&#123; </div><div class="line">    AudioServicesPlaySystemSound(shortSound); </div><div class="line">    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate); </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>AVFoundation framework</p>
+<p>对于压缩过Audio文件，或者超过30秒的音频文件，可以使用AVAudioPlayer类。这个类定义在AVFoundation framework中。</p>
+<p>下面我们使用这个类播放一个mp3的音频文件。首先要引入AVFoundation framework，然后MediaPlayerViewController.h中添加下面代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">#import &lt;AVFoundation/AVFoundation.h&gt; </div><div class="line">@interface MediaPlayerViewController : UIViewController &lt;AVAudioPlayerDelegate&gt; </div><div class="line">&#123; </div><div class="line">    IBOutlet UIButton *audioButton; </div><div class="line">    SystemSoundID shortSound; </div><div class="line">    AVAudioPlayer *audioPlayer;</div></pre></td></tr></table></figure>
+<p>AVAudioPlayer类也是需要知道音频文件的路径，使用下面代码创建一个AVAudioPlayer实例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">- (id)init </div><div class="line">&#123; </div><div class="line">    self = [super initWithNibName:@&quot;MediaPlayerViewController&quot; bundle:nil]; </div><div class="line">     </div><div class="line">    if (self) &#123; </div><div class="line">     </div><div class="line">        NSString *musicPath = [[NSBundle mainBundle] pathForResource:@&quot;Music&quot; </div><div class="line">                                                              ofType:@&quot;mp3&quot;]; </div><div class="line">        if (musicPath) &#123; </div><div class="line">            NSURL *musicURL = [NSURL fileURLWithPath:musicPath]; </div><div class="line">            audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:musicURL  </div><div class="line">                                                                 error:nil]; </div><div class="line">            [audioPlayer setDelegate:self]; </div><div class="line">        &#125; </div><div class="line">        NSString *soundPath = [[NSBundle mainBundle] pathForResource:@&quot;Sound12&quot; </div><div class="line">                                                              ofType:@&quot;aif&quot;];</div></pre></td></tr></table></figure>
+<p>我们可以在一个button的点击事件中开始播放这个mp3文件，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">- (IBAction)playAudioFile:(id)sender </div><div class="line">&#123; </div><div class="line">    if ([audioPlayer isPlaying]) &#123; </div><div class="line">        // Stop playing audio and change text of button </div><div class="line">        [audioPlayer stop]; </div><div class="line">        [sender setTitle:@&quot;Play Audio File&quot; </div><div class="line">                forState:UIControlStateNormal]; </div><div class="line">    &#125; </div><div class="line">    else &#123; </div><div class="line">        // Start playing audio and change text of button so </div><div class="line">        // user can tap to stop playback </div><div class="line">        [audioPlayer play]; </div><div class="line">        [sender setTitle:@&quot;Stop Audio File&quot; </div><div class="line">                forState:UIControlStateNormal]; </div><div class="line">    &#125; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样运行我们的程序，就可以播放音乐了。</p>
+<p>这个类对应的AVAudioPlayerDelegate有两个委托方法。一个是 audioPlayerDidFinishPlaying:successfully: 当音频播放完成之后触发。当播放完成之后，可以将播放按钮的文本重新回设置成：Play Audio File</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player </div><div class="line">                       successfully:(BOOL)flag </div><div class="line">&#123; </div><div class="line">    [audioButton setTitle:@&quot;Play Audio File&quot; </div><div class="line">                 forState:UIControlStateNormal]; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>另一个是audioPlayerEndInterruption:，当程序被应用外部打断之后，重新回到应用程序的时候触发。在这里当回到此应用程序的时候，继续播放音乐。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">- (void)audioPlayerEndInterruption:(AVAudioPlayer *)player </div><div class="line">&#123; </div><div class="line">    [audioPlayer play]; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="MediaPlayer-framework"><a href="#MediaPlayer-framework" class="headerlink" title="MediaPlayer framework"></a>MediaPlayer framework</h2><p>播放电影文件：</p>
+<p>iOS sdk中可以使用MPMoviePlayerController来播放电影文件。但是在iOS设备上播放电影文件有严格的格式要求，只能播放下面两个格式的电影文件。</p>
+<p>• H.264 (Baseline Profile Level 3.0)</p>
+<p>• MPEG-4 Part 2 video (Simple Profile)</p>
+<p>幸运的是你可以先使用iTunes将文件转换成上面两个格式。<br>MPMoviePlayerController还可以播放互联网上的视频文件。但是建议你先将视频文件下载到本地，然后播放。如果你不这样做，iOS可能会拒绝播放很大的视频文件。</p>
+<p>这个类定义在MediaPlayer framework中。在你的应用程序中，先添加这个引用，然后修改MediaPlayerViewController.h文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">#import &lt;MediaPlayer/MediaPlayer.h&gt; </div><div class="line">@interface MediaPlayerViewController : UIViewController &lt;AVAudioPlayerDelegate&gt; </div><div class="line">&#123; </div><div class="line">    MPMoviePlayerController *moviePlayer;</div></pre></td></tr></table></figure>
+<p>下面我们使用这个类来播放一个.m4v 格式的视频文件。与前面的类似，需要一个url路径。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">- (id)init </div><div class="line">&#123; </div><div class="line">    self = [super initWithNibName:@&quot;MediaPlayerViewController&quot; bundle:nil]; </div><div class="line">    if (self) &#123; </div><div class="line">     </div><div class="line">        NSString *moviePath = [[NSBundle mainBundle] pathForResource:@&quot;Layers&quot;  </div><div class="line">                                                              ofType:@&quot;m4v&quot;]; </div><div class="line">        if (moviePath) &#123; </div><div class="line">            NSURL *movieURL = [NSURL fileURLWithPath:moviePath]; </div><div class="line">            moviePlayer = [[MPMoviePlayerController alloc]  </div><div class="line">                                    initWithContentURL:movieURL]; </div><div class="line">        &#125;</div></pre></td></tr></table></figure>
+<p>MPMoviePlayerController有一个视图来展示播放器控件，我们在viewDidLoad方法中，将这个播放器展示出来。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">- (void)viewDidLoad </div><div class="line">&#123; </div><div class="line">    [[self view] addSubview:[moviePlayer view]]; </div><div class="line">    float halfHeight = [[self view] bounds].size.height / 2.0; </div><div class="line">    float width = [[self view] bounds].size.width; </div><div class="line">    [[moviePlayer view] setFrame:CGRectMake(0, halfHeight, width, halfHeight)]; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>还有一个MPMoviePlayerViewController类，用于全屏播放视频文件，用法和MPMoviePlayerController一样。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">MPMoviePlayerViewController *playerViewController = </div><div class="line">    [[MPMoviePlayerViewController alloc] initWithContentURL:movieURL]; </div><div class="line">  [viewController presentMoviePlayerViewControllerAnimated:playerViewController];</div></pre></td></tr></table></figure>
+<p>我们在听音乐的时候，可以用iphone做其他的事情，这个时候需要播放器在后台也能运行，我们只需要在应用程序中做个简单的设置就行了。</p>
+<p>1、在Info property list中加一个 Required background modes节点，它是一个数组，将第一项设置成设置App plays audio。</p>
+<p>2、在播放mp3的代码中加入下面代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">if (musicPath) &#123; </div><div class="line">        NSURL *musicURL = [NSURL fileURLWithPath:musicPath]; </div><div class="line">        [[AVAudioSession sharedInstance] </div><div class="line">                    setCategory:AVAudioSessionCategoryPlayback error:nil]; </div><div class="line">        audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:musicURL </div><div class="line">                                                             error:nil]; </div><div class="line">        [audioPlayer setDelegate:self]; </div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>在后台运行的播放音乐的功能在模拟器中看不出来，只有在真机上看效果。</p>
+<div align="center"><br><br><img src="http://s8.51cto.com/wyfs01/M01/44/2C/wKioOVKv4rryY8CaAABXVdhRv8E271.jpg" width="50%"><br><br></div>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS开发/" rel="tag">#iOS开发</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/04/20/2014-04-20/" rel="next" title="扬州游">
+                <i class="fa fa-chevron-left"></i> 扬州游
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/27/iOS性能优化：Instruments使用实战/" rel="prev" title="iOS性能优化：Instruments使用实战">
+                iOS性能优化：Instruments使用实战 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/hello.jpg"
+               alt="Yuan He" />
+          <p class="site-author-name" itemprop="name">Yuan He</p>
+          <p class="site-description motion-element" itemprop="description">博学而笃志,切问而近思</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/WaterSource/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2654101531/" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MediaPlayer-framework"><span class="nav-number">1.</span> <span class="nav-text">MediaPlayer framework</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2013 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yuan He</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
