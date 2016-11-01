@@ -1,0 +1,706 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="黑科技," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="第一台 iPhone 问世就装有相机。在第一个 SKDs 版本中，在 app 里面整合相机的唯一方法就是使用 UIImagePickerController，但到了 iOS 4，发布了更灵活的 AVFoundation 框架。
+在这篇文章里，我们将会看到如何使用 AVFoundation 捕捉图像，如何操控相机，以及它在 iOS 8 的新特性。
+
+概述
+AVFoundation vs. UIIma">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 上的相机捕捉">
+<meta property="og:url" content="http://yoursite.com/2015/02/21/2015-02-21/index.html">
+<meta property="og:site_name" content="Never Stop">
+<meta property="og:description" content="第一台 iPhone 问世就装有相机。在第一个 SKDs 版本中，在 app 里面整合相机的唯一方法就是使用 UIImagePickerController，但到了 iOS 4，发布了更灵活的 AVFoundation 框架。
+在这篇文章里，我们将会看到如何使用 AVFoundation 捕捉图像，如何操控相机，以及它在 iOS 8 的新特性。
+
+概述
+AVFoundation vs. UIIma">
+<meta property="og:updated_time" content="2016-11-01T02:26:53.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS 上的相机捕捉">
+<meta name="twitter:description" content="第一台 iPhone 问世就装有相机。在第一个 SKDs 版本中，在 app 里面整合相机的唯一方法就是使用 UIImagePickerController，但到了 iOS 4，发布了更灵活的 AVFoundation 框架。
+在这篇文章里，我们将会看到如何使用 AVFoundation 捕捉图像，如何操控相机，以及它在 iOS 8 的新特性。
+
+概述
+AVFoundation vs. UIIma">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2015/02/21/2015-02-21/"/>
+
+  <title> iOS 上的相机捕捉 | Never Stop </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Never Stop</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                iOS 上的相机捕捉
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-02-21T11:12:49+08:00" content="2015-02-21">
+              2015-02-21
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>第一台 iPhone 问世就装有相机。在第一个 SKDs 版本中，在 app 里面整合相机的唯一方法就是使用 UIImagePickerController，但到了 iOS 4，发布了更灵活的 AVFoundation 框架。</p>
+<p>在这篇文章里，我们将会看到如何使用 AVFoundation 捕捉图像，如何操控相机，以及它在 iOS 8 的新特性。</p>
+<hr>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><hr>
+<h2 id="AVFoundation-vs-UIImagePickerController"><a href="#AVFoundation-vs-UIImagePickerController" class="headerlink" title="AVFoundation vs. UIImagePickerController"></a>AVFoundation vs. <code>UIImagePickerController</code></h2><p><code>UIImagePickerController</code> 提供了一种非常简单的拍照方法。它支持所有的基本功能，比如切换到前置摄像头，开关闪光灯，点击屏幕区域实现对焦和曝光，以及在 iOS 8 中像系统照相机应用一样调整曝光。</p>
+<p>然而，当有直接访问相机的需求时，也可以选择 AVFoundation 框架。它提供了完全的操作权，例如，以编程方式更改硬件参数，或者操纵实时预览图。</p>
+<h2 id="AVFoundation-相关类"><a href="#AVFoundation-相关类" class="headerlink" title="AVFoundation 相关类"></a>AVFoundation 相关类</h2><p>AVFoundation 框架基于以下几个类实现图像捕捉 ，通过这些类可以访问来自相机设备的原始数据并控制它的组件。</p>
+<ul>
+<li>AVCaptureDevice 是关于相机硬件的接口。它被用于控制硬件特性，诸如镜头的位置、曝光、闪光灯等。</li>
+<li>AVCaptureDeviceInput 提供来自设备的数据。</li>
+<li>AVCaptureOutput 是一个抽象类，描述 capture session 的结果。以下是三种关于静态图片捕捉的具体子类：<ul>
+<li>AVCaptureStillImageOutput 用于捕捉静态图片</li>
+<li>AVCaptureMetadataOutput 启用检测人脸和二维码</li>
+<li>AVCaptureVideoOutput 为实时预览图提供原始帧</li>
+</ul>
+</li>
+<li>AVCaptureSession 管理输入与输出之间的数据流，以及在出现问题时生成运行时错误。</li>
+<li>AVCaptureVideoPreviewLayer 是 CALayer 的子类，可被用于自动显示相机产生的实时图像。它还有几个工具性质的方法，可将 layer 上的坐标转化到设备上。它看起来像输出，但其实不是。另外，它拥有 session (outputs 被 session 所拥有)。</li>
+</ul>
+<h2 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h2><hr>
+<p>让我们看看如何捕获图像。首先我们需要一个 AVCaptureSession 对象:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">let session = AVCaptureSession()</div></pre></td></tr></table></figure>
+<p>现在我们需要一个相机设备输入。在大多数 iPhone 和 iPad 中，我们可以选择后置摄像头或前置摄像头 – 又称自拍相机 (selfie camera) – 之一。那么我们必须先遍历所有能提供视频数据的设备 (麦克风也属于 AVCaptureDevice，因此略过不谈)，并检查 position 属性：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">let availableCameraDevices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo)</div><div class="line">for device in availableCameraDevices as [AVCaptureDevice] &#123;</div><div class="line">  if device.position == .Back &#123;</div><div class="line">    backCameraDevice = device</div><div class="line">  &#125;</div><div class="line">  else if device.position == .Front &#123;</div><div class="line">    frontCameraDevice = device</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后，一旦我们发现合适的相机设备，我们就能获得相关的 AVCaptureDeviceInput 对象。我们会将它设置为 session 的输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var error:NSError?</div><div class="line">let possibleCameraInput: AnyObject? = AVCaptureDeviceInput.deviceInputWithDevice(backCameraDevice, error: &amp;error)</div><div class="line">if let backCameraInput = possibleCameraInput as? AVCaptureDeviceInput &#123;</div><div class="line">  if self.session.canAddInput(backCameraInput) &#123;</div><div class="line">    self.session.addInput(backCameraInput)</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意当 app 首次运行时，第一次调用 AVCaptureDeviceInput.deviceInputWithDevice() 会触发系统提示，向用户请求访问相机。这在 iOS 7 的时候只有部分国家会有，到了 iOS 8 拓展到了所有地区。除非得到用户同意，否则相机的输入会一直是一个黑色画面的数据流。</p>
+<p>对于处理相机的权限，更合适的方法是先确认当前的授权状态。要是在授权还没有确定的情况下 (也就是说用户还没有看过弹出的授权对话框时)，我们应该明确地发起请求。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">let authorizationStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo)</div><div class="line">switch authorizationStatus &#123;</div><div class="line">case .NotDetermined:</div><div class="line">  // 许可对话没有出现，发起授权许可</div><div class="line">  AVCaptureDevice.requestAccessForMediaType(AVMediaTypeVideo,</div><div class="line">    completionHandler: &#123; (granted:Bool) -&gt; Void in</div><div class="line">    if granted &#123;</div><div class="line">      // 继续</div><div class="line">    &#125;</div><div class="line">    else &#123;</div><div class="line">      // 用户拒绝，无法继续</div><div class="line">    &#125;</div><div class="line">  &#125;)</div><div class="line">case .Authorized:</div><div class="line">  // 继续</div><div class="line">case .Denied, .Restricted:</div><div class="line">  // 用户明确地拒绝授权，或者相机设备无法访问</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果能继续的话，我们会有两种方式来显示来自相机的图像流。最简单的就是，生成一个带有 AVCaptureVideoPreviewLayer 的 view，并使用 capture session 作为初始化参数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">previewLayer = AVCaptureVideoPreviewLayer.layerWithSession(session) as AVCaptureVideoPreviewLayer</div><div class="line">previewLayer.frame = view.bounds</div><div class="line">view.layer.addSublayer(previewLayer)</div><div class="line"></div><div class="line">```	</div><div class="line"></div><div class="line">AVCaptureVideoPreviewLayer 会自动地显示来自相机的输出。当我们需要将实时预览图上的点击转换到设备的坐标系统中，比如点击某区域实现对焦时，这种做法会很容易办到。之后我们会看到具体细节。</div><div class="line"></div><div class="line">第二种方法是从输出数据流捕捉单一的图像帧，并使用 OpenGL 手动地把它们显示在 view 上。这有点复杂，但是如果我们想要对实时预览图进行操作或使用滤镜的话，就是必要的了。</div><div class="line"></div><div class="line">为获得数据流，我们需要创建一个 AVCaptureVideoDataOutput，这样一来，当相机在运行时，我们通过代理方法 captureOutput(_:didOutputSampleBuffer:fromConnection:) 就能获得所有图像帧 (除非我们处理太慢而导致掉帧)，然后将它们绘制在一个 GLKView 中。不需要对 OpenGL 框架有什么深刻的理解，我们只需要这样就能创建一个 GLKView：</div></pre></td></tr></table></figure>
+<p>glContext = EAGLContext(API: .OpenGLES2)<br>glView = GLKView(frame: viewFrame, context: glContext)<br>ciContext = CIContext(EAGLContext: glContext)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">现在轮到 AVCaptureVideoOutput：</div></pre></td></tr></table></figure>
+<p>videoOutput = AVCaptureVideoDataOutput()<br>videoOutput.setSampleBufferDelegate(self, queue: dispatch_queue_create(“sample buffer delegate”, DISPATCH_QUEUE_SERIAL))<br>if session.canAddOutput(self.videoOutput) {<br>  session.addOutput(self.videoOutput)<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">以及代理方法：</div></pre></td></tr></table></figure>
+<p>func captureOutput(captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {<br>  let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)<br>  let image = CIImage(CVPixelBuffer: pixelBuffer)<br>  if glContext != EAGLContext.currentContext() {<br>    EAGLContext.setCurrentContext(glContext)<br>  }<br>  glView.bindDrawable()<br>  ciContext.drawImage(image, inRect:image.extent(), fromRect: image.extent())<br>  glView.display()<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">一个警告：这些来自相机的样本旋转了 90 度，这是由于相机传感器的朝向所导致的。AVCaptureVideoPreviewLayer 会自动处理这种情况，但在这个例子，我们需要对 GLKView 进行旋转。</div><div class="line"></div><div class="line">马上就要搞定了。最后一个组件 -- AVCaptureStillImageOutput -- 实际上是最重要的，因为它允许我们捕捉静态图片。只需要创建一个实例，并添加到 session 里去：</div></pre></td></tr></table></figure>
+<p>stillCameraOutput = AVCaptureStillImageOutput()<br>if self.session.canAddOutput(self.stillCameraOutput) {<br>  self.session.addOutput(self.stillCameraOutput)<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">## 配置</div><div class="line"></div><div class="line">现在我们有了所有必需的对象，应该为我们的需求寻找最合适的配置。这里又有两种方法可以实现。最简单且最推荐是使用 session preset：</div></pre></td></tr></table></figure>
+<p>session.sessionPreset = AVCaptureSessionPresetPhoto</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">AVCaptureSessionPresetPhoto 会为照片捕捉选择最合适的配置，比如它可以允许我们使用最高的感光度 (ISO) 和曝光时间，基于相位检测 (phase detection)的自动对焦, 以及输出全分辨率的 JPEG 格式压缩的静态图片。</div><div class="line"></div><div class="line">然而，如果你需要更多的操控，可以使用 AVCaptureDeviceFormat 这个类，它描述了一些设备使用的参数，比如静态图片分辨率，视频预览分辨率，自动对焦类型，感光度和曝光时间限制等。每个设备支持的格式都列在 AVCaptureDevice.formats 属性中，并可以赋值给 AVCaptureDevice 的 activeFormat (注意你并不能修改格式)。</div><div class="line"></div><div class="line">## 操作相机</div><div class="line">---</div><div class="line"></div><div class="line">iPhone 和 iPad 中内置的相机或多或少跟其他相机有相同的操作，不同的是，一些参数如对焦、曝光时间 (在单反相机上的模拟快门的速度)，感光度是可以调节，但是镜头光圈是固定不可调整的。到了 iOS 8，我们已经可以对所有这些可变参数进行手动调整了。</div><div class="line"></div><div class="line">我们之后会看到细节，不过首先，该启动相机了：</div></pre></td></tr></table></figure>
+<p>sessionQueue = dispatch_queue_create(“com.example.camera.capture_session”, DISPATCH_QUEUE_SERIAL)<br>dispatch_async(sessionQueue) { () -&gt; Void in<br>  self.session.startRunning()<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">在 session 和相机设备中完成的所有操作和配置都是利用 block 调用的。因此，建议将这些操作分配到后台的串行队列中。此外，相机设备在改变某些参数前必须先锁定，直到改变结束才能解锁，例如：</div></pre></td></tr></table></figure>
+<p>var error:NSError?<br>if currentDevice.lockForConfiguration(&amp;error) {<br>  // 锁定成功，继续配置<br>  // currentDevice.unlockForConfiguration()<br>}<br>else {<br>  // 出错，相机可能已经被锁<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">对焦</div><div class="line"></div><div class="line">在 iOS 相机上，对焦是通过移动镜片改变其到传感器之间的距离实现的。</div><div class="line"></div><div class="line">自动对焦是通过相位检测和反差检测实现的。然而，反差检测只适用于低分辨率和高 FPS 视频捕捉 (慢镜头)。</div><div class="line"></div><div class="line">&gt; `编者注` 关于相位对焦和反差对焦，可以参看[这篇文章](http://ask.zealer.com/question/149.html)。</div><div class="line"></div><div class="line">AVCaptureFocusMode 是个枚举，描述了可用的对焦模式：</div><div class="line"></div><div class="line">* Locked 指镜片处于固定位置</div><div class="line">* AutoFocus 指一开始相机会先自动对焦一次，然后便处于 Locked 模式。</div><div class="line">* ContinuousAutoFocus 指当场景改变，相机会自动重新对焦到画面的中心点。</div><div class="line"></div><div class="line">设置想要的对焦模式必须在锁定之后实施：</div></pre></td></tr></table></figure>
+<p>let focusMode:AVCaptureFocusMode = …<br>if currentCameraDevice.isFocusModeSupported(focusMode) {<br>  … // 锁定以进行配置<br>  currentCameraDevice.focusMode = focusMode<br>  … // 解锁<br>  }<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">通常情况下，AutoFocus 模式会试图让屏幕中心成为最清晰的区域，但是也可以通过变换 “感兴趣的点 (point of interest)” 来设定另一个区域。这个点是一个 CGPoint，它的值从左上角 &#123;0，0&#125; 到右下角 &#123;1，1&#125;，&#123;0.5，0.5&#125; 为画面的中心点。通常可以用视频预览图上的点击手势识别来改变这个点，想要将 view 上的坐标转化到设备上的规范坐标，我们可以使用 AVVideoCaptureVideoPreviewLayer.captureDevicePointOfInterestForPoint()：</div></pre></td></tr></table></figure>
+<p>var pointInPreview = focusTapGR.locationInView(focusTapGR.view)<br>var pointInCamera = previewLayer.captureDevicePointOfInterestForPoint(pointInPreview)<br>…// 锁定，配置</p>
+<p>// 设置感兴趣的点<br>currentCameraDevice.focusPointOfInterest = pointInCamera</p>
+<p>// 在设置的点上切换成自动对焦<br>currentCameraDevice.focusMode = .AutoFocus</p>
+<p>…// 解锁</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">在 iOS 8 中，有个新选项可以移动镜片的位置，从较近物体的 0.0 到较远物体的 1.0 (不是指无限远)。</div></pre></td></tr></table></figure>
+<p>… // 锁定，配置<br>var lensPosition:Float = … // 0.0 到 1.0的float<br>currentCameraDevice.setFocusModeLockedWithLensPosition(lensPosition) {<br>  (timestamp:CMTime) -&gt; Void in<br>  // timestamp 对应于应用了镜片位置的第一张图像缓存区<br>}<br>… // 解锁</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">这意味着对焦可以使用 UISlider 设置，这有点类似于旋转单反上的对焦环。当用这种相机手动对焦时，通常有一个可见的辅助标识指向清晰的区域。AVFoundation 里面没有内置这种机制，但是比如可以通过显示 &quot;对焦峰值 (focus peaking)&quot;(一种将已对焦区域高亮显示的方式) 这样的手段来补救。我们在这里不会讨论细节，不过对焦峰值可以很容易地实现，通过使用阈值边缘 (threshold edge) 滤镜 (用自定义 CIFilter 或 GPUImageThresholdEdgeDetectionFilter)，并调用 AVCaptureAudioDataOutputSampleBufferDelegate 下的 captureOutput(_:didOutputSampleBuffer:fromConnection:) 方法将它覆盖到实时预览图上。</div><div class="line"></div><div class="line">曝光</div><div class="line"></div><div class="line">在 iOS 设备上，镜头上的光圈是固定的 (在 iPhone 5s 以及其之后的光圈值是 f/2.2，之前的是 f/2.4)，因此只有改变曝光时间和传感器的灵敏度才能对图片的亮度进行调整，从而达到合适的效果。至于对焦，我们可以选择连续自动曝光，在“感兴趣的点”一次性自动曝光，或者手动曝光。除了指定“感兴趣的点”，我们可以通过设置曝光补偿 (compensation) 修改自动曝光，也就是曝光档位的目标偏移。目标偏移在曝光档数里有讲到，它的范围在 minExposureTargetBias 与 maxExposureTargetBias 之间，0为默认值 (即没有“补偿”)。</div></pre></td></tr></table></figure>
+<p>var exposureBias:Float = … // 在 minExposureTargetBias 和 maxExposureTargetBias 之间的值<br>… // 锁定，配置<br>currentDevice.setExposureTargetBias(exposureBias) { (time:CMTime) -&gt; Void in<br>}<br>… // 解锁</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">使用手动曝光，我们可以设置 ISO 和曝光时间，两者的值都必须在设备当前格式所指定的范围内。</div></pre></td></tr></table></figure>
+<p>var activeFormat = currentDevice.activeFormat<br>var duration:CTime = … //在activeFormat.minExposureDuration 和 activeFormat.maxExposureDuration 之间的值，或用 AVCaptureExposureDurationCurrent 表示不变<br>var iso:Float = … // 在 activeFormat.minISO 和 activeFormat.maxISO 之间的值，或用 AVCaptureISOCurrent 表示不变<br>… // 锁定，配置<br>currentDevice.setExposureModeCustomWithDuration(duration, ISO: iso) { (time:CMTime) -&gt; Void in<br>}<br>… // 解锁</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">如何知道照片曝光是否正确呢？我们可以通过 KVO，观察 AVCaptureDevice 的 exposureTargetOffset 属性，确认是否在 0 附近。</div><div class="line"></div><div class="line">## 白平衡</div><div class="line"></div><div class="line">数码相机为了适应不同类型的光照条件需要补偿。这意味着在冷光线的条件下，传感器应该增强红色部分，而在暖光线下增强蓝色部分。在 iPhone 相机中，设备会自动决定合适的补光，但有时也会被场景的颜色所混淆失效。幸运地是，iOS 8 可以里手动控制白平衡。</div><div class="line"></div><div class="line">自动模式工作方式和对焦、曝光的方式一样，但是没有“感兴趣的点”，整张图像都会被纳入考虑范围。在手动模式，我们可以通过开尔文所表示的温度来调节色温和色彩。典型的色温值在 2000-3000K (类似蜡烛或灯泡的暖光源) 到 8000K (纯净的蓝色天空) 之间。色彩范围从最小的 -150 (偏绿) 到 150 (偏品红)。</div><div class="line"></div><div class="line">温度和色彩可以被用于计算来自相机传感器的恰当的 RGB 值，因此仅当它们做了基于设备的校正后才能被设置。</div><div class="line"></div><div class="line">以下是全部过程</div><div class="line"></div><div class="line">`</div></pre></td></tr></table></figure>
+<p>var incandescentLightCompensation = 3_000<br>var tint = 0 // 不调节<br>let temperatureAndTintValues = AVCaptureWhiteBalanceTemperatureAndTintValues(temperature: incandescentLightCompensation, tint: tint)<br>var deviceGains = currentCameraDevice.deviceWhiteBalanceGainsForTemperatureAndTintValues(temperatureAndTintValues)<br>… // 锁定，配置<br>currentCameraDevice.setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains(deviceGains) {<br>        (timestamp:CMTime) -&gt; Void in<br>    }<br>  }<br>… // 解锁</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">## 实时人脸检测</div><div class="line"></div><div class="line">AVCaptureMetadataOutput 可以用于检测人脸和二维码这两种物体。很明显，没什么人用二维码 (编者注: 因为在欧美现在二维码不是很流行，这里是一个恶搞。链接的这个 tumblr 博客的主题是 “当人们在扫二维码时的图片”，但是 2012 年开博至今没有任何一张图片，暗讽二维码根本没人在用，这和以中日韩为代表的亚洲用户群体的使用习惯完全相悖)，因此我们就来看看如何实现人脸检测。我们只需通过 AVCaptureMetadataOutput 的代理方法捕获的元对象：</div></pre></td></tr></table></figure>
+<p>var metadataOutput = AVCaptureMetadataOutput()<br>metadataOutput.setMetadataObjectsDelegate(self, queue: self.sessionQueue)<br>if session.canAddOutput(metadataOutput) {<br>  session.addOutput(metadataOutput)<br>}<br>metadataOutput.metadataObjectTypes = [AVMetadataObjectTypeFace]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">```</div><div class="line">func captureOutput(captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [AnyObject]!, fromConnection connection: AVCaptureConnection!) &#123;</div><div class="line">    for metadataObject in metadataObjects as [AVMetadataObject] &#123;</div><div class="line">      if metadataObject.type == AVMetadataObjectTypeFace &#123;</div><div class="line">        var transformedMetadataObject = previewLayer.transformedMetadataObjectForMetadataObject(metadataObject)</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">```</div><div class="line"></div><div class="line">更多关于人脸检测与识别的内容请查看 [Engin 的文章](https://objccn.io/issue-21-9/)。</div><div class="line"></div><div class="line">## 捕捉静态图片</div><div class="line"></div><div class="line">最后，我们要做的是捕捉高分辨率的图像，于是我们调用 captureStillImageAsynchronouslyFromConnection(connection, completionHandler)。在数据时被读取时，completion handler 将会在某个未指定的线程上被调用。</div><div class="line"></div><div class="line">如果设置使用 JPEG 编码作为静态图片输出，不管是通过 session .Photo 预设设定的，还是通过设备输出设置设定的，sampleBuffer 都会返回包含图像的元数据。如果在 AVCaptureMetadataOutput 中是可用的话，这会包含 EXIF 数据，或是被识别的人脸等：</div><div class="line"></div><div class="line">```</div><div class="line">dispatch_async(sessionQueue) &#123; () -&gt; Void in</div><div class="line"></div><div class="line">  let connection = self.stillCameraOutput.connectionWithMediaType(AVMediaTypeVideo)</div><div class="line"></div><div class="line">  // 将视频的旋转与设备同步</div><div class="line">  connection.videoOrientation = AVCaptureVideoOrientation(rawValue: UIDevice.currentDevice().orientation.rawValue)!</div><div class="line"></div><div class="line">  self.stillCameraOutput.captureStillImageAsynchronouslyFromConnection(connection) &#123;</div><div class="line">    (imageDataSampleBuffer, error) -&gt; Void in</div><div class="line"></div><div class="line">    if error == nil &#123;</div><div class="line"></div><div class="line">      // 如果使用 session .Photo 预设，或者在设备输出设置中明确进行了设置</div><div class="line">      // 我们就能获得已经压缩为JPEG的数据</div><div class="line"></div><div class="line">      let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataSampleBuffer)</div><div class="line"></div><div class="line">      // 样本缓冲区也包含元数据，我们甚至可以按需修改它</div><div class="line"></div><div class="line">      let metadata:NSDictionary = CMCopyDictionaryOfAttachments(nil, imageDataSampleBuffer, CMAttachmentMode(kCMAttachmentMode_ShouldPropagate)).takeUnretainedValue()</div><div class="line"></div><div class="line">      if let image = UIImage(data: imageData) &#123;</div><div class="line">        // 保存图片，或者做些其他想做的事情</div><div class="line">        ...</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    else &#123;</div><div class="line">      NSLog(&quot;error while capturing still image: \(error)&quot;)</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">```</div><div class="line"></div><div class="line">当图片被捕捉的时候，有视觉上的反馈是很好的体验。想要知道何时开始以及何时结束的话，可以使用 KVO 来观察 AVCaptureStillImageOutput 的 isCapturingStillImage 属性。</div><div class="line"></div><div class="line">## 分级捕捉</div><div class="line"></div><div class="line">在 iOS 8 还有一个有趣的特性叫“分级捕捉”，可以在不同的曝光设置下拍摄几张照片。这在复杂的光线下拍照显得非常有用，例如，通过设定 -1、0、1 三个不同的曝光档数，然后用 HDR 算法合并成一张。</div><div class="line"></div><div class="line">以下是代码实现：</div></pre></td></tr></table></figure>
+<p>dispatch_async(sessionQueue) { () -&gt; Void in<br>  let connection = self.stillCameraOutput.connectionWithMediaType(AVMediaTypeVideo)<br>  connection.videoOrientation = AVCaptureVideoOrientation(rawValue: UIDevice.currentDevice().orientation.rawValue)!</p>
+<p>  var settings = [-1.0, 0.0, 1.0].map {<br>    (bias:Float) -&gt; AVCaptureAutoExposureBracketedStillImageSettings in</p>
+<pre><code>AVCaptureAutoExposureBracketedStillImageSettings.autoExposureSettingsWithExposureTargetBias(bias)
+</code></pre><p>  }</p>
+<p>  var counter = settings.count</p>
+<p>  self.stillCameraOutput.captureStillImageBracketAsynchronouslyFromConnection(connection, withSettingsArray: settings) {<br>    (sampleBuffer, settings, error) -&gt; Void in</p>
+<pre><code>...
+// 保存 sampleBuffer(s)
+
+// 当计数为0，捕捉完成
+counter--
+</code></pre><p>  }<br>}</p>
+<p>````</p>
+<p>这很像是单个图像捕捉，但是不同的是 completion handler 被调用的次数和设置的数组的元素个数一样多。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>我们已经详细看到如何在 iPhone 应用里面实现拍照的基础功能（呃…不光是 iPhone，用 iPad 拍照其实也是不错的）。你也可以查看这个例子。最后说下，iOS 8 允许更精确的捕捉，特别是对于高级用户，这使得 iPhone 与专业相机之间的差距缩小，至少在手动控制上。不过，不是任何人都喜欢在日常拍照时使用复杂的手动操作界面，因此请合理地使用这些特性。</p>
+<blockquote>
+<p>原文转自: <a href="https://www.objccn.io/issue-21-3/" target="_blank" rel="external">objc中国</a></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/黑科技/" rel="tag">#黑科技</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/05/10/2014-05-10/" rel="next" title="iOS开发之多媒体播放">
+                <i class="fa fa-chevron-left"></i> iOS开发之多媒体播放
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/27/iOS性能优化：Instruments使用实战/" rel="prev" title="iOS性能优化：Instruments使用实战">
+                iOS性能优化：Instruments使用实战 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/hello.jpg"
+               alt="Yuan He" />
+          <p class="site-author-name" itemprop="name">Yuan He</p>
+          <p class="site-description motion-element" itemprop="description">博学而笃志,切问而近思</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/WaterSource/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2654101531/" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#AVFoundation-vs-UIImagePickerController"><span class="nav-number">1.1.</span> <span class="nav-text">AVFoundation vs. UIImagePickerController</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AVFoundation-相关类"><span class="nav-number">1.2.</span> <span class="nav-text">AVFoundation 相关类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置"><span class="nav-number">1.3.</span> <span class="nav-text">设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.4.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2013 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yuan He</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
