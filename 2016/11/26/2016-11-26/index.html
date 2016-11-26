@@ -1,0 +1,662 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS开发," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="新入职的公司用的布局框架是PureLayout，之前没接触过。用了几天就基本熟练掌握了，项目本职需求做得差不多了，现在才有空写这篇文章，希望能对你快速学习PureLayout有帮助。
+PureLayout简介PureLayout是一个简单但强大的Objective-C库，使用桥接头文件也能很好地适用于Swift语言。PureLayout为Auto Layout提供了对开发者更加友好的界面，简单清晰">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PureLayout使用方法">
+<meta property="og:url" content="http://yoursite.com/2016/11/26/2016-11-26/index.html">
+<meta property="og:site_name" content="Never Stop">
+<meta property="og:description" content="新入职的公司用的布局框架是PureLayout，之前没接触过。用了几天就基本熟练掌握了，项目本职需求做得差不多了，现在才有空写这篇文章，希望能对你快速学习PureLayout有帮助。
+PureLayout简介PureLayout是一个简单但强大的Objective-C库，使用桥接头文件也能很好地适用于Swift语言。PureLayout为Auto Layout提供了对开发者更加友好的界面，简单清晰">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1982466-8336ea58523ef323.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1982466-59270f45866d852f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1982466-6f8a5ad65e8ed083.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2016-11-26T15:37:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PureLayout使用方法">
+<meta name="twitter:description" content="新入职的公司用的布局框架是PureLayout，之前没接触过。用了几天就基本熟练掌握了，项目本职需求做得差不多了，现在才有空写这篇文章，希望能对你快速学习PureLayout有帮助。
+PureLayout简介PureLayout是一个简单但强大的Objective-C库，使用桥接头文件也能很好地适用于Swift语言。PureLayout为Auto Layout提供了对开发者更加友好的界面，简单清晰">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1982466-8336ea58523ef323.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/11/26/2016-11-26/"/>
+
+  <title> PureLayout使用方法 | Never Stop </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Never Stop</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                PureLayout使用方法
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-26T22:32:32+08:00" content="2016-11-26">
+              2016-11-26
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>新入职的公司用的布局框架是PureLayout，之前没接触过。用了几天就基本熟练掌握了，项目本职需求做得差不多了，现在才有空写这篇文章，希望能对你快速学习PureLayout有帮助。</p>
+<h2 id="PureLayout简介"><a href="#PureLayout简介" class="headerlink" title="PureLayout简介"></a>PureLayout简介</h2><p>PureLayout是一个简单但强大的Objective-C库，使用桥接头文件也能很好地适用于Swift语言。PureLayout为Auto Layout提供了对开发者更加友好的界面，简单清晰。想了解更具体的可以谷歌或者百度，这里就不做过多介绍了。</p>
+<p><a href="https://github.com/PureLayout/PureLayout" target="_blank" rel="external">PureLayout下载地址</a>内含写好的例子，也是很不错的。</p>
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><p>使用的时候引入头文件：#import “PureLayout.h”，尽量放pch文件里，不然每个界面都要引入，很麻烦。</p>
+<p>如果你喜欢用懒加载，那步骤就是，先把控件贴在父控件上，然后再设置约束。<br>如果你喜欢直接初始化，那么就把所有控件初始化之后，再统一设置约束。<br>比较推荐懒加载，代码看着清晰。可以自行选择。</p>
+<h4 id="例子1"><a href="#例子1" class="headerlink" title="例子1"></a>例子1</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">//红色view距离父控件左边20,距离父控件上边100</div><div class="line">[self.redView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:20.f];</div><div class="line">[self.redView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:100.f];</div><div class="line">//红色view的宽和高为100</div><div class="line">[self.redView autoSetDimensionsToSize:CGSizeMake(100, 100)];</div><div class="line"></div><div class="line">//蓝色view的左边,距离红色view的右边为30</div><div class="line">[self.blueView autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.redView withOffset:30];</div><div class="line">//蓝色view,红色view等宽等高</div><div class="line">[@[self.blueView,self.redView] autoMatchViewsDimension:ALDimensionWidth];</div><div class="line">[@[self.blueView,self.redView] autoMatchViewsDimension:ALDimensionHeight];</div><div class="line">//蓝色view,红色view水平对齐</div><div class="line">[self.blueView autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.redView];</div><div class="line"></div><div class="line">[self.purpleView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:20.f];</div><div class="line">[self.purpleView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:250];</div><div class="line">[self.purpleView autoSetDimension:ALDimensionWidth toSize:150];</div><div class="line">[self.purpleView autoSetDimension:ALDimensionHeight toSize:150];</div><div class="line"></div><div class="line">//绿色View贴在紫色View上,距离父控件的上,左,下,右为15</div><div class="line">[self.greenView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(15, 15, 15, 15)];</div></pre></td></tr></table></figure>
+<p>效果见下图：</p>
+<div align="center"><br><br><img src="http://upload-images.jianshu.io/upload_images/1982466-8336ea58523ef323.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="60%"><br><br></div>
+
+<h4 id="例子2"><a href="#例子2" class="headerlink" title="例子2"></a>例子2</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">//红色view在父view的中心点</div><div class="line">[self.redView autoCenterInSuperview];</div><div class="line">//红色view的宽高为100</div><div class="line">[self.redView autoSetDimensionsToSize:CGSizeMake(100, 100)];</div><div class="line"></div><div class="line">//红色view,蓝色view左对齐</div><div class="line">[self.blueView autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.redView];</div><div class="line">//蓝色View的上边距离红色view的下边是10</div><div class="line">[self.blueView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.redView withOffset:10];</div><div class="line">//蓝色View距离父view的右边为20</div><div class="line">[self.blueView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:20.f];</div><div class="line">//蓝色View的高度是红色View高度的一半</div><div class="line">[self.blueView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.redView withMultiplier:0.5];</div></pre></td></tr></table></figure>
+<p>效果见下图：</p>
+<div align="center"><br><br><img src="http://upload-images.jianshu.io/upload_images/1982466-59270f45866d852f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="60%"><br><br></div>
+
+<h4 id="例子3"><a href="#例子3" class="headerlink" title="例子3"></a>例子3</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">NSArray *colorViews = @[self.redView, self.blueView, self.purpleView, self.greenView];</div><div class="line">[colorViews autoSetViewsDimension:ALDimensionHeight toSize:40.f];</div><div class="line">//间距为10,水平对齐,依次排列</div><div class="line">[colorViews autoDistributeViewsAlongAxis:ALAxisHorizontal alignedTo:ALAttributeHorizontal withFixedSpacing:10.0 insetSpacing:YES matchedSizes:YES];</div><div class="line">//红色view相对于其父view水平对齐</div><div class="line">[self.redView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];</div></pre></td></tr></table></figure>
+<p>效果见下图:</p>
+<div align="center"><br><br><img src="http://upload-images.jianshu.io/upload_images/1982466-6f8a5ad65e8ed083.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="60%"><br><br></div>
+
+<p>这四句代码实现的功能是不是感觉很强大。</p>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><table>
+<thead>
+<tr>
+<th>Masonry</th>
+<th>PureLayout</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>重量级，需学习成本</td>
+<td>轻量级，语法更偏向Objective-C</td>
+</tr>
+<tr>
+<td>添加约束 mas_makeConstraints使用了 block</td>
+<td>没有block</td>
+</tr>
+<tr>
+<td>更新约束 mas_updateConstraints保证不会导致出现两个相同的约束</td>
+<td>开发者控制</td>
+</tr>
+<tr>
+<td>删除约束 mas_remakeConstrains, 没有针对iOS 8使用Active属性</td>
+<td>针对 iOS 8使用Active属性</td>
+</tr>
+</tbody>
+</table>
+<p>呼应一下首段，重要的事情再说一遍希望越来越多的开发者开始使用PureLayout。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS开发/" rel="tag">#iOS开发</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/20/2016-11-20/" rel="next" title="上手Reactive Cocoa">
+                <i class="fa fa-chevron-left"></i> 上手Reactive Cocoa
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/hello.jpg"
+               alt="Yuan He" />
+          <p class="site-author-name" itemprop="name">Yuan He</p>
+          <p class="site-description motion-element" itemprop="description">博学而笃志,切问而近思</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/WaterSource/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2654101531/" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#PureLayout简介"><span class="nav-number">1.</span> <span class="nav-text">PureLayout简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用方法"><span class="nav-number">1.1.</span> <span class="nav-text">使用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#例子1"><span class="nav-number">1.1.1.</span> <span class="nav-text">例子1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#例子2"><span class="nav-number">1.1.2.</span> <span class="nav-text">例子2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#例子3"><span class="nav-number">1.1.3.</span> <span class="nav-text">例子3</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结尾"><span class="nav-number">2.</span> <span class="nav-text">结尾</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2013 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yuan He</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
