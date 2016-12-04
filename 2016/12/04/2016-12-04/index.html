@@ -1,0 +1,625 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS开发," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="百度上很多算法都是压到最后800480,有一些会变形,为什么呢?例如一张1600500,你要怎么压缩,按照我们的想法,正常来说就是要把图片变成了800*250,然后取得这张图片,
+百度上大多数算法都是scale1 = 800/1600, scale2 = 480/500,然后把原来图片的宽度和高度分别 * scale,然后剪切,压缩,最后得出来的图片大多数变形,———OK,那我们要怎么做呢?
+首先">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS不变形的裁剪图片">
+<meta property="og:url" content="http://yoursite.com/2016/12/04/2016-12-04/index.html">
+<meta property="og:site_name" content="Never Stop">
+<meta property="og:description" content="百度上很多算法都是压到最后800480,有一些会变形,为什么呢?例如一张1600500,你要怎么压缩,按照我们的想法,正常来说就是要把图片变成了800*250,然后取得这张图片,
+百度上大多数算法都是scale1 = 800/1600, scale2 = 480/500,然后把原来图片的宽度和高度分别 * scale,然后剪切,压缩,最后得出来的图片大多数变形,———OK,那我们要怎么做呢?
+首先">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3445110-7863b6bc54ab7696.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2016-12-04T05:15:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS不变形的裁剪图片">
+<meta name="twitter:description" content="百度上很多算法都是压到最后800480,有一些会变形,为什么呢?例如一张1600500,你要怎么压缩,按照我们的想法,正常来说就是要把图片变成了800*250,然后取得这张图片,
+百度上大多数算法都是scale1 = 800/1600, scale2 = 480/500,然后把原来图片的宽度和高度分别 * scale,然后剪切,压缩,最后得出来的图片大多数变形,———OK,那我们要怎么做呢?
+首先">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/3445110-7863b6bc54ab7696.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/12/04/2016-12-04/"/>
+
+  <title> iOS不变形的裁剪图片 | Never Stop </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Never Stop</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                iOS不变形的裁剪图片
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-04T12:31:32+08:00" content="2016-12-04">
+              2016-12-04
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>百度上很多算法都是压到最后800<em>480,有一些会变形,为什么呢?例如一张1600</em>500,你要怎么压缩,按照我们的想法,正常来说就是要把图片变成了800*250,然后取得这张图片,</p>
+<p>百度上大多数算法都是scale1 = 800/1600, scale2 = 480/500,然后把原来图片的宽度和高度分别 * scale,然后剪切,压缩,最后得出来的图片大多数变形,———OK,那我们要怎么做呢?</p>
+<p>首先我们先确定好两个东西,一个是传入图片(UIImage*)image,一个是压缩目标尺寸(CGSize)targetSize</p>
+<p>先看图片,然后我们开始以下的算法咯</p>
+<div align="center"><br><br><img src="http://upload-images.jianshu.io/upload_images/3445110-7863b6bc54ab7696.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="60%"><br><br></div>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">-(UIImage*)image:(UIImage*)image  fortargetSize: (CGSize)targetSize&#123;</div><div class="line"></div><div class="line">	UIImage*sourceImage = image;</div><div class="line"></div><div class="line">	CGSize imageSize = sourceImage.size;//图片的size</div><div class="line"></div><div class="line">	CGFloat imageWidth = imageSize.width;//图片宽度</div><div class="line"></div><div class="line">	CGFloat imageHeight = imageSize.height;//图片高度</div><div class="line"></div><div class="line">	NSInteger judge;//声明一个判断属性</div><div class="line"></div><div class="line">    //判断是否需要调整尺寸(这个地方的判断标准又个人决定,在此我是判断高大于宽),因为图片是800*480,所以也可以变成480*800 </div><div class="line">    if( ( imageHeight - imageWidth)&gt;0) &#123;</div><div class="line"></div><div class="line">        //在这里我将目标尺寸修改成480*800</div><div class="line">        CGFloat tempW = targetSize.width;</div><div class="line"></div><div class="line">        CGFloat tempH = targetSize.height;</div><div class="line"></div><div class="line">        targetSize.height= tempW;</div><div class="line"></div><div class="line">        targetSize.width= tempH;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">	CGFloat targetWidth = targetSize.width;//获取最终的目标宽度尺寸</div><div class="line"></div><div class="line">	CGFloat targetHeight = targetSize.height;//获取最终的目标高度尺寸</div><div class="line"></div><div class="line">	CGFloat scaleFactor ;//先声明拉伸的系数</div><div class="line"></div><div class="line">	CGFloat scaledWidth = targetWidth;</div><div class="line"></div><div class="line">	CGFloat scaledHeight = targetHeight;</div><div class="line"></div><div class="line">	CGPoint thumbnailPoint =CGPointMake(0.0,0.0);//这个是图片剪切的起点位置</div><div class="line"></div><div class="line">    //第一个判断,图片大小宽跟高都小于目标尺寸,直接返回image</div><div class="line">    if( imageHeight &lt; targetHeight &amp;&amp; imageWidth &lt; targetWidth) &#123;</div><div class="line">        return image;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    if ( CGSizeEqualToSize(imageSize, targetSize ) ==NO )&#123;</div><div class="line"></div><div class="line">      CGFloat widthFactor = targetWidth / imageWidth;  //这里是目标宽度除以图片宽度</div><div class="line"></div><div class="line">      CGFloat heightFactor = targetHeight / imageHeight; //这里是目标高度除以图片高度</div><div class="line"></div><div class="line">        //分四种情况,</div><div class="line">        //第一种,widthFactor,heightFactor都小于1,也就是图片宽度跟高度都比目标图片大,要缩小</div><div class="line">        if(widthFactor &lt;1&amp;&amp; heightFactor&lt;1)&#123;</div><div class="line">//第一种,需要判断要缩小哪一个尺寸,这里看拉伸尺度,我们的scale在小于1的情况下,谁越小,等下就用原图的宽度高度✖️那一个系数(这里不懂的话,代个数想一下,例如目标800*480  原图1600*800  系数就采用宽度系数widthFactor = 1/2  )</div><div class="line"></div><div class="line">            if(widthFactor &gt; heightFactor)&#123;</div><div class="line">judge =1;//右部分空白</div><div class="line"></div><div class="line">       scaleFactor = heightFactor; //修改最后的拉伸系数是高度系数(也就是最后要*这个值)</div><div class="line"></div><div class="line">       &#125;</div><div class="line"></div><div class="line">       else</div><div class="line"></div><div class="line">      &#123;</div><div class="line"></div><div class="line">              judge =2;//下部分空白</div><div class="line"></div><div class="line">              scaleFactor = widthFactor;</div><div class="line"></div><div class="line">      &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">    else if(widthFactor &gt;1&amp;&amp; heightFactor &lt;1)&#123;</div><div class="line"></div><div class="line">    //第二种,宽度不够比例,高度缩小一点点(widthFactor大于一,说明目标宽度比原图片宽度大,此时只要拉伸高度系数)</div><div class="line"></div><div class="line">    judge =3;//下部分空白 </div><div class="line"></div><div class="line">    //采用高度拉伸比例</div><div class="line"></div><div class="line">    scaleFactor = imageWidth / targetWidth;// 计算高度缩小系数 </div><div class="line"></div><div class="line">&#125;else if(heightFactor &gt;1&amp;&amp; widthFactor &lt;1)&#123;</div><div class="line"></div><div class="line">     //第三种,高度不够比例,宽度缩小一点点(heightFactor大于一,说明目标高度比原图片高度大,此时只要拉伸宽度系数)</div><div class="line"></div><div class="line">     judge =4;//下边空白</div><div class="line"></div><div class="line">     //采用高度拉伸比例</div><div class="line"></div><div class="line">    scaleFactor = imageHeight / targetWidth;</div><div class="line"></div><div class="line">     &#125;else&#123;</div><div class="line"></div><div class="line">     //第四种,此时宽度高度都小于目标尺寸,不必要处理放大(如果有处理放大的,在这里写).</div><div class="line"></div><div class="line">     &#125;</div><div class="line"></div><div class="line">scaledWidth= imageWidth * scaleFactor;</div><div class="line"></div><div class="line">scaledHeight = imageHeight * scaleFactor; </div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">if(judge ==1)&#123;</div><div class="line"></div><div class="line">     //右部分空白</div><div class="line"></div><div class="line">    targetWidth = scaledWidth;//此时把原来目标剪切的宽度改小,例如原来可能是800,现在改成780</div><div class="line"></div><div class="line">&#125;else if(judge ==2)&#123;</div><div class="line"></div><div class="line">//下部分空白</div><div class="line"></div><div class="line">    targetHeight = scaledHeight;</div><div class="line"></div><div class="line">&#125;else if(judge ==3)&#123;</div><div class="line"></div><div class="line">    //第三种,高度不够比例,宽度缩小一点点</div><div class="line"></div><div class="line">    targetWidth  = scaledWidth; </div><div class="line"></div><div class="line">&#125;else&#123;</div><div class="line"></div><div class="line">    //第三种,高度不够比例,宽度缩小一点点</div><div class="line"></div><div class="line">    targetHeight= scaledHeight;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">      UIGraphicsBeginImageContext(targetSize);//开始剪切</div><div class="line"></div><div class="line">      CGRect thumbnailRect =CGRectZero;//剪切起点(0,0)</div><div class="line"></div><div class="line">      thumbnailRect.origin= thumbnailPoint;</div><div class="line"></div><div class="line">      thumbnailRect.size.width= scaledWidth;</div><div class="line"></div><div class="line">      thumbnailRect.size.height= scaledHeight;</div><div class="line"></div><div class="line">      [sourceImage drawInRect:thumbnailRect];</div><div class="line"></div><div class="line">       UIImage*newImage =UIGraphicsGetImageFromCurrentImageContext();//截图拿到图片</div><div class="line"></div><div class="line">    return newImage;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS开发/" rel="tag">#iOS开发</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/26/2016-11-26/" rel="next" title="PureLayout使用方法">
+                <i class="fa fa-chevron-left"></i> PureLayout使用方法
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/hello.jpg"
+               alt="Yuan He" />
+          <p class="site-author-name" itemprop="name">Yuan He</p>
+          <p class="site-description motion-element" itemprop="description">博学而笃志,切问而近思</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/WaterSource/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2654101531/" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2013 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yuan He</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
