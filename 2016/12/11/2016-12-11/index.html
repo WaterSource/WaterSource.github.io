@@ -1,0 +1,741 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS开发," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="在了解intrinsicContentSize之前，我们需要先了解2个概念：
+
+AutoLayout在做什么
+约束优先级是什么意思。
+
+如果不了解这两个概念，看intinsic content size没有任何意义。注：由于上面这几个概念都是针对UIView或其子类(UILabel，UIImageView等等)来说的。所以下文中都用UIView指代。
+AutoLayout在做什么 – 一个UIVi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="详解intrinsicContentSize 及 约束优先级／content Hugging／content Compression Resistance">
+<meta property="og:url" content="http://yoursite.com/2016/12/11/2016-12-11/index.html">
+<meta property="og:site_name" content="Never Stop">
+<meta property="og:description" content="在了解intrinsicContentSize之前，我们需要先了解2个概念：
+
+AutoLayout在做什么
+约束优先级是什么意思。
+
+如果不了解这两个概念，看intinsic content size没有任何意义。注：由于上面这几个概念都是针对UIView或其子类(UILabel，UIImageView等等)来说的。所以下文中都用UIView指代。
+AutoLayout在做什么 – 一个UIVi">
+<meta property="og:image" content="http://img.blog.csdn.net/20160314170635059">
+<meta property="og:image" content="http://img.blog.csdn.net/20160314171333593">
+<meta property="og:image" content="http://img.blog.csdn.net/20160314171442562">
+<meta property="og:image" content="http://img.blog.csdn.net/20160314171524062">
+<meta property="og:image" content="http://img.blog.csdn.net/20160314171652109">
+<meta property="og:image" content="http://img.blog.csdn.net/20160314171756501">
+<meta property="og:image" content="http://img.blog.csdn.net/20160314171829329">
+<meta property="og:image" content="http://img.blog.csdn.net/20160314171952440">
+<meta property="og:image" content="http://img.blog.csdn.net/20160314172131346">
+<meta property="og:image" content="http://img.blog.csdn.net/20160314172208377">
+<meta property="og:image" content="http://img.blog.csdn.net/20160314172318414">
+<meta property="og:image" content="http://img.blog.csdn.net/20160314172405019">
+<meta property="og:image" content="http://img.blog.csdn.net/20160314172538285">
+<meta property="og:image" content="http://img.blog.csdn.net/20160314172651785">
+<meta property="og:image" content="http://img.blog.csdn.net/20160314173711526">
+<meta property="og:updated_time" content="2016-12-11T11:39:38.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="详解intrinsicContentSize 及 约束优先级／content Hugging／content Compression Resistance">
+<meta name="twitter:description" content="在了解intrinsicContentSize之前，我们需要先了解2个概念：
+
+AutoLayout在做什么
+约束优先级是什么意思。
+
+如果不了解这两个概念，看intinsic content size没有任何意义。注：由于上面这几个概念都是针对UIView或其子类(UILabel，UIImageView等等)来说的。所以下文中都用UIView指代。
+AutoLayout在做什么 – 一个UIVi">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20160314170635059">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/12/11/2016-12-11/"/>
+
+  <title> 详解intrinsicContentSize 及 约束优先级／content Hugging／content Compression Resistance | Never Stop </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Never Stop</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                详解intrinsicContentSize 及 约束优先级／content Hugging／content Compression Resistance
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-11T19:28:32+08:00" content="2016-12-11">
+              2016-12-11
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在了解intrinsicContentSize之前，我们需要先了解2个概念：</p>
+<ul>
+<li>AutoLayout在做什么</li>
+<li>约束优先级是什么意思。</li>
+</ul>
+<p>如果不了解这两个概念，看intinsic content size没有任何意义。<br>注：由于上面这几个概念都是针对UIView或其子类(UILabel，UIImageView等等)来说的。所以下文中都用UIView指代。</p>
+<p>AutoLayout在做什么 – 一个UIView想要显示在屏幕中，仅须有2个需要确定的元素，一是位置，二是大小。只要2者确定，UIView就可以正确显示，至于显示的内容，则由UIView自己决定（drawRect）。</p>
+<div align="center"><br><br><img src="http://img.blog.csdn.net/20160314170635059" width="60%"><br><br></div>
+
+<p>没有AutoLayout的时候，我们需要通过 initWithFrame:(CGRect)这种方式来指定UIView的位置和大小。</p>
+<p>而使用AutoLayout的过程，就是通过约束来确定UIView的位置和大小的过程。</p>
+<p>约束优先级 – 为什么约束需要优先级？因为有的时候2个约束可能会有冲突。 比如：有一个UIView 距离父UIView的左右距离都是0，这是2个约束，此时再给此UIView加一个宽度约束，比如指定宽度为100，那么就会产生约束冲突了。</p>
+<div align="center"><br><br><img src="http://img.blog.csdn.net/20160314171333593" width="60%"><br><br></div>
+
+<p>因为，这两种约束不可能同时存在，只能满足一个，那么满足谁呢？默认情况下给UIView加的这几个约束优先级都是1000，属于最高的优先级了，表示此约束必须满足。</p>
+<p>所以这种冲突不能被iOS所允许。此时就需要修改优先级了。把其中任意一个约束的优先级改为小于1000的值即可。</p>
+<blockquote>
+<p>iOS可以通过比较两个”相互冲突的约束”的优先级，从而忽略低优先级的某个约束，达到正确布局的目的。</p>
+</blockquote>
+<p>用鼠标选中宽度约束，然后在屏幕右侧的菜单中，修改优先级，如下图：</p>
+<div align="center"><br><br><img src="http://img.blog.csdn.net/20160314171442562" width="60%"><br><br></div>
+
+<p>这样就没有约束冲突了。因为如果一旦两个约束冲突，系统会自动忽略优先级低的约束。</p>
+<div align="center"><br><br><img src="http://img.blog.csdn.net/20160314171524062" width="60%"><br><br></div>
+
+<p>上面举的这个例子有些极端，因为上面两个约束都是确定的值，而且是绝对冲突。所以如果遇到这种情况，可能选择删掉某个约束更为合适。</p>
+<p>而约束优先级更多的时候用于解决模糊约束（相对于上面的确定值约束来说）的冲突的问题。<br>比如有这样一个问题：</p>
+<ul>
+<li>UIView1有四个约束：距离父UIView左和上确定，宽和高也确定。</li>
+<li>UIView2在UIView1的下面，约束也有4个：上面距离UIView1确定，左面同UIView1对齐，同UIView1等高且等宽。<br>此时这两个UIView应该像这样：</li>
+</ul>
+<div align="center"><br><br><img src="http://img.blog.csdn.net/20160314171652109" width="60%"><br><br></div>
+
+<p>这是一个很普通的应用场景，假设我希望有这样一个效果： 我希望UIView2的宽度不能超过50。当UIView1宽度小于50的时候，二者等宽；当UIView1宽度大于50的时候，UIView2不受UIView1宽度的影响。<br>于是我给UIView2加上一条约束：宽度&lt;=50。这时候冲突来了：<br>因为UIView1的宽度是定好的，而UIView2和UIView1等宽。那么UIView2的宽度就是确定的。</p>
+<p>很显然，分为两种情况（根据UIView1的宽度不同）：</p>
+<ul>
+<li>若UIView1的宽度大于50，UIView2的宽度也一定大于50，这跟新加的限制宽度&lt;=50的约束是冲突的。</li>
+</ul>
+<div align="center"><br><br><img src="http://img.blog.csdn.net/20160314171756501" width="60%"><br><br></div>
+
+<ul>
+<li>否则不冲突。</li>
+</ul>
+<div align="center"><br><br><img src="http://img.blog.csdn.net/20160314171829329" width="60%"><br><br></div>
+
+<p>更糟糕的是，实际情况中，UIView1的宽度可能不是一个确定的值。它有可能会被页面中的其他View所影响，可能还会在运行时产生变化，并不能保证它的实际宽度一定小于50。所以，一旦产生约束冲突，可能就会对应用产生不确定的影响：可能显示错乱，也可能程序崩溃。</p>
+<p>所以我们为了得到正确的结果，应该这样处理：</p>
+<ol>
+<li>当UIView1宽度小于等于50的时候，约束不冲突，修改优先级与否都是一样结果。</li>
+<li>当UIView1宽度大于50的时候，忽略等宽约束，也就是降低等宽约束优先级。</li>
+</ol>
+<p>所以我们把等宽约束的优先级修改为999。上面两条都满足，问题解决。</p>
+<div align="center"><br><br><img src="http://img.blog.csdn.net/20160314171952440" width="60%"><br><br></div>
+
+<p>说到模糊约束，content Hugging／content Compression Resistance就是2个UIView自带的模糊约束。<br>而这两个约束存在的条件则是UIView必须指定了 Intrinsic Content Size。<br>在了解这两个模糊约束之前，必须了解Intrinsic Content Size是什么东西。</p>
+<p>Intrinsic Contenet Size – Intrinsic Content Size：固有大小。顾名思义，在AutoLayout中，它作为UIView的属性（不是语法上的属性），意思就是说我知道自己的大小，如果你没有为我指定大小，我就按照这个大小来。 比如：大家都知道在使用AutoLayout的时候，UILabel是不用指定尺寸大小的，只需指定位置即可，就是因为，只要确定了文字内容，字体等信息，它自己就能计算出大小来。</p>
+<div align="center"><br><br><img src="http://img.blog.csdn.net/20160314172131346" width="60%"><br><br></div>
+
+<p>UILabel，UIImageView，UIButton等这些组件及某些包含它们的系统组件都有 Intrinsic Content Size 属性。<br>也就是说，遇到这些组件，你只需要为其指定位置即可。大小就使用Intrinsic Content Size就行了。</p>
+<p>在代码中，上述系统控件都重写了UIView 中的 -(CGSize)intrinsicContentSize: 方法。<br>并且在需要改变这个值的时候调用：invalidateIntrinsicContentSize 方法，通知系统这个值改变了。</p>
+<p>所以当我们在编写继承自UIView的自定义组件时，也想要有Intrinsic Content Size的时候，就可以通过这种方法来轻松实现。</p>
+<p>Intrinsic冲突 – 一个UIView有了 Intrinsic Content Size 之后，才可以只指定位置，而不用指定大小。并且才可能会触发上述两个约束。 但是问题又来了，对于上述这种UIView来说，只指定位置而不指定大小，有的时候会有问题。 我们用UILabel来举例吧（所有支持Intrinsic Content Size 的组件都有此问题）。 2个UILabel，UILabel1（文字内容：UILabel1）和UILabel2（文字内容：UILabel2），其内容按照下面说明布局： - 2个UILabel距离上边栏为50点。 - UILabel1与左边栏距离为10，UILabel2左面距离UILabel1为10点。 因为都具有Intrinsic属性，所以不需要指定size。位置应该也明确了。</p>
+<div align="center"><br><br><img src="http://img.blog.csdn.net/20160314172208377" width="60%"><br><br></div>
+
+<p>现在问题来了，再给UILabel2加一条约束，右侧距离右边栏为10点。</p>
+<p>很明显，如果按照约束来布局，则没办法满足2个UIlabel都使用 Intrinsic Content Size，至少某个UILabel的宽度大于Intrinsic Content Size。这种情况，我们称之为2个组件之间的“Intrinsic冲突”。</p>
+<div align="center"><br><br><img src="http://img.blog.csdn.net/20160314172318414" width="60%"><br><br></div>
+
+<p>解决“Intrinsic冲突”的方案有2种：</p>
+<ol>
+<li>两个UIlabel都不使用Intrinsic Content Size。为两个UIlabel增加新的约束，来显式指定它们的大小。如：给2个UIlabel增加宽度和高度约束或等宽等高约束等等。</li>
+</ol>
+<div align="center"><br><br><img src="http://img.blog.csdn.net/20160314172405019" width="60%"><br><br></div>
+
+<p>可以让其中一个UIlabel使用Intrinsic Content Size，另一个label则自动占用剩余的空间。这时候就需要用到 Content Hugging 和 Content Compression Resistance了！具体做法在下面介绍。</p>
+<blockquote>
+<p>一句话总结“Intrinsic冲突”：两个或多个可以使用Intrinsic Content Size的组件，因为组件中添加的其他约束，而无法同时使用 intrinsic Content Size了</p>
+</blockquote>
+<p>content Hugging／content Compression Resistance – 首先，这两个概念都是UIView的属性。 假设两个组件产生了“Intrinsic冲突”： 1. Content Hugging 约束（不想变大约束）表示：如果组件的此属性优先级比另一个组件此属性优先级高的话，那么这个组件就保持不变，另一个可以在需要拉伸的时候拉伸。属性分横向和纵向2个方向。 2. Content Compression Resistance 约束（不想变小约束）表示：如果组件的此属性优先级比另一个组件此属性优先级高的话，那么这个组件就保持不变，另一个可以在需要压缩的时候压缩。属性分横向和纵向2个方向。 意思很明显。上面UIlabel这个例子中，很显然，如果某个UILabel使用Intrinsic Content Size的时候，另一个需要拉伸。 所以我们需要调整两个UILabel的 Content Hugging约束的优先级就可以啦。 在这个页面可以调整优先级（拉到最下面）。</p>
+<div align="center"><br><br><img src="http://img.blog.csdn.net/20160314172538285" width="60%"><br><br></div>
+
+<p>分别调整两个UILabel的 Content Hugging的优先级可以得到不同的结果：</p>
+<div align="center"><br><br><img src="http://img.blog.csdn.net/20160314172651785" width="60%"><br><br></div>
+
+<p>Content Compression Resistance 的情况就不多说了，原理相同。</p>
+<h5 id="在代码中修改UIView的这两个优先级"><a href="#在代码中修改UIView的这两个优先级" class="headerlink" title="在代码中修改UIView的这两个优先级"></a>在代码中修改UIView的这两个优先级</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[label setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];</div><div class="line">[label setContentCompressionResistancePriority: UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];</div></pre></td></tr></table></figure>
+<p>Priority是个enum：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">typedef float UILayoutPriority;</div><div class="line">static const UILayoutPriority UILayoutPriorityRequired NS_AVAILABLE_IOS(6_0) = 1000; // A required constraint.  Do not exceed this.</div><div class="line">static const UILayoutPriority UILayoutPriorityDefaultHigh NS_AVAILABLE_IOS(6_0) = 750; // This is the priority level with which a button resists compressing its content.</div><div class="line">static const UILayoutPriority UILayoutPriorityDefaultLow NS_AVAILABLE_IOS(6_0) = 250; // This is the priority level at which a button hugs its contents horizontally.</div><div class="line">static const UILayoutPriority UILayoutPriorityFittingSizeLevel NS_AVAILABLE_IOS(6_0) = 50; // When you send -[UIView systemLayoutSizeFittingSize:], the size fitting most closely to the target size (the argument) is computed.  UILayoutPriorityFittingSizeLevel is the priority level with which the view wants to conform to the target size in that computation.  It&apos;s quite low.  It is generally not appropriate to make a constraint at exactly this priority.  You want to be higher or lower.</div></pre></td></tr></table></figure>
+<p>Axis表示横向及纵向：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">typedef NS_ENUM(NSInteger, UILayoutConstraintAxis) &#123;</div><div class="line">    UILayoutConstraintAxisHorizontal = 0,</div><div class="line">    UILayoutConstraintAxisVertical = 1</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h5 id="创建自定义具有-Intrinsic-Content-Size-功能的组件"><a href="#创建自定义具有-Intrinsic-Content-Size-功能的组件" class="headerlink" title="创建自定义具有 Intrinsic Content Size 功能的组件"></a>创建自定义具有 Intrinsic Content Size 功能的组件</h5><p>代码及注释如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//IntrinsicView.h</div><div class="line">#import &lt;UIKit/UIKit.h&gt;</div><div class="line"></div><div class="line">@interface IntrinsicView : UIView</div><div class="line">@property (nonatomic) CGSize extendSize;</div><div class="line">@end</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">//IntrinsicView.m</div><div class="line">#import &quot;IntrinsicView.h&quot;</div><div class="line"></div><div class="line">static bool closeIntrinsic = false;//测试关闭Intrinsic的影响</div><div class="line"></div><div class="line">@implementation IntrinsicView</div><div class="line"></div><div class="line">- (instancetype)init</div><div class="line">&#123;</div><div class="line">    self = [super init];</div><div class="line">    if (self) &#123;</div><div class="line">        //不兼容旧版Autoreizingmask，只使用AutoLayout</div><div class="line">        //如果为YES，在AutoLayout中则会自动将view的frame和bounds属性转换为约束。</div><div class="line">        self.translatesAutoresizingMaskIntoConstraints = NO;</div><div class="line">    &#125;</div><div class="line">    return self;</div><div class="line">&#125;</div><div class="line"></div><div class="line">//当用户设置extendSize时，提示系统IntrinsicContentSize变化了。</div><div class="line">-(void)setExtendSize:(CGSize)extendSize&#123;</div><div class="line">    _extendSize = extendSize;</div><div class="line">    //如果不加这句话，在view显示之后（比如延时几秒），再设置extendSize不会有效果。</div><div class="line">    //本例中也就是testInvalidateIntrinsic的方法不会产生预期效果。</div><div class="line">    [self invalidateIntrinsicContentSize];</div><div class="line">&#125;</div><div class="line"></div><div class="line">//通过覆盖intrinsicContentSize函数修改View的Intrinsic的大小</div><div class="line">-(CGSize)intrinsicContentSize&#123;</div><div class="line">    if (closeIntrinsic) &#123;</div><div class="line">        return CGSizeMake(UIViewNoIntrinsicMetric, UIViewNoIntrinsicMetric);</div><div class="line">    &#125; else &#123;</div><div class="line">        return CGSizeMake(_extendSize.width, _extendSize.height);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">@end</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">//测试代码</div><div class="line">#import &quot;ViewController.h&quot;</div><div class="line">#import &quot;newViewCtlViewController.h&quot;</div><div class="line">#import &quot;IntrinsicView.h&quot;</div><div class="line"></div><div class="line">@interface ViewController ()</div><div class="line">@end</div><div class="line"></div><div class="line">@implementation ViewController</div><div class="line"></div><div class="line">-(void)viewDidLoad&#123;</div><div class="line">    [super viewDidLoad];</div><div class="line">    [self testIntrinsicView];</div><div class="line">&#125;+</div><div class="line">-(void) testIntrinsicView&#123;</div><div class="line">    IntrinsicView *intrinsicView1 = [[IntrinsicView alloc] init];</div><div class="line">    intrinsicView1.extendSize = CGSizeMake(100, 100);</div><div class="line">    intrinsicView1.backgroundColor = [UIColor greenColor];</div><div class="line">    [self.view addSubview:intrinsicView1];</div><div class="line">    [self.view addConstraints:@[</div><div class="line">                                //距离superview上方100点</div><div class="line">                                  [NSLayoutConstraint constraintWithItem:intrinsicView1 attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1 constant:100],</div><div class="line">                                  //距离superview左面10点</div><div class="line">                                  [NSLayoutConstraint constraintWithItem:intrinsicView1 attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1 constant:10],</div><div class="line">    ]];</div><div class="line"></div><div class="line"></div><div class="line">    IntrinsicView *intrinsicView2 = [[IntrinsicView alloc] init];</div><div class="line">    intrinsicView2.extendSize = CGSizeMake(100, 30);</div><div class="line">    intrinsicView2.backgroundColor = [UIColor redColor];</div><div class="line">    [self.view addSubview:intrinsicView2];</div><div class="line">    [self.view addConstraints:@[</div><div class="line">                                //距离superview上方220点</div><div class="line">                                [NSLayoutConstraint constraintWithItem:intrinsicView2 attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1 constant:220],</div><div class="line">                                //距离superview左面10点</div><div class="line">                                [NSLayoutConstraint constraintWithItem:intrinsicView2 attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1 constant:10],</div><div class="line">                                ]];</div><div class="line"></div><div class="line">    [self performSelector:@selector(testInvalidateIntrinsic:) withObject:intrinsicView2 afterDelay:2];</div><div class="line">&#125;</div><div class="line"></div><div class="line">-(void) testInvalidateIntrinsic:(IntrinsicView *)view&#123;</div><div class="line">    view.extendSize = CGSizeMake(100, 80);</div><div class="line">&#125;</div><div class="line">@end</div></pre></td></tr></table></figure>
+<p>代码效果如下：</p>
+<div align="center"><br><br><img src="http://img.blog.csdn.net/20160314173711526" width="60%"><br><br></div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS开发/" rel="tag">#iOS开发</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/04/2016-12-04/" rel="next" title="iOS不变形的裁剪图片">
+                <i class="fa fa-chevron-left"></i> iOS不变形的裁剪图片
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/hello.jpg"
+               alt="Yuan He" />
+          <p class="site-author-name" itemprop="name">Yuan He</p>
+          <p class="site-description motion-element" itemprop="description">博学而笃志,切问而近思</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">33</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/WaterSource/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2654101531/" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#在代码中修改UIView的这两个优先级"><span class="nav-number">1.</span> <span class="nav-text">在代码中修改UIView的这两个优先级</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#创建自定义具有-Intrinsic-Content-Size-功能的组件"><span class="nav-number">2.</span> <span class="nav-text">创建自定义具有 Intrinsic Content Size 功能的组件</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2013 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yuan He</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
