@@ -1,0 +1,671 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS开发," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="孙源大神的 blog 有一份不错的 runtime 习题, 神经病院objc runtime入院考试, 题目涉及方面比较深,有一题对于 super 关键字很刷新认知。
+先放题目:
+下面的代码输出什么?
+12345678910@implementation Son : Father- (id)init &amp;#123;    self = [super init];    if (self) &amp;#123">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对于 super 调用的些许理解">
+<meta property="og:url" content="http://yoursite.com/2017/07/09/2017-07-09/index.html">
+<meta property="og:site_name" content="Never Stop">
+<meta property="og:description" content="孙源大神的 blog 有一份不错的 runtime 习题, 神经病院objc runtime入院考试, 题目涉及方面比较深,有一题对于 super 关键字很刷新认知。
+先放题目:
+下面的代码输出什么?
+12345678910@implementation Son : Father- (id)init &amp;#123;    self = [super init];    if (self) &amp;#123">
+<meta property="og:updated_time" content="2017-07-09T11:35:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="对于 super 调用的些许理解">
+<meta name="twitter:description" content="孙源大神的 blog 有一份不错的 runtime 习题, 神经病院objc runtime入院考试, 题目涉及方面比较深,有一题对于 super 关键字很刷新认知。
+先放题目:
+下面的代码输出什么?
+12345678910@implementation Son : Father- (id)init &amp;#123;    self = [super init];    if (self) &amp;#123">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/07/09/2017-07-09/"/>
+
+  <title> 对于 super 调用的些许理解 | Never Stop </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Never Stop</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                对于 super 调用的些许理解
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-09T19:19:38+08:00" content="2017-07-09">
+              2017-07-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>孙源大神的 blog 有一份不错的 <code>runtime</code> 习题, <a href="http://blog.sunnyxx.com/2014/11/06/runtime-nuts/" target="_blank" rel="external">神经病院objc runtime入院考试</a>, 题目涉及方面比较深,有一题对于 <code>super</code> 关键字很刷新认知。</p>
+<p>先放题目:</p>
+<p>下面的代码输出什么?</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">@implementation Son : Father</div><div class="line">- (id)init &#123;</div><div class="line">    self = [super init];</div><div class="line">    if (self) &#123;</div><div class="line">        NSLog(@&quot;%@&quot;, NSStringFromClass([self class]));</div><div class="line">        NSLog(@&quot;%@&quot;, NSStringFromClass([super class]));</div><div class="line">    &#125;</div><div class="line">    return self;</div><div class="line">&#125;</div><div class="line">@end</div></pre></td></tr></table></figure>
+<p>答案是 <code>Son / Son</code>。孙源大神的解释是这样的:</p>
+<blockquote>
+<p>因为super为编译器标示符，向super发送的消息被编译成objc_msgSendSuper，但仍以self作为reveiver。</p>
+</blockquote>
+<p>这样的解释显然并不够, 只给了一个结论性的理由。有另外一篇大佬的blog 中解释比较刨根见底<a href="http://chun.tips/2014/11/05/objc-runtime-1/" target="_blank" rel="external">Objective－C Runtime（1）－ Self &amp; Super</a></p>
+<p>贴一下解答中关键的部分:</p>
+<blockquote>
+<p>当调用<code>[super class]</code>时，会转换成<code>objc_msgSendSuper</code>函数。第一步先构造<code>objc_super</code>结构体，结构体第一个成员就是 <code>self</code>。第二个成员是<code>(id)class_getSuperclass(objc_getClass(“Son”))</code>, 实际该函数输出结果为<code>Father</code>。第二步是去<code>Father</code>这个类里去找- <code>(Class)class</code>，没有，然后去<code>NSObject</code>类去找，找到了。最后内部是使用<code>objc_msgSend(objc_super-&gt;receiver</code>, <code>@selector(class))</code>去调用，此时已经和<code>[self class]</code>调用相同了，故上述输出结果仍然返回<code>Son</code>。</p>
+</blockquote>
+<p>有个地方跨度很大:</p>
+<blockquote>
+<p>最后内部是使用 objc_msgSend(objc_super-&gt;receiver, @selector(class))去调用</p>
+</blockquote>
+<p>这个地方非常奇怪，就是本来一直都是调用的objc_msgSendSuper函数，为啥最后换了调用另一个函数。单从文章全文来看，似乎并没有做出解释。</p>
+<p>我的猜测是，作者可能认为， objc_msgSendSuper函数在向父类中去找实现的时候，最后一直找到了NSObject才找到了 - (Class)class这个方法的实现，于是这个函数找到这个实现后，直接对这个类对象发送消息，变成了 objc_msgSend(objc_super-&gt;receiver, @selector(class))。</p>
+<p>也就是说，用<code>objc_msgSendSuper</code>找方法实现，找到了，再通过objc_msgSend给调用者发送消息，重新去沿着继承链再找方法实现。这么看来，岂不是很傻，每一次调用父类方法的时候，都要遍历两遍继承链？虽然runtime有很好的方法缓存机制，但是如此遍历，肯定不是一个好的设计。况且，objc_msgSendSuper这个函数名就表示，就是已经在给父类发消息了，从代码的调用上，也可以证明。</p>
+<p>下面就是调试代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">@interface Father : NSObject</div><div class="line">@end</div><div class="line">  </div><div class="line">@implementation Father</div><div class="line">  </div><div class="line">- (Class)class &#123;</div><div class="line">    return [NSValue class];</div><div class="line">&#125;</div><div class="line">@end</div><div class="line">@interface Son : Father</div><div class="line">- (void)superClassName;</div><div class="line">@end</div><div class="line">@implementation Son</div><div class="line">  </div><div class="line">- (Class)class &#123;</div><div class="line">    return [NSNumber class];</div><div class="line">&#125;</div><div class="line">- (void)superClassName &#123;</div><div class="line">    NSLog(@&quot;Son&apos;s super Class is : %@&quot;, [super class]);</div><div class="line">&#125;</div><div class="line">@end</div><div class="line">int main(int argc, const char * argv[]) &#123;</div><div class="line">    Son *foo = [Son new];</div><div class="line">    [foo superClassName];</div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这段代码就可以很好的反映，究竟是不是在调用super方法时是不是发送两次消息。</p>
+<p>首先，在两个类的class重写方法中，打断点。</p>
+<p>运行起来后，第一次的断点，是走Father类。因为此时实际上是objc_msgSendSuper在发送消息。继续运行，Son的断点是根本不会走的。会直接输出Son’s super Class is : NSValue。</p>
+<p>所以，为什么当父类重写- (Class)class方法时，输出就是正确的？</p>
+<p>按照ChunYeal大佬的说法，找到方法后会变成使用 objc_msgSend(objc_super-&gt;receiver, @selector(class))去调用，那么还是输出了 Son 的类才对啊。</p>
+<p>所以，这个例子就证明了两点：</p>
+<ol>
+<li>沿着父类找实现的过程只有一次。</li>
+<li>使用super关键字究竟能不能得到正确结果，取决于是不是调用的方法是由NSObject来实现的。</li>
+</ol>
+<p>所以，我们就需要明确，NSObject类的class方法实现是怎样的原理。</p>
+<p>所以，我们可以查看源文件NSObject.mm可以看到：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- (Class)class &#123;</div><div class="line">    return object_getClass(self);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Class object_getClass(id obj)</div><div class="line">&#123;</div><div class="line">    if (obj) return obj-&gt;getIsa();</div><div class="line">    else return Nil;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>关键的地方来了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">objc_object::getIsa() </div><div class="line">&#123;</div><div class="line">    if (!isTaggedPointer()) return ISA();</div><div class="line">    uintptr_t ptr = (uintptr_t)this;</div><div class="line">    if (isExtTaggedPointer()) &#123;</div><div class="line">        uintptr_t slot = </div><div class="line">            (ptr &gt;&gt; _OBJC_TAG_EXT_SLOT_SHIFT) &amp; _OBJC_TAG_EXT_SLOT_MASK;</div><div class="line">        return objc_tag_ext_classes[slot];</div><div class="line">    &#125; else &#123;</div><div class="line">        uintptr_t slot = </div><div class="line">            (ptr &gt;&gt; _OBJC_TAG_SLOT_SHIFT) &amp; _OBJC_TAG_SLOT_MASK;</div><div class="line">        return objc_tag_classes[slot];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>再往下已经不需要看了，因为我们能明确，实际上，NSObject的- (Class)class方法实际的本质是取得isa指针。我们前面已经知道，当使用super关键字时，会转换成函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">objc_msgSendSuper(struct objc_super *super, SEL op, ...)</div></pre></td></tr></table></figure>
+<p>第一个参数是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">struct objc_super &#123;</div><div class="line">   __unsafe_unretained id receiver;</div><div class="line">   __unsafe_unretained Class super_class;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>使用clang重写文件，查看NSLog(@”%@”, NSStringFromClass([super class]));对于的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">NSLog((NSString *)&amp;__NSConstantStringImpl__var_folders_gm_0jk35cwn1d3326x0061qym280000gn_T_main_a5cecc_mi_1, NSStringFromClass(((Class (*)(__rw_objc_super *, SEL))(void *)objc_msgSendSuper)((__rw_objc_super)&#123; (id)self, (id)class_getSuperclass(objc_getClass(&quot;Son&quot;)) &#125;, sel_registerName(&quot;class&quot;))));</div></pre></td></tr></table></figure>
+<p>所以可以得到结论，在向父类传递消息的时候，是去父类找实现，但是消息的接收者receiver依然是self。这一点，孙源大神讲得的确正确。但是关键就在于：</p>
+<p>真正使得例子中返回的class为 Son 的原因，在于返回的是self的isa。</p>
+<p>向上寻找的过程中，并不在乎是具体的哪一个父类实现了方法。而到到了NSObject中，也没有办法真的知道这个消息的接受者究竟是通过什么方式来访问isa的，所以，作为基类，就直接返回消息接受者的信息，这个在设计上就避免了很多不必要的问题。</p>
+<p>所以，我认为，我的这个解释更具有合理性一些。</p>
+<p>这篇文章并没有完全解释清楚, 后续会继续更新</p>
+<p>参考博文:</p>
+<p><a href="http://blog.sunnyxx.com/2014/11/06/runtime-nuts/" target="_blank" rel="external">神经病院objc runtime入院考试</a></p>
+<p><a href="http://chun.tips/2014/11/05/objc-runtime-1/" target="_blank" rel="external">刨根问底 Objective－C Runtime（1）－ Self &amp; Super</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS开发/" rel="tag">#iOS开发</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/20/2017-05-25/" rel="next" title="iOS 蓝牙开发">
+                <i class="fa fa-chevron-left"></i> iOS 蓝牙开发
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/hello.jpg"
+               alt="Yuan He" />
+          <p class="site-author-name" itemprop="name">Yuan He</p>
+          <p class="site-description motion-element" itemprop="description">博学而笃志,切问而近思</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">36</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/WaterSource/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2654101531/" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2013 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yuan He</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
