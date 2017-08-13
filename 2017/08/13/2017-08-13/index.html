@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="iOS开发," />
 
 
 
@@ -84,22 +84,22 @@
 
 
 
-<meta name="description" content="烟花三月下扬州。
-脑门一抽，想到这句诗就决定来了。乍暖还寒的天气，出门的时候穿了很多，所以太阳出来一会就热的不行了。瘦西湖门票也是排了好久的队伍才买到，进了园子，花团锦簇，似乎能闻到春天的气息。建筑古色古香，一番小桥流水的画面。当然，到处都是游人，观赏美景，拍照留念。
-主要细看了二十四桥和五亭桥。二十四桥长24米，宽2.4米，24个栏柱，24级台阶，因此得名。湖面波光粼粼，春风袭面，坐在桥边，满眼">
+<meta name="description" content="问题的原因:生成秘钥的时候默认情况下每个账户生成的秘钥位置和名称都是相同的，这样后生成的秘钥就会覆盖前面的秘钥导致其失效，而 GitLab 和 GitHub 上虽有生成秘钥的指引文章，但没有特殊说明这块。
+解决方法:在生成后一个秘钥的时候对其重新命名，以避免冲突，同时将不同的秘钥配置到相对应的Host上面，这样在访问不同的远程仓库时调用不同的key,冲突也就解决了。
+具体操作:生成 GitLab">
 <meta property="og:type" content="article">
-<meta property="og:title" content="扬州游">
-<meta property="og:url" content="http://yoursite.com/2014/04/20/2014-04-20/index.html">
+<meta property="og:title" content="GitLab / GitHub 多账户下设置 ssh keys">
+<meta property="og:url" content="http://yoursite.com/2017/08/13/2017-08-13/index.html">
 <meta property="og:site_name" content="Never Stop">
-<meta property="og:description" content="烟花三月下扬州。
-脑门一抽，想到这句诗就决定来了。乍暖还寒的天气，出门的时候穿了很多，所以太阳出来一会就热的不行了。瘦西湖门票也是排了好久的队伍才买到，进了园子，花团锦簇，似乎能闻到春天的气息。建筑古色古香，一番小桥流水的画面。当然，到处都是游人，观赏美景，拍照留念。
-主要细看了二十四桥和五亭桥。二十四桥长24米，宽2.4米，24个栏柱，24级台阶，因此得名。湖面波光粼粼，春风袭面，坐在桥边，满眼">
-<meta property="og:updated_time" content="2016-10-20T06:09:54.000Z">
+<meta property="og:description" content="问题的原因:生成秘钥的时候默认情况下每个账户生成的秘钥位置和名称都是相同的，这样后生成的秘钥就会覆盖前面的秘钥导致其失效，而 GitLab 和 GitHub 上虽有生成秘钥的指引文章，但没有特殊说明这块。
+解决方法:在生成后一个秘钥的时候对其重新命名，以避免冲突，同时将不同的秘钥配置到相对应的Host上面，这样在访问不同的远程仓库时调用不同的key,冲突也就解决了。
+具体操作:生成 GitLab">
+<meta property="og:updated_time" content="2017-08-13T14:18:44.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="扬州游">
-<meta name="twitter:description" content="烟花三月下扬州。
-脑门一抽，想到这句诗就决定来了。乍暖还寒的天气，出门的时候穿了很多，所以太阳出来一会就热的不行了。瘦西湖门票也是排了好久的队伍才买到，进了园子，花团锦簇，似乎能闻到春天的气息。建筑古色古香，一番小桥流水的画面。当然，到处都是游人，观赏美景，拍照留念。
-主要细看了二十四桥和五亭桥。二十四桥长24米，宽2.4米，24个栏柱，24级台阶，因此得名。湖面波光粼粼，春风袭面，坐在桥边，满眼">
+<meta name="twitter:title" content="GitLab / GitHub 多账户下设置 ssh keys">
+<meta name="twitter:description" content="问题的原因:生成秘钥的时候默认情况下每个账户生成的秘钥位置和名称都是相同的，这样后生成的秘钥就会覆盖前面的秘钥导致其失效，而 GitLab 和 GitHub 上虽有生成秘钥的指引文章，但没有特殊说明这块。
+解决方法:在生成后一个秘钥的时候对其重新命名，以避免冲突，同时将不同的秘钥配置到相对应的Host上面，这样在访问不同的远程仓库时调用不同的key,冲突也就解决了。
+具体操作:生成 GitLab">
 
 
 
@@ -120,9 +120,9 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2014/04/20/2014-04-20/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/08/13/2017-08-13/"/>
 
-  <title> 扬州游 | Never Stop </title>
+  <title> GitLab / GitHub 多账户下设置 ssh keys | Never Stop </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -252,7 +252,7 @@
             
             
               
-                扬州游
+                GitLab / GitHub 多账户下设置 ssh keys
               
             
           </h1>
@@ -264,8 +264,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-04-20T10:20:38+08:00" content="2014-04-20">
-              2014-04-20
+            <time itemprop="dateCreated" datetime="2017-08-13T22:19:38+08:00" content="2017-08-13">
+              2017-08-13
             </time>
           </span>
 
@@ -278,8 +278,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/杂谈/" itemprop="url" rel="index">
-                    <span itemprop="name">杂谈</span>
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
                   </a>
                 </span>
 
@@ -311,10 +311,26 @@
       
 
       
-        <p>烟花三月下扬州。</p>
-<p>脑门一抽，想到这句诗就决定来了。乍暖还寒的天气，出门的时候穿了很多，所以太阳出来一会就热的不行了。瘦西湖门票也是排了好久的队伍才买到，进了园子，花团锦簇，似乎能闻到春天的气息。建筑古色古香，一番小桥流水的画面。当然，到处都是游人，观赏美景，拍照留念。</p>
-<p>主要细看了二十四桥和五亭桥。二十四桥长24米，宽2.4米，24个栏柱，24级台阶，因此得名。湖面波光粼粼，春风袭面，坐在桥边，满眼的春色欲滴。五亭桥上有五个亭子，层层叠叠在一起，看起来颇为壮观。每个亭子都精雕细琢，每个角梁上都挂有古风的铃铛，别有韵味。</p>
-<p>大半天下来，瘦西湖也只匆匆忙忙逛了大半个，出了一身的汗。整个园子都是花明柳媚，湖水碧波荡漾，建筑别具匠心，也算不虚此行。</p>
+        <h2 id="问题的原因"><a href="#问题的原因" class="headerlink" title="问题的原因:"></a>问题的原因:</h2><p>生成秘钥的时候默认情况下每个账户生成的秘钥位置和名称都是相同的，这样后生成的秘钥就会覆盖前面的秘钥导致其失效，而 GitLab 和 GitHub 上虽有生成秘钥的指引文章，但没有特殊说明这块。</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法:"></a>解决方法:</h2><p>在生成后一个秘钥的时候对其重新命名，以避免冲突，同时将不同的秘钥配置到相对应的Host上面，这样在访问不同的远程仓库时调用不同的key,冲突也就解决了。</p>
+<h2 id="具体操作"><a href="#具体操作" class="headerlink" title="具体操作:"></a>具体操作:</h2><h3 id="生成-GitLab-秘钥"><a href="#生成-GitLab-秘钥" class="headerlink" title="生成 GitLab 秘钥"></a>生成 GitLab 秘钥</h3><p>本地生成ssh keys命令：ssh-keygen -t rsa -C “注册的gitlab邮箱”，生成的公司秘钥会提示是否需要重命名，公司 GitLab 的秘钥我们就使用默认名称，直接回车跳过，另外还会提示你设置密码,设置密码的话后续登陆会比较麻烦，也直接跳过。</p>
+<p>查看 .ssh/目录(/Users/mac用户名/.ssh/)，可以看到公私秘钥已经生成，名称分别为id_rsa.pub、id_rsa</p>
+<p>执行命令查看公钥内容：cat ~/.ssh/id_rsa.pub，或者直接用 Sublime Text2 编辑器打开id_rsa.pub。</p>
+<p>将这部分代码添加到到 GitLab 账户的的 SSH Keys 中即可。</p>
+<h3 id="生成-GitHub-秘钥"><a href="#生成-GitHub-秘钥" class="headerlink" title="生成 GitHub 秘钥"></a>生成 GitHub 秘钥</h3><p>终端执行命令：ssh-keygen -t rsa -C “注册的github邮箱”，这次一定要注意，对生成定的秘钥进行重命名，这里暂且重命名为 id_rsa_github ,同样不设置密码。可以看到生成的公私秘钥已经分别被重命名为 id_rsa_github.pub 和 id_rsa_github。</p>
+<p>可以查看公钥里面的内容：cat ~/.ssh/id_rsa_github.pub</p>
+<p>添加到到 GitHub 账户的的 SSH Keys 中即可</p>
+<p>GitLab 和 GitHub 的秘钥是分开生成了，可怎么让这两份秘钥分别对应到相应的远程仓库呢？就是让id_rsa.pub认得gitlab,让 id_rsa_github.pub 认得github。既然不能自动识别，那就只好手动设置了：</p>
+<h3 id="配置config"><a href="#配置config" class="headerlink" title="配置config"></a>配置config</h3><p>在.ssh/目录下新建config文件：touch config，通过 Sublime Text2 编辑器进行如下配置：</p>
+<h4 id="GitLab"><a href="#GitLab" class="headerlink" title="GitLab"></a>GitLab</h4><p>Host gitlab  (随意取名)</p>
+<p>HostName git.xxx.cn  (公司的 GitLab host)</p>
+<p>IdentityFile ~/.ssh/id_rsa</p>
+<h4 id="GitHub"><a href="#GitHub" class="headerlink" title="GitHub"></a>GitHub</h4><p>Host github</p>
+<p>HostName github.com</p>
+<p>IdentityFile ~/.ssh/id_rsa_github</p>
+<h2 id="检测"><a href="#检测" class="headerlink" title="检测"></a>检测</h2><p>ssh -T git@github</p>
+<p>ssh -T git@gitlab</p>
+<p>如果没有报错,就说明设置成功了~</p>
 
       
     </div>
@@ -335,22 +351,24 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/iOS开发/" rel="tag">#iOS开发</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2014/03/05/2014-03-05/" rel="next" title="探索iOS开发中的消息传递机制">
-                <i class="fa fa-chevron-left"></i> 探索iOS开发中的消息传递机制
+              <a href="/2017/07/09/2017-07-09/" rel="next" title="对于 super 调用的些许理解">
+                <i class="fa fa-chevron-left"></i> 对于 super 调用的些许理解
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2014/05/10/2014-05-10/" rel="prev" title="iOS开发之多媒体播放">
-                iOS开发之多媒体播放 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -484,7 +502,7 @@
               
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题的原因"><span class="nav-number">1.</span> <span class="nav-text">问题的原因:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方法"><span class="nav-number">2.</span> <span class="nav-text">解决方法:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#具体操作"><span class="nav-number">3.</span> <span class="nav-text">具体操作:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生成-GitLab-秘钥"><span class="nav-number">3.1.</span> <span class="nav-text">生成 GitLab 秘钥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成-GitHub-秘钥"><span class="nav-number">3.2.</span> <span class="nav-text">生成 GitHub 秘钥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置config"><span class="nav-number">3.3.</span> <span class="nav-text">配置config</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#GitLab"><span class="nav-number">3.3.1.</span> <span class="nav-text">GitLab</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GitHub"><span class="nav-number">3.3.2.</span> <span class="nav-text">GitHub</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检测"><span class="nav-number">4.</span> <span class="nav-text">检测</span></a></li></ol></div>
             
           </div>
         </section>
