@@ -1,0 +1,624 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS开发," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="获取屏幕宽/高1[UIScreen mainScreen].bounds.size.width / height;
+获取设备版本号12345需要导入 --&amp;gt;  #import &amp;quot;sys/utsname.h&amp;quot;  struct utsname systemInfo;  uname(&amp;amp;systemInfo);  NSString *deviceString = [NSS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 获取设备的各种信息">
+<meta property="og:url" content="http://yoursite.com/2017/08/20/2017-08-20/index.html">
+<meta property="og:site_name" content="Never Stop">
+<meta property="og:description" content="获取屏幕宽/高1[UIScreen mainScreen].bounds.size.width / height;
+获取设备版本号12345需要导入 --&amp;gt;  #import &amp;quot;sys/utsname.h&amp;quot;  struct utsname systemInfo;  uname(&amp;amp;systemInfo);  NSString *deviceString = [NSS">
+<meta property="og:updated_time" content="2017-08-20T08:21:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS 获取设备的各种信息">
+<meta name="twitter:description" content="获取屏幕宽/高1[UIScreen mainScreen].bounds.size.width / height;
+获取设备版本号12345需要导入 --&amp;gt;  #import &amp;quot;sys/utsname.h&amp;quot;  struct utsname systemInfo;  uname(&amp;amp;systemInfo);  NSString *deviceString = [NSS">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/08/20/2017-08-20/"/>
+
+  <title> iOS 获取设备的各种信息 | Never Stop </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Never Stop</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                iOS 获取设备的各种信息
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-08-20T16:10:38+08:00" content="2017-08-20">
+              2017-08-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="获取屏幕宽-高"><a href="#获取屏幕宽-高" class="headerlink" title="获取屏幕宽/高"></a>获取屏幕宽/高</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[UIScreen mainScreen].bounds.size.width / height;</div></pre></td></tr></table></figure>
+<h3 id="获取设备版本号"><a href="#获取设备版本号" class="headerlink" title="获取设备版本号"></a>获取设备版本号</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">需要导入 --&gt;  #import &quot;sys/utsname.h&quot;</div><div class="line">  struct utsname systemInfo;</div><div class="line">  uname(&amp;systemInfo);</div><div class="line">  NSString *deviceString = [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];</div><div class="line">  deviceString 则为设备对应的版本号</div></pre></td></tr></table></figure>
+<h3 id="获取-iPhone-名称"><a href="#获取-iPhone-名称" class="headerlink" title="获取 iPhone 名称"></a>获取 iPhone 名称</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[UIDevice currentDevice].name;  获取的是对应 iPhone 的名字</div></pre></td></tr></table></figure>
+<h3 id="获取-app-版本号"><a href="#获取-app-版本号" class="headerlink" title="获取 app 版本号"></a>获取 app 版本号</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[[[NSBundle mainBundle] infoDictionary] objectForKey:@&quot;CFBundleShortVersionString&quot;];</div></pre></td></tr></table></figure>
+<h3 id="获取当前系统名称-以及-版本号"><a href="#获取当前系统名称-以及-版本号" class="headerlink" title="获取当前系统名称 以及 版本号"></a>获取当前系统名称 以及 版本号</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[UIDevice currentDevice].systemName;</div><div class="line">[UIDevice currentDevice].systemVersion;</div></pre></td></tr></table></figure>
+<h3 id="获取通用的唯一标识码-UUID"><a href="#获取通用的唯一标识码-UUID" class="headerlink" title="获取通用的唯一标识码 UUID"></a>获取通用的唯一标识码 UUID</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[[UIDevice currentDevice] identifierForVendor].UUIDString;</div></pre></td></tr></table></figure>
+<h3 id="获取当前设备-ip"><a href="#获取当前设备-ip" class="headerlink" title="获取当前设备 ip"></a>获取当前设备 ip</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">+ (NSString *)getDeviceIPAdress &#123;</div><div class="line">    NSString *address = @&quot;an error occurred when obtaining ip address&quot;;</div><div class="line">    struct ifaddrs *interfaces = NULL;</div><div class="line">    struct ifaddrs *temp_addr = NULL;</div><div class="line">    int success = 0;</div><div class="line">    success = getifaddrs(&amp;interfaces);</div><div class="line">    if (success == 0) &#123; // 0 表示获取成功</div><div class="line">        temp_addr = interfaces;</div><div class="line">        while (temp_addr != NULL) &#123;</div><div class="line">            if( temp_addr-&gt;ifa_addr-&gt;sa_family == AF_INET) &#123;</div><div class="line">                // Check if interface is en0 which is the wifi connection on the iPhone</div><div class="line">                if ([[NSString stringWithUTF8String:temp_addr-&gt;ifa_name] isEqualToString:@&quot;en0&quot;]) &#123;</div><div class="line">                    // Get NSString from C String</div><div class="line">                    address = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)temp_addr-&gt;ifa_addr)-&gt;sin_addr)];</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            temp_addr = temp_addr-&gt;ifa_next;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    freeifaddrs(interfaces);</div><div class="line">    return address;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="获取总内存大小"><a href="#获取总内存大小" class="headerlink" title="获取总内存大小"></a>获取总内存大小</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[NSProcessInfo processInfo].physicalMemory;</div></pre></td></tr></table></figure>
+<h3 id="获取当前可用内存"><a href="#获取当前可用内存" class="headerlink" title="获取当前可用内存"></a>获取当前可用内存</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">+ (long long)getAvailableMemorySize &#123;</div><div class="line">    vm_statistics_data_t vmStats;</div><div class="line">    mach_msg_type_number_t infoCount = HOST_VM_INFO_COUNT;</div><div class="line">    kern_return_t kernReturn = host_statistics(mach_host_self(), HOST_VM_INFO, (host_info_t)&amp;vmStats, &amp;infoCount);</div><div class="line">    if (kernReturn != KERN_SUCCESS)</div><div class="line">    &#123;</div><div class="line">        return NSNotFound;</div><div class="line">    &#125;</div><div class="line">    return ((vm_page_size * vmStats.free_count + vm_page_size * vmStats.inactive_count));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="获取精准电池电量"><a href="#获取精准电池电量" class="headerlink" title="获取精准电池电量"></a>获取精准电池电量</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">通过 runtime 获取电池容量控件类私有变量的值 较为精确</div><div class="line">+ (CGFloat)getCurrentBatteryLevel &#123;</div><div class="line">    UIApplication *app = [UIApplication sharedApplication];</div><div class="line">    if (app.applicationState == UIApplicationStateActive||app.applicationState==UIApplicationStateInactive) &#123;</div><div class="line">        Ivar ivar=  class_getInstanceVariable([app class],&quot;_statusBar&quot;);</div><div class="line">        id status  = object_getIvar(app, ivar);</div><div class="line">        for (id aview in [status subviews]) &#123;</div><div class="line">            int batteryLevel = 0;</div><div class="line">            for (id bview in [aview subviews]) &#123;</div><div class="line">                if ([NSStringFromClass([bview class]) caseInsensitiveCompare:@&quot;UIStatusBarBatteryItemView&quot;] == NSOrderedSame&amp;&amp;[[[UIDevice currentDevice] systemVersion] floatValue] &gt;=6.0) &#123;</div><div class="line">                    Ivar ivar=  class_getInstanceVariable([bview class],&quot;_capacity&quot;);</div><div class="line">                    if(ivar) &#123;</div><div class="line">                        batteryLevel = ((int (*)(id, Ivar))object_getIvar)(bview, ivar);</div><div class="line">                        if (batteryLevel &gt; 0 &amp;&amp; batteryLevel &lt;= 100) &#123;</div><div class="line">                            return batteryLevel;</div><div class="line">                        &#125; else &#123;</div><div class="line">                            return 0;</div><div class="line">                        &#125;</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="获取电池当前的状态"><a href="#获取电池当前的状态" class="headerlink" title="获取电池当前的状态"></a>获取电池当前的状态</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">//共四种</div><div class="line">+ (NSString *) getBatteryState &#123;</div><div class="line">    UIDevice *device = [UIDevice currentDevice];</div><div class="line">    if (device.batteryState == UIDeviceBatteryStateUnknown) &#123;</div><div class="line">        return @&quot;UnKnow&quot;;</div><div class="line">    &#125; else if (device.batteryState == UIDeviceBatteryStateUnplugged)&#123;</div><div class="line">        return @&quot;Unplugged&quot;;</div><div class="line">    &#125; else if (device.batteryState == UIDeviceBatteryStateCharging)&#123;</div><div class="line">        return @&quot;Charging&quot;;</div><div class="line">    &#125; else if (device.batteryState == UIDeviceBatteryStateFull)&#123;</div><div class="line">        return @&quot;Full&quot;;</div><div class="line">    &#125;</div><div class="line">    return nil;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="获取设备当前的语言"><a href="#获取设备当前的语言" class="headerlink" title="获取设备当前的语言"></a>获取设备当前的语言</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">NSArray *languageArray = [NSLocale preferredLanguages];</div><div class="line">[languageArray objectAtIndex:0];</div></pre></td></tr></table></figure>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS开发/" rel="tag">#iOS开发</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/13/2017-08-13/" rel="next" title="GitLab / GitHub 多账户下设置 ssh keys">
+                <i class="fa fa-chevron-left"></i> GitLab / GitHub 多账户下设置 ssh keys
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/hello.jpg"
+               alt="Yuan He" />
+          <p class="site-author-name" itemprop="name">Yuan He</p>
+          <p class="site-description motion-element" itemprop="description">博学而笃志,切问而近思</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">38</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/WaterSource/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2654101531/" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取屏幕宽-高"><span class="nav-number">1.</span> <span class="nav-text">获取屏幕宽/高</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取设备版本号"><span class="nav-number">2.</span> <span class="nav-text">获取设备版本号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取-iPhone-名称"><span class="nav-number">3.</span> <span class="nav-text">获取 iPhone 名称</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取-app-版本号"><span class="nav-number">4.</span> <span class="nav-text">获取 app 版本号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取当前系统名称-以及-版本号"><span class="nav-number">5.</span> <span class="nav-text">获取当前系统名称 以及 版本号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取通用的唯一标识码-UUID"><span class="nav-number">6.</span> <span class="nav-text">获取通用的唯一标识码 UUID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取当前设备-ip"><span class="nav-number">7.</span> <span class="nav-text">获取当前设备 ip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取总内存大小"><span class="nav-number">8.</span> <span class="nav-text">获取总内存大小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取当前可用内存"><span class="nav-number">9.</span> <span class="nav-text">获取当前可用内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取精准电池电量"><span class="nav-number">10.</span> <span class="nav-text">获取精准电池电量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取电池当前的状态"><span class="nav-number">11.</span> <span class="nav-text">获取电池当前的状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取设备当前的语言"><span class="nav-number">12.</span> <span class="nav-text">获取设备当前的语言</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2013 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yuan He</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
