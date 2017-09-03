@@ -1,0 +1,677 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS开发," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本文参考 shinobicontrols 公司写的系列博客.
+
+今年 WWDC 2017 推出了 Core ML 以及 ARKit,基于设备原因,只是查阅了相关文献资料,回顾了下 16 年的开发者大会,发现漏写一篇关于 Xcode 8 推出的调试工具 Thread Sanitizer, 现补上.
+线程一直是 app 中需要考虑的问题,有时候出现一个很严重的 bug,但是不是必现的,花费很长时间去">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线程竞态检测工具 - Thread Sanitizer">
+<meta property="og:url" content="http://yoursite.com/2017/09/02/2017-09-02/index.html">
+<meta property="og:site_name" content="Never Stop">
+<meta property="og:description" content="本文参考 shinobicontrols 公司写的系列博客.
+
+今年 WWDC 2017 推出了 Core ML 以及 ARKit,基于设备原因,只是查阅了相关文献资料,回顾了下 16 年的开发者大会,发现漏写一篇关于 Xcode 8 推出的调试工具 Thread Sanitizer, 现补上.
+线程一直是 app 中需要考虑的问题,有时候出现一个很严重的 bug,但是不是必现的,花费很长时间去">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/227290-1e49672eb7c048a2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/227290-0072970edd4351b3.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/227290-92b025979e9f2643.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/227290-74bbbdb64832f3c2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/227290-08340b87870f35aa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/12400">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/227290-e19e48a069420aef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/227290-7aec6f70c3c9b401.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-09-01T03:57:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="线程竞态检测工具 - Thread Sanitizer">
+<meta name="twitter:description" content="本文参考 shinobicontrols 公司写的系列博客.
+
+今年 WWDC 2017 推出了 Core ML 以及 ARKit,基于设备原因,只是查阅了相关文献资料,回顾了下 16 年的开发者大会,发现漏写一篇关于 Xcode 8 推出的调试工具 Thread Sanitizer, 现补上.
+线程一直是 app 中需要考虑的问题,有时候出现一个很严重的 bug,但是不是必现的,花费很长时间去">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/227290-1e49672eb7c048a2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/02/2017-09-02/"/>
+
+  <title> 线程竞态检测工具 - Thread Sanitizer | Never Stop </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Never Stop</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                线程竞态检测工具 - Thread Sanitizer
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-09-02T16:10:38+08:00" content="2017-09-02">
+              2017-09-02
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本文参考 <a href="https://www.shinobicontrols.com" target="_blank" rel="external">shinobicontrols</a> 公司写的系列博客.</p>
+</blockquote>
+<p>今年 WWDC 2017 推出了 Core ML 以及 ARKit,基于设备原因,只是查阅了相关文献资料,回顾了下 16 年的开发者大会,发现漏写一篇关于 Xcode 8 推出的调试工具 Thread Sanitizer, 现补上.</p>
+<p>线程一直是 app 中需要考虑的问题,有时候出现一个很严重的 bug,但是不是必现的,花费很长时间去调试修复缺一无所获,这种情况一般是<code>多个线程访问同一块内存造成的</code>,而多线程的 bug 往往是程序员的梦魇,这种 bug 比较难以定位,只有在特定条件下才能重现,所以定位问题比较困难.</p>
+<p>问题的原因其实就是所谓的 <code>线程竞态</code>,关于这个名词 <a href="https://github.com/google/sanitizers/wiki/ThreadSanitizerCppManual" target="_blank" rel="external">Google 的 ThreadSanitizer 文档</a> 作出了解释:</p>
+<blockquote>
+<p>两个线程同时访问同一个变量，而且其中至少一个线程要做的是写操作，这种情况就叫竞态。</p>
+</blockquote>
+<p>##演示</p>
+<p>有个 demo ，能让用户存钱、取钱，每次 $100。跟之前一样，最终版的工程放在 <a href="https://github.com/shinobicontrols/iOS10-day-by-day/tree/master/02%20-%20Thread%20Sanitizer" target="_blank" rel="external">Github</a> 上了。</p>
+<p>##银行账户</p>
+<p>银行账户的数据模型很简单，名为<code>Account</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">import Foundation</div><div class="line"></div><div class="line">class Account &#123;</div><div class="line">    var balance: Int = 0</div><div class="line"></div><div class="line">    func withdraw(amount: Int, completed: () -&gt; ()) &#123;</div><div class="line">        let newBalance = self.balance - amount</div><div class="line"></div><div class="line">        if newBalance &lt; 0 &#123;</div><div class="line">            print(&quot;You don&apos;t have enough money to withdraw \(amount)&quot;)</div><div class="line">            return</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        // 模仿银行的防伪验证过程</div><div class="line">        sleep(2)</div><div class="line"></div><div class="line">        self.balance = newBalance</div><div class="line"></div><div class="line">        completed()</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    func deposit(amount: Int, completed: () -&gt; ()) &#123;</div><div class="line">        let newBalance = self.balance + amount</div><div class="line">        self.balance = newBalance</div><div class="line"></div><div class="line">        completed()</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>里面只包含了这么几个方法，能让我们给账户存钱、取钱。存取的金额写死为 $100。</p>
+<p>其中，deposit 方法是立即返回的，而 withdraw 方法要花一点时间才能执行完。我们名义上说是因为银行要执行防伪验证，背后其实就是让线程 sleep 了 2 秒。这在后面能给我们一个使用多线程的借口。</p>
+<p>另外一点要注意的是 completed block，在存取成功之后执行。</p>
+<h2 id="View-Controller"><a href="#View-Controller" class="headerlink" title="View Controller"></a>View Controller</h2><p>View Controller 里有两个 button ——一个存钱、一个取钱——还有一个 label，显示当前账户余额。Storyboard 中的布局是这样的：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/227290-1e49672eb7c048a2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="60%"></p>
+<p>从 Storyboard 中引出显示余额 label 的 IBOutlet，再写几个方法更新余额的显示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">import UIKit</div><div class="line"></div><div class="line">class ViewController: UIViewController &#123;</div><div class="line"></div><div class="line">    @IBOutlet var balanceLabel: UILabel!</div><div class="line"></div><div class="line">    let account = Account()</div><div class="line"></div><div class="line">    override func viewDidLoad() &#123;</div><div class="line">        super.viewDidLoad()</div><div class="line">        updateBalanceLabel()</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @IBAction func withdraw(_ sender: UIButton) &#123;</div><div class="line">        self.account.withdraw(amount: 100, onSuccess: updateBalanceLabel)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @IBAction func deposit(_ sender: UIButton) &#123;</div><div class="line">        self.account.deposit(amount: 100, onSuccess: updateBalanceLabel)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    func updateBalanceLabel() &#123;</div><div class="line">        balanceLabel.text = &quot;Balance: $\(account.balance)&quot;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="http://upload-images.jianshu.io/upload_images/227290-0072970edd4351b3.gif?imageMogr2/auto-orient/strip" width="60%"></p>
+<p>嗯……取钱的过程有点慢呀。这是因为所写的withdraw方法里有严格的『防伪验证』机制，在方法结束前会一直 block 主线程。而我们希望的是用户能快速重复存钱、取钱，把延迟降到最低。</p>
+<h2 id="Dispatch-Queue-登场了"><a href="#Dispatch-Queue-登场了" class="headerlink" title="Dispatch Queue 登场了"></a>Dispatch Queue 登场了</h2><p>如果要是能把withdraw方法从主线程移出来，就解决这问题了。我们可以用上新出的『Swift 化』的 GCD 库：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">func withdraw(amount: Int, onSuccess: () -&gt; ()) &#123;</div><div class="line">    DispatchQueue(label: &quot;com.shinobicontrols.balance-moderator&quot;).async &#123;</div><div class="line">        let newBalance = self.balance - amount</div><div class="line"></div><div class="line">        if newBalance &lt; 0 &#123;</div><div class="line">            print(&quot;You don&apos;t have enough money to withdraw \(amount)&quot;)</div><div class="line">            return</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        // 模仿银行的防伪验证过程</div><div class="line">        sleep(2)</div><div class="line"></div><div class="line">        self.balance = newBalance</div><div class="line"></div><div class="line">        DispatchQueue.main.async &#123;</div><div class="line">            onSuccess()</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="http://upload-images.jianshu.io/upload_images/227290-92b025979e9f2643.gif?imageMogr2/auto-orient/strip" width="60%"></p>
+<p>等一下，我们的钱呢？一开始账户余额是 $100，我们先取了 $100，然后存了 $100，怎么账户余额只剩下 0 了呢？</p>
+<p>存取方法肯定是没问题的（刚才都分别测过了），看起来问题就出在把 withdraw 的任务放到单独线程这一步。</p>
+<h2 id="Thread-Sanitizer"><a href="#Thread-Sanitizer" class="headerlink" title="Thread Sanitizer"></a>Thread Sanitizer</h2><p>开启 Thread Sanitizer 很简单，只需点击 target 的 Edit Scheme…，然后在 Diagnostics tab 下勾选 Thread Sanitizer。可以选择 Pause on issues，这样比较方便一步步调试问题。我们把它勾上。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/227290-74bbbdb64832f3c2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="60%"></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/227290-08340b87870f35aa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/12400" width="60%"></p>
+<p>因为 thread sanitizer 只在运行时工作，我们需要把工程重新编译、重新跑一下。来试试吧。</p>
+<p>在 WWDC 演讲中，苹果推荐在所有的单元测试里都打开 thread sanitizer。Sanitizer 只在运行时有效，而且必须要代码运行到那儿才能检测出线程竞态。如果你的代码单元测试覆盖率很高，那么 Thread Sanitizer 能找出工程里绝大部分的线程竞态.</p>
+<blockquote>
+<p>还要注意的一点是，对于 Swift 这个工具只对 Swift 3 的代码有效（Objective-C 也兼容），而且只能用 64 位的模拟器来跑。</p>
+</blockquote>
+<p>现在我们再把之前的操作重复一遍，先取钱，再马上存钱。这时候 thread sanitizer 把 app 暂停了，因为它发现了线程竞态。它清晰地展现出了冲突发生时的调用栈。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/227290-e19e48a069420aef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="60%"></p>
+<p>而且，它在控制台里打印出了相关信息。</p>
+<p>通过调用栈和打印出的信息，Thread Analyzer 给力地帮我们定位了问题所在： Account.deposit 方法与 Account.widthdraw 方法会访问同一个属性 Account.balance，从而出现了竞态。哎呀，看样子我们应该把存钱和取钱放在同一个线程里进行。</p>
+<p>我们修改一下 Account 类的代码，用一个公共的 queue：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">class Account &#123;</div><div class="line">    var balance: Int = 0</div><div class="line">    private let queue = DispatchQueue(label: &quot;com.shinobicontrols.balance-moderator&quot;)</div><div class="line"></div><div class="line">    func withdraw(amount: Int, onSuccess: () -&gt; ()) &#123;</div><div class="line">        queue.async &#123;</div><div class="line">            // 跟之前一样...</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    func deposit(amount: Int, onSuccess: () -&gt; ()) &#123;</div><div class="line">        queue.async &#123;</div><div class="line">            let newBalance = self.balance + amount</div><div class="line">            self.balance = newBalance</div><div class="line"></div><div class="line">            DispatchQueue.main.async &#123;</div><div class="line">                onSuccess()</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>再跑一遍代码，发现还是有竞态；只不过这次不是在 Account 类里，而是由 ViewController 类在主线程访问 balance 造成的。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/227290-7aec6f70c3c9b401.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="40%"></p>
+<p>为解决这个问题，我们可以把 balance 属性改成 private 保护起来，只能在 Account 类内部访问它，然后改用 queue 来返回结果。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">private var _balance: Int = 0</div><div class="line">var balance: Int &#123;</div><div class="line">    return queue.sync &#123;</div><div class="line">        return _balance</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>之前所有对 balance 属性的写操作都要改成私有的 _balance。</p>
+<p>现在再跑一遍，再怎么重复点击 “withdraw” 和 “deposit” 都不会惊动 Thread Sanitizer 了。太棒啦——我们用这个工具修好了多线程的 bug。</p>
+<p>尽管看着不起眼，Thread Sanitizer 还是很有可能会成为 iOS 开发者的一个重要工具。它能在程序运行没出错的情况下就找到线程竞态，可以为你省下大把时间 debug 间歇出现的多线程问题。</p>
+<p>一如既往，苹果的 <a href="https://developer.apple.com/videos/play/wwdc2016/412/" target="_blank" rel="external">WWDC 演讲</a> 信息量很大，值得一看。Sanitizer 是 Clang 编译器的一部分，更详细的信息可以参考<a href="http://clang.llvm.org/docs/ThreadSanitizer.html" target="_blank" rel="external">LLVM</a> 的官网，还有 Google 开发 sanitizer 的团队编写了许多有趣的 wiki，其中包括对<a href="https://github.com/google/sanitizers/wiki/ThreadSanitizerAboutRaces" target="_blank" rel="external">检测多线程问题算法</a>的简单介绍。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS开发/" rel="tag">#iOS开发</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/20/2017-08-20/" rel="next" title="iOS 获取设备的各种信息">
+                <i class="fa fa-chevron-left"></i> iOS 获取设备的各种信息
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/hello.jpg"
+               alt="Yuan He" />
+          <p class="site-author-name" itemprop="name">Yuan He</p>
+          <p class="site-description motion-element" itemprop="description">博学而笃志,切问而近思</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">39</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/WaterSource/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2654101531/" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#View-Controller"><span class="nav-number">1.</span> <span class="nav-text">View Controller</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dispatch-Queue-登场了"><span class="nav-number">2.</span> <span class="nav-text">Dispatch Queue 登场了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Thread-Sanitizer"><span class="nav-number">3.</span> <span class="nav-text">Thread Sanitizer</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2013 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yuan He</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
