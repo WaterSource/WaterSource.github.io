@@ -84,22 +84,19 @@
 
 
 
-<meta name="description" content="最近换了一台新 mac，自然要重新装一下 CocoaPods 啦。但是，噩梦从此开始了，各种问题都遇到了。下面总结一下今天遇到的一些奇葩问题。推荐一下这篇文章
-1.ruby源问题ruby 的默认软件源在亚马逊服务器上，地址是https://rubygems.org/ 但是这个是用不了的，所以我们需要换源
-目前国内绝大多数用的是淘宝的镜像:https://ruby.taobao.org/ （很多老教">
+<meta name="description" content="App Store 评分方式目前方式通过 APP 内部打开网页形式, 跳转至 App Store 编辑页面评论. 在评分页面,可以评分和评价,但是有点不好就是必须得跳转至 App Store. 用户操作会切换场景,会造成部分用户使用的困扰，可能需要花费较长的等待时间，甚至加载失败等，造成评价数量少。
+iOS6 +在APP内部加载App Store 展示APP信息，但不能直接跳转到评论编辑页面。再加">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CocoaPods 安装问题总结">
-<meta property="og:url" content="http://yoursite.com/2015/05/01/2015-05-01/index.html">
+<meta property="og:title" content="iOS 10.3 App内好评详解">
+<meta property="og:url" content="http://yoursite.com/2017/09/17/2017-09-17/index.html">
 <meta property="og:site_name" content="Never Stop">
-<meta property="og:description" content="最近换了一台新 mac，自然要重新装一下 CocoaPods 啦。但是，噩梦从此开始了，各种问题都遇到了。下面总结一下今天遇到的一些奇葩问题。推荐一下这篇文章
-1.ruby源问题ruby 的默认软件源在亚马逊服务器上，地址是https://rubygems.org/ 但是这个是用不了的，所以我们需要换源
-目前国内绝大多数用的是淘宝的镜像:https://ruby.taobao.org/ （很多老教">
-<meta property="og:updated_time" content="2016-10-08T05:42:42.000Z">
+<meta property="og:description" content="App Store 评分方式目前方式通过 APP 内部打开网页形式, 跳转至 App Store 编辑页面评论. 在评分页面,可以评分和评价,但是有点不好就是必须得跳转至 App Store. 用户操作会切换场景,会造成部分用户使用的困扰，可能需要花费较长的等待时间，甚至加载失败等，造成评价数量少。
+iOS6 +在APP内部加载App Store 展示APP信息，但不能直接跳转到评论编辑页面。再加">
+<meta property="og:updated_time" content="2017-09-17T12:44:44.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CocoaPods 安装问题总结">
-<meta name="twitter:description" content="最近换了一台新 mac，自然要重新装一下 CocoaPods 啦。但是，噩梦从此开始了，各种问题都遇到了。下面总结一下今天遇到的一些奇葩问题。推荐一下这篇文章
-1.ruby源问题ruby 的默认软件源在亚马逊服务器上，地址是https://rubygems.org/ 但是这个是用不了的，所以我们需要换源
-目前国内绝大多数用的是淘宝的镜像:https://ruby.taobao.org/ （很多老教">
+<meta name="twitter:title" content="iOS 10.3 App内好评详解">
+<meta name="twitter:description" content="App Store 评分方式目前方式通过 APP 内部打开网页形式, 跳转至 App Store 编辑页面评论. 在评分页面,可以评分和评价,但是有点不好就是必须得跳转至 App Store. 用户操作会切换场景,会造成部分用户使用的困扰，可能需要花费较长的等待时间，甚至加载失败等，造成评价数量少。
+iOS6 +在APP内部加载App Store 展示APP信息，但不能直接跳转到评论编辑页面。再加">
 
 
 
@@ -120,9 +117,9 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2015/05/01/2015-05-01/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/09/17/2017-09-17/"/>
 
-  <title> CocoaPods 安装问题总结 | Never Stop </title>
+  <title> iOS 10.3 App内好评详解 | Never Stop </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -252,7 +249,7 @@
             
             
               
-                CocoaPods 安装问题总结
+                iOS 10.3 App内好评详解
               
             
           </h1>
@@ -264,8 +261,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2015-05-01T20:11:32+08:00" content="2015-05-01">
-              2015-05-01
+            <time itemprop="dateCreated" datetime="2017-09-17T16:10:38+08:00" content="2017-09-17">
+              2017-09-17
             </time>
           </span>
 
@@ -311,47 +308,14 @@
       
 
       
-        <p>最近换了一台新 mac，自然要重新装一下 CocoaPods 啦。但是，噩梦从此开始了，各种问题都遇到了。下面总结一下今天遇到的一些奇葩问题。推荐一下这篇<a href="http://www.jianshu.com/p/6e5c0f78200a" target="_blank" rel="external">文章</a></p>
-<h2 id="1-ruby源问题"><a href="#1-ruby源问题" class="headerlink" title="1.ruby源问题"></a>1.ruby源问题</h2><p>ruby 的默认软件源在亚马逊服务器上，地址是<a href="https://rubygems.org/" target="_blank" rel="external">https://rubygems.org/</a> 但是这个是用不了的，所以我们需要换源</p>
-<p>目前国内绝大多数用的是淘宝的镜像:<a href="https://ruby.taobao.org/" target="_blank" rel="external">https://ruby.taobao.org/</a> （很多老教程中使用的是<a href="http://ruby.taobao.org/）。" target="_blank" rel="external">http://ruby.taobao.org/）。</a></p>
+        <h2 id="App-Store-评分方式"><a href="#App-Store-评分方式" class="headerlink" title="App Store 评分方式"></a>App Store 评分方式</h2><h3 id="目前方式"><a href="#目前方式" class="headerlink" title="目前方式"></a>目前方式</h3><p>通过 APP 内部打开网页形式, 跳转至 App Store 编辑页面评论. 在评分页面,可以评分和评价,但是有点不好就是必须得跳转至 App Store. 用户操作会切换场景,会造成部分用户使用的困扰，可能需要花费较长的等待时间，甚至加载失败等，造成评价数量少。</p>
+<h3 id="iOS6"><a href="#iOS6" class="headerlink" title="iOS6 +"></a>iOS6 +</h3><p>在APP内部加载App Store 展示APP信息，但不能直接跳转到评论编辑页面。再加载处App Store展示页面后，需要手动点击 评论→ 撰写评论，多两步操作，部分用户可能存在操作障碍（找不到).</p>
+<h3 id="iOS10-3"><a href="#iOS10-3" class="headerlink" title="iOS10.3 +"></a>iOS10.3 +</h3><p>APP内评分机制是iOS 10.3 中新添功能。用户可以直接在 App 内进行评分，开发者可以对用户在 App Store 的评论进行回复。<br>APP内评分调用API [SKStoreReviewController requestReview]; (目前唯一)，应用会自动弹窗请求用户评分，弹窗不可定制，对处理过程和处理结果无法监控。只能使用该 API 请求评分，不能请求评价和反馈。<br>一个应用内每年最多使用 3 次弹窗，滥用弹窗，会引起不少用户的反感，甚至因此给应用差评。<br>iOS10.3版本以前的评分方式依然可以使用。</p>
+<h4 id="当前接入方式-无版本限制"><a href="#当前接入方式-无版本限制" class="headerlink" title="当前接入方式 (无版本限制)"></a>当前接入方式 (无版本限制)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">NSString *APPID = [PlistReader valueForKeyInConfig:@&quot;APP_ID&quot;];</div><div class="line"></div><div class="line">NSString *appStoreReviewStr = [NSString stringWithFormat: @&quot;itms-apps://itunes.apple.com/app/id%@?action=write-review&quot;,APPID];</div><div class="line"></div><div class="line">[[UIApplication sharedApplication] openURL:[NSURL URLWithString:appStoreReviewStr]];</div></pre></td></tr></table></figure>
+<h4 id="iOS10-3-接入方式"><a href="#iOS10-3-接入方式" class="headerlink" title="iOS10.3 + 接入方式"></a>iOS10.3 + 接入方式</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">导入头文件 #import &lt;StoreKit/StoreKit.h&gt;</div><div class="line"></div><div class="line">//因为一年内只有三次, 需要根据不同的场合做出判断处理</div><div class="line">[SKStoreReviewController requestReview];</div></pre></td></tr></table></figure>
 <blockquote>
-<p>sudo gem sources -r <a href="https://rubygems/org/" target="_blank" rel="external">https://rubygems/org/</a></p>
-<p>sudo gem sources -a <a href="https://ruby.taobao.org/" target="_blank" rel="external">https://ruby.taobao.org/</a></p>
+<p>参考文献<br><a href="http://blog.csdn.net/u011363981/article/details/76136843" target="_blank" rel="external">具透 | iOS 10.3 新 App Store 评价机制详解</a></p>
 </blockquote>
-<p>此时出现了:</p>
-<p>Error fetching <a href="https://ruby.taobao.org/:SSL_connect" target="_blank" rel="external">https://ruby.taobao.org/:SSL_connect</a> returned=1 errno=0 state=SSLv3 read server certificate B: certificate verify failed (<a href="https://ruby.taobao.org/specs.4.8.gz" target="_blank" rel="external">https://ruby.taobao.org/specs.4.8.gz</a>)</p>
-<p>目前找到的解决办法有这几个。</p>
-<ul>
-<li>1.换个镜像呗：<a href="http://gems.ruby-china.org/" target="_blank" rel="external">http://gems.ruby-china.org/</a></li>
-</ul>
-<p>这个问题的根本原因是 ca-bunle 中没有包含 GlobalSign 根证书导致的。目前淘宝提供的解决办法有两个</p>
-<ul>
-<li><p>2.升级 ruby gems 到2.6.3版本（该版本把 GlobalSign 加入到了 gem 的证书链中）</p>
-</li>
-<li><p>3.更新 OpenSSL 的 ca-bundle 到最新</p>
-</li>
-</ul>
-<p>更详细的解释请看 GitHub 上的 <a href="https://github.com/alibaba/ruby.taobao.org/issues/54" target="_blank" rel="external">Issues</a></p>
-<h2 id="2-Setting-up-Cocoapods-master-repo问题"><a href="#2-Setting-up-Cocoapods-master-repo问题" class="headerlink" title="2.Setting up Cocoapods master repo问题"></a>2.Setting up Cocoapods master repo问题</h2><p>不得不说这个问题真的很让人头疼。当然问题也可以通过使用镜像索引的方法解决</p>
-<p>$ pod repo remove master</p>
-<p>$ pod repo add master xxxx(镜像地址)</p>
-<p>$ pod repo update</p>
-<p>但是更换了镜像之后Podfile里面的source也得跟着改变，所以还是慢慢等吧。</p>
-<h2 id="3-Setting-up-Cocoapods-master-repo-下载过程中报错："><a href="#3-Setting-up-Cocoapods-master-repo-下载过程中报错：" class="headerlink" title="3.Setting up Cocoapods master repo 下载过程中报错："></a>3.Setting up Cocoapods master repo 下载过程中报错：</h2><p>error: RPC failed; result=56, HTTP code = 200</p>
-<p>fatal: The remote end hung up unexpectedly</p>
-<p>fatal: early EOF</p>
-<p>fatal: index-pack failed</p>
-<p>这个问题主要是因为需要clone的东西太大了，超出了git的限制，所以我们需要手动调整一下git的配置，网上提供的命令是：</p>
-<p>git config http.postBuffer 524288000</p>
-<p>但是实际使用的时候变成下面的命令会更好用哦</p>
-<p>git config –global http.postBuffer 524288000</p>
-<h2 id="4-还是Setting-up-Cocoapods-master-repo-过程中报的错"><a href="#4-还是Setting-up-Cocoapods-master-repo-过程中报的错" class="headerlink" title="4.还是Setting up Cocoapods master repo 过程中报的错"></a>4.还是Setting up Cocoapods master repo 过程中报的错</h2><p>error: RPC failed; curl 56 SSLRead() return error -36或者9806</p>
-<p>fatal: The remote end hung up unexpectedly</p>
-<p>fatal: early EOF</p>
-<p>fatal: index-pack failed</p>
-<p>解决方案:</p>
-<p>$sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer</p>
-<p>-switch后面的地址代表的是Xcode包内容中的Contents文件夹下的Developer文件夹路径</p>
 
       
     </div>
@@ -383,17 +347,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/02/27/iOS性能优化：Instruments使用实战/" rel="next" title="iOS性能优化：Instruments使用实战">
-                <i class="fa fa-chevron-left"></i> iOS性能优化：Instruments使用实战
+              <a href="/2017/09/02/2017-09-02/" rel="next" title="线程竞态检测工具 - Thread Sanitizer">
+                <i class="fa fa-chevron-left"></i> 线程竞态检测工具 - Thread Sanitizer
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/10/01/gcd_中_dispatch_once_的性能与实现/" rel="prev" title="GCD 中 dispatch_once 的性能与实现">
-                GCD 中 dispatch_once 的性能与实现 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -527,7 +487,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-ruby源问题"><span class="nav-number">1.</span> <span class="nav-text">1.ruby源问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Setting-up-Cocoapods-master-repo问题"><span class="nav-number">2.</span> <span class="nav-text">2.Setting up Cocoapods master repo问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Setting-up-Cocoapods-master-repo-下载过程中报错："><span class="nav-number">3.</span> <span class="nav-text">3.Setting up Cocoapods master repo 下载过程中报错：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-还是Setting-up-Cocoapods-master-repo-过程中报的错"><span class="nav-number">4.</span> <span class="nav-text">4.还是Setting up Cocoapods master repo 过程中报的错</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#App-Store-评分方式"><span class="nav-number">1.</span> <span class="nav-text">App Store 评分方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#目前方式"><span class="nav-number">1.1.</span> <span class="nav-text">目前方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#iOS6"><span class="nav-number">1.2.</span> <span class="nav-text">iOS6 +</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#iOS10-3"><span class="nav-number">1.3.</span> <span class="nav-text">iOS10.3 +</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#当前接入方式-无版本限制"><span class="nav-number">1.3.1.</span> <span class="nav-text">当前接入方式 (无版本限制)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#iOS10-3-接入方式"><span class="nav-number">1.3.2.</span> <span class="nav-text">iOS10.3 + 接入方式</span></a></li></ol></li></ol></li></ol></div>
             
           </div>
         </section>
