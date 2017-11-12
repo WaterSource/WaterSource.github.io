@@ -105,7 +105,7 @@
 <meta property="og:image" content="http://oq70m0m6t.bkt.clouddn.com/CPU%20%E5%8D%A0%E7%94%A8%E7%8E%872.jpeg">
 <meta property="og:image" content="http://oq70m0m6t.bkt.clouddn.com/url%E5%93%8D%E5%BA%94%E6%97%B6%E9%97%B4%E7%9B%91%E6%8E%A7.png">
 <meta property="og:image" content="http://oq70m0m6t.bkt.clouddn.com/webview.jpeg">
-<meta property="og:updated_time" content="2017-11-12T12:56:01.000Z">
+<meta property="og:updated_time" content="2017-11-12T13:00:55.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="移动 app 网络和性能应该如何监控">
 <meta name="twitter:description" content="APP性能需要在上线前进行性能测试，主要有这几个方面：安全、启动时间; CPU 占用; 内存占用; 流量耗用;电量耗用.
@@ -350,13 +350,13 @@
 <p><img src="http://oq70m0m6t.bkt.clouddn.com/CPU%20%E5%8D%A0%E7%94%A8%E7%8E%872.jpeg" width="65%"></p>
 <p>关于采集数据的频率完全是自己制定的，而且大部分app都是在刚启动不久内cpu占用较大 之后就渐渐区域稳定，所以建议在刚开始采集间隔短一点比如1s，之后采集间隔逐渐加大最后稳定到5分钟获取一次</p>
 <h4 id="4-页面的帧率"><a href="#4-页面的帧率" class="headerlink" title="4.页面的帧率"></a>4.页面的帧率</h4><p>这个测量页面帧率的做法就是通过这个CADisplayLink刷帧方法的调用次数计算的，一般这个方法最快能每秒调用60次，如果是CPU或是GPU某个步骤耗时导致渲染错过了一次垂直信号，那这个方法就不会被调用了，之后统计的帧数也就随之降低了。 上面代码中的fps就是求出的这一时刻的帧率可以塞入数组再稍作处理上传。这里需要注意的是 性能监测平台自己对性能的影响，这个统计帧率的方法可能相对来说要耗性能一些，所以需要控制在某些时刻采集一定的样本就及时暂停。  这个数据建议hook每个页面加载时的方法如viewwillappear，或是tableview滑动时的代理方法，因为卡顿大多发生在这两个场景。 对帧率有兴趣的可以做一个悬浮窗测试帧率, GitHub 上监测页面帧率的第三方框架也有很多,可以参考</p>
-<h4 id="URL-响应时间监控"><a href="#URL-响应时间监控" class="headerlink" title="URL 响应时间监控"></a>URL 响应时间监控</h4><p>这里普通的做法就是继承 NSURLProtocol 这个类写一个子类，然后在子类中实现NSURLConnectionDelegate 的那五个代理方法。 </p>
+<h4 id="5-URL-响应时间监控"><a href="#5-URL-响应时间监控" class="headerlink" title="5.URL 响应时间监控"></a>5.URL 响应时间监控</h4><p>这里普通的做法就是继承 NSURLProtocol 这个类写一个子类，然后在子类中实现NSURLConnectionDelegate 的那五个代理方法。 </p>
 <p><img src="http://oq70m0m6t.bkt.clouddn.com/url%E5%93%8D%E5%BA%94%E6%97%B6%E9%97%B4%E7%9B%91%E6%8E%A7.png" width="65%"></p>
 <p>（经过调研connection在升级ipv6后还是可以使用的）你可以得到请求的url，建议只记录host和path，因为吧拼上的参数也上传第一不好快速分类，第二服务端还要做截取处理增加压力，第三浪费流量。 也可以得到response包的length。 响应时间可以根据结束方法中的时间减去开始方法中的时间得到，然后以key-value的方式上传。个人觉得请求没必要与viewcontroller关联，要考虑到管理页面栈还要考虑present和dismiss，收效甚微。并且想知道哪个url属于哪个页面还有很多可执行的方案。</p>
 <p>关于webView的url响应时间监控，比普通的native内url要复杂一些。 虽然上面说的统计方法也可以统计到webview的url响应时间，但是只能统计到完整url时间。webView的打开时可能会伴随一些302跳转之类的url，最后才到目标url。 如果一个url经历了三次跳转，响应时间很长，用上面说的统计方法只能统计总时间并不能定位到具体是哪一个子url异常。 这时就需要webView内特殊的时间统计了。</p>
 <p><img src="http://oq70m0m6t.bkt.clouddn.com/webview.jpeg" width="65%"></p>
 <p>有的一个url会调多个不同团队维护的服务导致了重定向（图中ABC都是完整url的子url），分别在webView的两个代理方法中埋点计算差值，从A走了didstart到B走了didstart这个时间的差值为①就是A所消耗的时间，①+②+③是完整的时间。 通过这种分离统计的方法，可以把慢url明确定位到每一个服务，不对拖累好人。</p>
-<h4 id="请求错误码统计"><a href="#请求错误码统计" class="headerlink" title="请求错误码统计"></a>请求错误码统计</h4><p>如果没有做错误码统计的话，你服务器有问题或者某些地区被运营商劫持之类的，你app的界面可能显示的就是一直转菊花，这时是无法精确定位问题的。 所以将自己的请求都进行编号并收集错误码是非常有必要的。 我们所关注的错误码有三种</p>
+<h4 id="6-请求错误码统计"><a href="#6-请求错误码统计" class="headerlink" title="6.请求错误码统计"></a>6.请求错误码统计</h4><p>如果没有做错误码统计的话，你服务器有问题或者某些地区被运营商劫持之类的，你app的界面可能显示的就是一直转菊花，这时是无法精确定位问题的。 所以将自己的请求都进行编号并收集错误码是非常有必要的。 我们所关注的错误码有三种</p>
 <ol>
 <li>正常的HTTP Response code 比如200 ，404，500   </li>
 <li>AFN（应该大部分人都是用AFN 3.0 版本）指定的code 如 -1101, 1102等</li>
@@ -535,7 +535,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-页面的打开速度"><span class="nav-number">1.</span> <span class="nav-text">1. 页面的打开速度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-内存使用值"><span class="nav-number">2.</span> <span class="nav-text">2.内存使用值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-CPU-占用率"><span class="nav-number">3.</span> <span class="nav-text">3.CPU 占用率</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-页面的帧率"><span class="nav-number">4.</span> <span class="nav-text">4.页面的帧率</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#URL-响应时间监控"><span class="nav-number">5.</span> <span class="nav-text">URL 响应时间监控</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#请求错误码统计"><span class="nav-number">6.</span> <span class="nav-text">请求错误码统计</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-页面的打开速度"><span class="nav-number">1.</span> <span class="nav-text">1. 页面的打开速度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-内存使用值"><span class="nav-number">2.</span> <span class="nav-text">2.内存使用值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-CPU-占用率"><span class="nav-number">3.</span> <span class="nav-text">3.CPU 占用率</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-页面的帧率"><span class="nav-number">4.</span> <span class="nav-text">4.页面的帧率</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-URL-响应时间监控"><span class="nav-number">5.</span> <span class="nav-text">5.URL 响应时间监控</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-请求错误码统计"><span class="nav-number">6.</span> <span class="nav-text">6.请求错误码统计</span></a></li></ol></div>
             
           </div>
         </section>
