@@ -1,0 +1,669 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS开发," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="APP性能需要在上线前进行性能测试，主要有这几个方面：安全、启动时间; CPU 占用; 内存占用; 流量耗用;电量耗用.
+
+在移动端开发者中最重要的KPI应该是崩溃率. 当崩溃率稳定下来后，工作的重心就应该转移到性能优化上. 虽然现在市面上第三方性能检测平台已经比较成熟了, 但还是建议公司使用自己开发的 SDK ,原因如下:
+
+数据安全
+避开费用, 有的平台是 MAU 三万以下不收费，超出后费用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="移动 app 网络和性能应该如何监控">
+<meta property="og:url" content="http://yoursite.com/2017/11/12/2017-11-12/index.html">
+<meta property="og:site_name" content="Never Stop">
+<meta property="og:description" content="APP性能需要在上线前进行性能测试，主要有这几个方面：安全、启动时间; CPU 占用; 内存占用; 流量耗用;电量耗用.
+
+在移动端开发者中最重要的KPI应该是崩溃率. 当崩溃率稳定下来后，工作的重心就应该转移到性能优化上. 虽然现在市面上第三方性能检测平台已经比较成熟了, 但还是建议公司使用自己开发的 SDK ,原因如下:
+
+数据安全
+避开费用, 有的平台是 MAU 三万以下不收费，超出后费用">
+<meta property="og:image" content="http://oq70m0m6t.bkt.clouddn.com/Snip20171112_1.png">
+<meta property="og:image" content="http://oq70m0m6t.bkt.clouddn.com/CPU%20%E5%8D%A0%E7%94%A8%E7%8E%871.jpeg">
+<meta property="og:image" content="http://oq70m0m6t.bkt.clouddn.com/CPU%20%E5%8D%A0%E7%94%A8%E7%8E%872.jpeg">
+<meta property="og:image" content="http://oq70m0m6t.bkt.clouddn.com/url%E5%93%8D%E5%BA%94%E6%97%B6%E9%97%B4%E7%9B%91%E6%8E%A7.png">
+<meta property="og:image" content="http://oq70m0m6t.bkt.clouddn.com/webview.jpeg">
+<meta property="og:updated_time" content="2017-11-12T12:56:01.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="移动 app 网络和性能应该如何监控">
+<meta name="twitter:description" content="APP性能需要在上线前进行性能测试，主要有这几个方面：安全、启动时间; CPU 占用; 内存占用; 流量耗用;电量耗用.
+
+在移动端开发者中最重要的KPI应该是崩溃率. 当崩溃率稳定下来后，工作的重心就应该转移到性能优化上. 虽然现在市面上第三方性能检测平台已经比较成熟了, 但还是建议公司使用自己开发的 SDK ,原因如下:
+
+数据安全
+避开费用, 有的平台是 MAU 三万以下不收费，超出后费用">
+<meta name="twitter:image" content="http://oq70m0m6t.bkt.clouddn.com/Snip20171112_1.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/11/12/2017-11-12/"/>
+
+  <title> 移动 app 网络和性能应该如何监控 | Never Stop </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Never Stop</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                移动 app 网络和性能应该如何监控
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-11-12T16:10:38+08:00" content="2017-11-12">
+              2017-11-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>APP性能需要在上线前进行性能测试，主要有这几个方面：安全、启动时间; CPU 占用; 内存占用; 流量耗用;电量耗用.</p>
+</blockquote>
+<p>在移动端开发者中最重要的KPI应该是崩溃率. 当崩溃率稳定下来后，工作的重心就应该转移到性能优化上. 虽然现在市面上第三方性能检测平台已经比较成熟了, 但还是建议公司使用自己开发的 SDK ,原因如下:</p>
+<ol>
+<li>数据安全</li>
+<li>避开费用, 有的平台是 MAU 三万以下不收费，超出后费用极高</li>
+<li>可以自定义指标没有无用代码，接入第三方 SDK 包体积增大不少，其实你只用到了个别几个功能</li>
+</ol>
+<p>本文在几个方面浅谈一下实现思路:</p>
+<h4 id="1-页面的打开速度"><a href="#1-页面的打开速度" class="headerlink" title="1. 页面的打开速度"></a>1. 页面的打开速度</h4><p>关于页面的加载速度的测量有两个指标，一个是页面渲染速度，一个是页面加载速度</p>
+<p>页面渲染速度就是计算一个viewcontroller从viewdidload的第一行到viewdidappear的最后一行所用的时间。 这种方法可以适用于大多数相对静态的页面，一打开就直接加载的  </p>
+<p>页面加载速度相对比较麻烦，适用于有些页面并不是一进入就加载而是先发个请求，请求回调后才继续搭建页面的。加载时间应该是用户点开页面到用户能完全的看到内容才算加载完毕，这里就需要算进去请求消耗的时间了，对于源码级别的sdk，我们可以通过每发出一个请求就记到栈里，回调一个消除一个，当栈里的每一个请求都已经回调后才能认定是界面加载完毕。 业界也有一些黑盒的云测平台是录屏解析视频流，认定一个页面从打开到页面稳定后为加载时间。 个人认为肯定没有源码级别的准啊</p>
+<p>关于这种接入一个sdk直接hook每个页面生命周期方法也简单提一下吧，就是写一个类作为UIViewController的分类，增加几个方法如XXXviewdidload ， XXXviewdidappear等，然后使用这种swizzle的做法替换方法的实现</p>
+<h4 id="2-内存使用值"><a href="#2-内存使用值" class="headerlink" title="2.内存使用值"></a>2.内存使用值</h4><p>关于内存和cpu的获取方法业内基本都有统一的代码了，大致如下</p>
+<p><img src="http://oq70m0m6t.bkt.clouddn.com/Snip20171112_1.png" width="65%"></p>
+<p>需要先引入这两个头文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">#include &lt;mach/task_info.h&gt;</div><div class="line">#include &lt;mach/mach.h&gt;</div></pre></td></tr></table></figure>
+<p>获取到了数据存入数组那接下来的事情就是上报策略的制定了。没必要每次获取数据都上报，可以设置每次启动上报上一次session的全部记录就好，启动后隔个10秒或20秒错开请求高峰期。上报时的数据结构也要尽可能的精简，因为不能对用户的流量造成太大的损失，也可以选择先压缩后再上传</p>
+<h4 id="3-CPU-占用率"><a href="#3-CPU-占用率" class="headerlink" title="3.CPU 占用率"></a>3.CPU 占用率</h4><p>同样需要内存的那两个头文件</p>
+<p><img src="http://oq70m0m6t.bkt.clouddn.com/CPU%20%E5%8D%A0%E7%94%A8%E7%8E%871.jpeg" width="65%"></p>
+<p><img src="http://oq70m0m6t.bkt.clouddn.com/CPU%20%E5%8D%A0%E7%94%A8%E7%8E%872.jpeg" width="65%"></p>
+<p>关于采集数据的频率完全是自己制定的，而且大部分app都是在刚启动不久内cpu占用较大 之后就渐渐区域稳定，所以建议在刚开始采集间隔短一点比如1s，之后采集间隔逐渐加大最后稳定到5分钟获取一次</p>
+<h4 id="4-页面的帧率"><a href="#4-页面的帧率" class="headerlink" title="4.页面的帧率"></a>4.页面的帧率</h4><p>这个测量页面帧率的做法就是通过这个CADisplayLink刷帧方法的调用次数计算的，一般这个方法最快能每秒调用60次，如果是CPU或是GPU某个步骤耗时导致渲染错过了一次垂直信号，那这个方法就不会被调用了，之后统计的帧数也就随之降低了。 上面代码中的fps就是求出的这一时刻的帧率可以塞入数组再稍作处理上传。这里需要注意的是 性能监测平台自己对性能的影响，这个统计帧率的方法可能相对来说要耗性能一些，所以需要控制在某些时刻采集一定的样本就及时暂停。  这个数据建议hook每个页面加载时的方法如viewwillappear，或是tableview滑动时的代理方法，因为卡顿大多发生在这两个场景。 对帧率有兴趣的可以做一个悬浮窗测试帧率, GitHub 上监测页面帧率的第三方框架也有很多,可以参考</p>
+<h4 id="URL-响应时间监控"><a href="#URL-响应时间监控" class="headerlink" title="URL 响应时间监控"></a>URL 响应时间监控</h4><p>这里普通的做法就是继承 NSURLProtocol 这个类写一个子类，然后在子类中实现NSURLConnectionDelegate 的那五个代理方法。 </p>
+<p><img src="http://oq70m0m6t.bkt.clouddn.com/url%E5%93%8D%E5%BA%94%E6%97%B6%E9%97%B4%E7%9B%91%E6%8E%A7.png" width="65%"></p>
+<p>（经过调研connection在升级ipv6后还是可以使用的）你可以得到请求的url，建议只记录host和path，因为吧拼上的参数也上传第一不好快速分类，第二服务端还要做截取处理增加压力，第三浪费流量。 也可以得到response包的length。 响应时间可以根据结束方法中的时间减去开始方法中的时间得到，然后以key-value的方式上传。个人觉得请求没必要与viewcontroller关联，要考虑到管理页面栈还要考虑present和dismiss，收效甚微。并且想知道哪个url属于哪个页面还有很多可执行的方案。</p>
+<p>关于webView的url响应时间监控，比普通的native内url要复杂一些。 虽然上面说的统计方法也可以统计到webview的url响应时间，但是只能统计到完整url时间。webView的打开时可能会伴随一些302跳转之类的url，最后才到目标url。 如果一个url经历了三次跳转，响应时间很长，用上面说的统计方法只能统计总时间并不能定位到具体是哪一个子url异常。 这时就需要webView内特殊的时间统计了。</p>
+<p><img src="http://oq70m0m6t.bkt.clouddn.com/webview.jpeg" width="65%"></p>
+<p>有的一个url会调多个不同团队维护的服务导致了重定向（图中ABC都是完整url的子url），分别在webView的两个代理方法中埋点计算差值，从A走了didstart到B走了didstart这个时间的差值为①就是A所消耗的时间，①+②+③是完整的时间。 通过这种分离统计的方法，可以把慢url明确定位到每一个服务，不对拖累好人。</p>
+<h4 id="请求错误码统计"><a href="#请求错误码统计" class="headerlink" title="请求错误码统计"></a>请求错误码统计</h4><p>如果没有做错误码统计的话，你服务器有问题或者某些地区被运营商劫持之类的，你app的界面可能显示的就是一直转菊花，这时是无法精确定位问题的。 所以将自己的请求都进行编号并收集错误码是非常有必要的。 我们所关注的错误码有三种</p>
+<ol>
+<li>正常的HTTP Response code 比如200 ，404，500   </li>
+<li>AFN（应该大部分人都是用AFN 3.0 版本）指定的code 如 -1101, 1102等</li>
+<li>后端请求制定的errorcode。 如 errorcode : 7, message : “您还没有登录” 或 errorcode:10,message:”签名验证失败” </li>
+</ol>
+<p>还有很重要一点，就是将自己的所有接口做成一整套映射的编号， 举个例子67对应的是persondetail接口。出现了请求错误，上传的请求错误码应该包含两个部分：接口编号+错误编号。 错误编号建议优先使用自己制定的errcode，其次是AFNcode，最后才是HTTPresponsecode。</p>
+<p>“67-10” “35-404” 如果以后上报了类似的错误码，当然比只看到转菊花要好定位的多。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS开发/" rel="tag">#iOS开发</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/24/2017-09-24/" rel="next" title="iOS 11 更新了哪些细节?">
+                <i class="fa fa-chevron-left"></i> iOS 11 更新了哪些细节?
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/hello.jpg"
+               alt="Yuan He" />
+          <p class="site-author-name" itemprop="name">Yuan He</p>
+          <p class="site-description motion-element" itemprop="description">博学而笃志,切问而近思</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">42</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/WaterSource/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2654101531/" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-页面的打开速度"><span class="nav-number">1.</span> <span class="nav-text">1. 页面的打开速度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-内存使用值"><span class="nav-number">2.</span> <span class="nav-text">2.内存使用值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-CPU-占用率"><span class="nav-number">3.</span> <span class="nav-text">3.CPU 占用率</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-页面的帧率"><span class="nav-number">4.</span> <span class="nav-text">4.页面的帧率</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#URL-响应时间监控"><span class="nav-number">5.</span> <span class="nav-text">URL 响应时间监控</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#请求错误码统计"><span class="nav-number">6.</span> <span class="nav-text">请求错误码统计</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2013 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yuan He</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
